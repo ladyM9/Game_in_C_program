@@ -14,16 +14,10 @@ Adafruit_ILI9341 display = Adafruit_ILI9341(TFT_CS, TFT_DC);
 int x;
 int SW = 2;
 int SW_state = 0;
-
-
-
 bool ref = false;
 
-
-
-
 struct OBJECT {
-  int x = 1;
+  int x = 140;
   int y = 1;
   int r = 5;
 
@@ -31,11 +25,11 @@ struct OBJECT {
 } OBJECT1;
 
 struct STARTL {
- int x = 1;
- int y = 128; 
- int x1= 1;
- int y1 = 163;
-}STARTL1;
+  int x = 1;
+  int y = 128;
+  int x1 = 1;
+  int y1 = 163;
+} STARTL1;
 
 struct LINE {
   int x = 162;
@@ -43,14 +37,6 @@ struct LINE {
   int x1 = 188;
   int y1 = 239;
 } LINE1;
-
-
-//struct OD {
-//  int X = 10;
-//  int Y = 10;
-//  int h = 8;
-//  int w = 8;
-//} OD1;
 
 void setup() {
   // put your setup code here, to run once:
@@ -65,8 +51,8 @@ void setup() {
   //  display.setContrast(50);
   display.setCursor(0, 0);
   display.setTextColor(ILI9341_BLUE);
-//  OBJECT1.x = display.width() / 2; // gdje iscrtati krug po x osi
-//  OBJECT1.y = display.height() / 2; // gdje iscrtati krug po y osi
+  //  OBJECT1.x = display.width() / 2; // gdje iscrtati krug po x osi
+  //  OBJECT1.y = display.height() / 2; // gdje iscrtati krug po y osi
 
 
   Serial.println(myLabs[1][1].x0, DEC);
@@ -98,6 +84,7 @@ void loop() {
   }
   if (ref) {
     ref = false;
+    int rezult;
     display.clearDisplay();
     //    odabir_lab(x, OD1, OBJECT1);
     display.fillCircle(OBJECT1.x, OBJECT1.y, OBJECT1.r , ILI9341_WHITE);
@@ -107,7 +94,7 @@ void loop() {
       //display.drawLine(myLabs[1][i].x0, myLabs[1][i].y0, myLabs[1][i].x1, myLabs[1][i].y1, ILI9341_BLACK);
     }
     display.display();
-    if (collided_with(OBJECT1, LINE1, myLabs[1])) {  //ako se dogodila kolizija odnosno ako je kuglica na izlazu iz laba napravi sljedeće
+    if (rezult  =(collided_with(OBJECT1, LINE1, myLabs[1]))) {  //ako se dogodila kolizija odnosno ako je kuglica na izlazu iz laba napravi sljedeće
       display.clearDisplay();
       display.setTextWrap(false);
       display.setTextSize(4);
@@ -118,13 +105,16 @@ void loop() {
       display.display();
       while (true);
     }
-
-
+    if (rezult = (collided_with(OBJECT1, LINE1, myLabs[1]))) {
+      OBJECT1.x -= 2;
+      OBJECT1.y -= 2;
+      while(true);
+    }
   }
 }
-bool collided_with(struct OBJECT o, struct LINE l,  const myline_t *v) {
+int collided_with(struct OBJECT o, struct LINE l,  const myline_t *v) {
   //  funkcija za detekciju kolizije
-  int i ;
+  int rez ;
   bool _collisionDetected = false;
 
   //  for (int i = 0; i < 49; i++)
@@ -141,24 +131,19 @@ bool collided_with(struct OBJECT o, struct LINE l,  const myline_t *v) {
 
   if ((o.x = v->x0) && (o.x = v->x1) && (o.y = v->y0) && (o.y = v->y1)) _collisionDetected = true;
   if ( _collisionDetected) {
-    o.x -= 2;
-    o.y -= 2;
-    return true;
+    return 0;
   }else{
     return false;
   }
-
 
   if ((o.x >= l.x) && (o.x <= l.x1) && (o.y >= l.y) && (o.y  <= l.y1)) _collisionDetected = true;  //detekcija na izlaz iz labirinta
   if (_collisionDetected ) {
-    return true;
+    return 1;
   }else{
     return false;
   }
-  //}
+
 }
-
-
 //display.display();
 //    if (analogRead(A0)) {
 //      display.clearDisplay();
