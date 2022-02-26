@@ -1,4 +1,3 @@
-
 #include "Adafruit_GFX.h"
 #include "ILI9341_STM32.h"
 
@@ -33,12 +32,12 @@ struct OBJECT {
 
 } OBJECT1;
 
-struct LINE {
-  int m = 162;
-  int n = 238;
-  int m1 = 188;
-  int n1 = 239;
-} LINE1;
+//struct LINE {
+//  int m = 162;
+//  int n = 238;
+//  int m1 = 188;
+//  int n1 = 239;
+//} LINE1;
 
 
 struct OD {
@@ -71,8 +70,10 @@ void setup() {
   //  display.setContrast(50);
   display.setCursor(0, 0);
   display.setTextColor(ILI9341_BLUE);
-  OBJECT1.x = display.width() / 2; // gdje iscrtati krug po x osi
-  OBJECT1.y = display.height() / 2; // gdje iscrtati krug po y osi
+  OBJECT1.x = display.width() - 300;
+  OBJECT1.y = display.height() - 180;
+  //  OBJECT1.x = display.width()/ 2; // gdje iscrtati krug po x osi
+  //  OBJECT1.y = display.height()/ 2; // gdje iscrtati krug po y osi
 
 
   Serial.println(myLabs[1][1].x0, DEC);
@@ -115,19 +116,23 @@ void loop() {
       display.drawLine(myLabs[0][i].x0, myLabs[0][i].y0, myLabs[0][i].x1, myLabs[0][i].y1, ILI9341_WHITE);
       //display.drawLine(myLabs[1][i].x0, myLabs[1][i].y0, myLabs[1][i].x1, myLabs[1][i].y1, ILI9341_BLACK);
     }
+//  if ( (OBJECT1.x = (myLabs[2][0].x0)) && (OBJECT1.y = (myLabs[2][0].y0))) {
+//    display.print("YOU WIN");
+//  }
     display.display();
-//      if (collided_with(OBJECT1, LINE1)) {  //ako se dogodila kolizija odnosno ako je kuglica na izlazu iz laba napravi sljedeće
-//        display.clearDisplay();
-//  //      display.setTextWrap(false);
-//  //      display.setTextSize(4);
-//        display.setCursor(0, 0);
-//        display.setRotation(1);
-//        display.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
-//  //      display.print("YOU WON " );
-//       //display.display();
-//        while (true);
-//    }
-    
+
+    //      if (collided_with(OBJECT1, LINE1)) {  //ako se dogodila kolizija odnosno ako je kuglica na izlazu iz laba napravi sljedeće
+    //        display.clearDisplay();
+    //  //      display.setTextWrap(false);
+    //  //      display.setTextSize(4);
+    //        display.setCursor(0, 0);
+    //        display.setRotation(1);
+    //        display.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
+    //  //      display.print("YOU WON " );
+    //       //display.display();
+    //        while (true);
+    //    }
+
 
   }
 }
@@ -142,25 +147,12 @@ void loop() {
 //      if (_collisionDetected) {
 //        return true;
 //      }
-//  
-//    }  
-//}
- // for ( int i = 0 ; i < 49 ; i++) {
-//    const myline_t myLab1[]; 
-    
-  
-//    if((o.x =  myLabs[i][i]) && (o.y =  myLabs[i][i])) &&  _collisionDetected = true;
-//     if( _collisionDetected) {
-//      o.x -=2;
-//      o.y -=2;
-//      return true;
-//    } 
 //
-//    else {
-//      return false;
 //    }
-//    }
-//  
+//}
+
+//}
+//
 //
 //    if ((o.x >= l.m) && (o.x >= l.m1) && (o.y >= l.n) && (o.y  >= l.n1)) _collisionDetected = true;  //detekcija na izlaz iz labirinta
 //    if (_collisionDetected ) {
@@ -172,15 +164,15 @@ void loop() {
 //    }
 //  //}
 //}
-  
 
-  //display.display();
-  //    if (analogRead(A0)) {
-  //      display.clearDisplay();
-  //    }
-  //
-  //    while (true);
-  //  }
+
+//display.display();
+//    if (analogRead(A0)) {
+//      display.clearDisplay();
+//    }
+//
+//    while (true);
+//  }
 //}
 
 //bool odabir_game(int x, struct OD t, struct OBJECT o) { //funkcija koja će biti za odabir igrice
@@ -209,17 +201,17 @@ extern "C" void SystemClock_Config(void)
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
   RCC_PeriphCLKInitTypeDef PeriphClkInitStruct = {0};
 
-  /** Supply configuration update enable 
+  /** Supply configuration update enable
   */
   HAL_PWREx_ConfigSupply(PWR_LDO_SUPPLY);
-  /** Configure the main internal regulator output voltage 
+  /** Configure the main internal regulator output voltage
   */
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE0);
 
-  while(!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {}
-  /** Initializes the CPU, AHB and APB busses clocks 
+  while (!__HAL_PWR_GET_FLAG(PWR_FLAG_VOSRDY)) {}
+  /** Initializes the CPU, AHB and APB busses clocks
   */
-  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48|RCC_OSCILLATORTYPE_HSE;
+  RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI48 | RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_BYPASS;
   RCC_OscInitStruct.HSI48State = RCC_HSI48_ON;
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
@@ -236,11 +228,11 @@ extern "C" void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /** Initializes the CPU, AHB and APB busses clocks 
+  /** Initializes the CPU, AHB and APB busses clocks
   */
-  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK|RCC_CLOCKTYPE_SYSCLK
-                              |RCC_CLOCKTYPE_PCLK1|RCC_CLOCKTYPE_PCLK2
-                              |RCC_CLOCKTYPE_D3PCLK1|RCC_CLOCKTYPE_D1PCLK1;
+  RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_HCLK | RCC_CLOCKTYPE_SYSCLK
+                                | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2
+                                | RCC_CLOCKTYPE_D3PCLK1 | RCC_CLOCKTYPE_D1PCLK1;
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.SYSCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_HCLK_DIV2;
@@ -253,8 +245,8 @@ extern "C" void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_SPI1|RCC_PERIPHCLK_USB
-                              |RCC_PERIPHCLK_FMC;
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_SPI1 | RCC_PERIPHCLK_USB
+      | RCC_PERIPHCLK_FMC;
   PeriphClkInitStruct.FmcClockSelection = RCC_FMCCLKSOURCE_D1HCLK;
   PeriphClkInitStruct.Spi123ClockSelection = RCC_SPI123CLKSOURCE_PLL;
   PeriphClkInitStruct.UsbClockSelection = RCC_USBCLKSOURCE_HSI48;
@@ -262,7 +254,7 @@ extern "C" void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  /** Enable USB Voltage detector 
+  /** Enable USB Voltage detector
   */
   HAL_PWREx_EnableUSBVoltageDetector();
 }
