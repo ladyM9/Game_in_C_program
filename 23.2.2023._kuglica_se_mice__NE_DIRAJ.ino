@@ -27,7 +27,7 @@ typedef struct myline {
 struct OBJECT {
   int x = 1;
   int y = 1;
-  int r = 5;
+  int r = 2;
 
 
 } OBJECT1;
@@ -70,8 +70,8 @@ void setup() {
   //  display.setContrast(50);
   display.setCursor(0, 0);
   display.setTextColor(ILI9341_BLUE);
-  OBJECT1.x = display.width() - 300;
-  OBJECT1.y = display.height() - 180;
+  OBJECT1.x = display.width() - 168;
+  OBJECT1.y = display.height() - 265;
   //  OBJECT1.x = display.width()/ 2; // gdje iscrtati krug po x osi
   //  OBJECT1.y = display.height()/ 2; // gdje iscrtati krug po y osi
 
@@ -116,10 +116,33 @@ void loop() {
       display.drawLine(myLabs[0][i].x0, myLabs[0][i].y0, myLabs[0][i].x1, myLabs[0][i].y1, ILI9341_WHITE);
       //display.drawLine(myLabs[1][i].x0, myLabs[1][i].y0, myLabs[1][i].x1, myLabs[1][i].y1, ILI9341_BLACK);
     }
-//  if ( (OBJECT1.x = (myLabs[2][0].x0)) && (OBJECT1.y = (myLabs[2][0].y0))) {
-//    display.print("YOU WIN");
-//  }
     display.display();
+    //    if((OBJECT1.x >= 49) && (OBJECT1.x <= 59))
+    for ( int i = 0 ; i < 49 ; i++) {
+      if ((OBJECT1.x == myLabs[0][i].x0) || (OBJECT1.y == myLabs[0][i].y0) || (OBJECT1.x == myLabs[0][i].x1) || (OBJECT1.y == myLabs[0][i].y1)) {
+        //  if ( (OBJECT1.x <= (myLabs[0][42].x0)) && (OBJECT1.y == (myLabs[0][48].y0)) && (OBJECT1.x == (myLabs[0][49].x1)) && (OBJECT1.y >= (myLabs[0][48].y1))) {
+        display.clearDisplay();
+        display.setTextWrap(false);
+        display.setTextSize(4);
+        display.setCursor(0, 0);
+        display.setRotation(1);
+        display.print("YOU LOST");
+        //display.print("YOU WIN");
+        //display.display();
+
+      }
+//      if ((OBJECT1.x == display.width() + 168) || (OBJECT1.y == display.height())) {
+//        display.clearDisplay();
+//        display.setTextWrap(false);
+//        display.setTextSize(4);
+//        display.setCursor(0, 0);
+//        display.setRotation(1);
+//        display.print("YOU WIN");
+//      }
+    }
+    display.display();
+
+
 
     //      if (collided_with(OBJECT1, LINE1)) {  //ako se dogodila kolizija odnosno ako je kuglica na izlazu iz laba napravi sljedeće
     //        display.clearDisplay();
