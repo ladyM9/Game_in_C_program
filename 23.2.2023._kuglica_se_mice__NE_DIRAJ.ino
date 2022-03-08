@@ -51,7 +51,7 @@ const myline_t myLab1[] = {{2, 1, 128, 1} , {163, 1, 318, 1} , {318, 1, 318, 239
   {285, 191, 319, 191} , {161, 214, 192, 214} , {192, 214, 192, 235}
 };
 //const myline_t myLab1[] = {{1, 4, 11, 4} , {19, 1, 19, 8}, {11, 8, 19, 8} , {11, 9, 11, 17} , {1, 22, 11, 22} , {11, 26, 18, 26} , {11, 27, 11, 31} , {1, 36, 10, 36} , {19, 13, 19, 39 }, {11, 40, 33, 40} , {20, 8, 24, 8} , {28, 4, 33, 4} , {34, 1, 34, 17}, {20, 13, 25, 13}, {28, 18, 34, 18} , {27, 19, 27, 29} , {27, 27, 34, 27}, {34, 28, 34, 31}, {20, 36, 48, 36}, {36, 22, 41, 22}, {42, 5, 42 , 35}, {49, 6, 49, 8}, {65, 5, 65, 8} , {73, 1, 73, 3}, {50, 8, 83, 8}, {43, 13, 48, 13}, {57, 9, 57, 18} , {50, 18, 57, 18} , {43, 26, 56, 26} , {57, 22, 57, 26} , {58, 22, 65, 22} , {65, 18, 65, 22} , {66, 18, 72, 18} , {72, 13, 72, 18} , {65, 13, 72, 13} , {74, 23, 74, 26} , {65, 23, 73, 23}, {53, 31, 73, 31} , {73, 31, 73, 39} , {57, 40, 73, 40}, {49, 37, 49, 47}, {42, 40, 42, 47}, {65, 41, 65, 47}};
-const myline_t myLab2[] = {{1, 0, 81, 0}, {0, 0, 0, 46}, {81, 0, 81, 46}, {0, 47, 42, 47}, {49, 47, 83, 47}};
+const myline_t myLab2[] = {    {2, 2, 66, 2}, {82, 2, 162, 2}, {82, 18, 114, 18}, {130, 18, 162, 18}, {66, 34, 146, 34}, {18, 50, 50, 50}, {82, 50, 98, 50}, {114, 50, 162, 50} , {50, 66, 66, 66}, {98, 66, 146, 66}, {18, 82, 34, 82}, {50, 82, 82, 82}, {146, 82, 162, 82}, {2, 98, 34, 98}, {82, 98, 130, 98}, {146, 98, 162, 98}, {66, 114, 114, 114}, {130, 114, 146, 114}, {50, 130, 66, 130} , {146, 130, 162, 130}, {18, 146, 98, 146}, {130, 146, 146, 146}, {2, 162, 82, 162}, {98, 162, 162, 162}, {2, 2, 2, 162}, {18, 18, 18, 66}, {18, 114, 18, 146}, {34, 2, 34, 34}, {34, 66, 34, 130}, {50, 18, 50, 130}, {66, 18, 66, 50}, {66, 98, 66, 114}, {66, 130, 66, 146}, {82, 2, 82, 18}, {82, 50, 82, 98}, {82, 114, 82, 130}, {82, 146, 82, 162}, {98, 50, 98, 82}, {98, 130, 98, 146}, {114, 34, 114, 50}, {114, 82, 114, 98}, {114, 114, 114, 162}, {130, 66, 130, 82}, {130, 98, 130, 146}, {162, 2, 162, 162}};
 const myline_t myLab3[] = {42, 48, 49, 48}; //linija za izlaz
 const myline_t myLab4[] = {{0, 0, 99, 0 } , {126, 0, 249, 0} , {0, 0, 0, 141} , {0, 141, 123, 141} , {150, 141, 249, 141}, {249, 141, 249, 0} , {1, 27, 18, 27} , {27, 15, 48, 15} , {51, 15, 51, 42}, {24, 42, 17, 42} , {24, 42, 24, 69} , {24, 69, 51, 69}, {51, 69, 51, 126}, {3, 84, 24, 84}, {84, 84, 24, 111}, {75, 3, 75, 81}, {57, 57, 72, 57} , {54, 99, 96, 99} , {75, 114, 75, 138} , {99, 15, 99, 141}, {102, 27, 150, 27} , {150, 27, 150, 42}, {126, 42, 150, 42} , {126, 36, 126, 54} , {174, 15, 174, 57} , {153, 57, 174, 57}, {150, 57, 150, 69}, {141, 69, 150, 69}, {177, 42, 198, 42}, {99, 3, 99, 42}, {225, 15, 225, 69} , {201, 84, 225, 69}, {99, 66, 198, 99}, {225, 84, 225, 84} , {126, 84, 195, 84} , {126, 84, 126, 111}, {198, 99, 222, 99} , {102, 114, 147, 114} , {150, 99, 174, 99}, {174, 99, 174, 114}, {174, 114, 249, 114}, {135, 129, 198, 129}, {147, 129, 147, 141}};
 const myline_t *myLabs[] = {myLab1 , myLab2, myLab3, myLab4};
@@ -117,9 +117,14 @@ void loop() {
       //display.drawLine(myLabs[1][i].x0, myLabs[1][i].y0, myLabs[1][i].x1, myLabs[1][i].y1, ILI9341_BLACK);
     }
     display.display();
+
     //    if((OBJECT1.x >= 49) && (OBJECT1.x <= 59))
     for ( int i = 0 ; i < 49 ; i++) {
-      if ((OBJECT1.x == myLabs[0][i].x0) || (OBJECT1.y == myLabs[0][i].y0) || (OBJECT1.x == myLabs[0][i].x1) || (OBJECT1.y == myLabs[0][i].y1)) {
+
+      int d = ((myLabs[0][i].y1 - myLabs[0][i].y0) / (myLabs[0][i].x1 - myLabs[0][i].x0)) * (OBJECT1.x - myLabs[0][i].x0) + myLabs[0][i].y0;
+      if ( OBJECT1.x && OBJECT1.y == d ) {
+        //      if ((OBJECT1.x < myLabs[1][i].x0) && (OBJECT1.x > ( myLabs[1][i].x1 + 240)) && ( OBJECT1.y < myLabs[1][i].y0) && ( OBJECT1.y > ( myLabs[1][i].y1 + 320))) {
+        //      if ((OBJECT1.x == myLabs[1][i].x0) || (OBJECT1.y == myLabs[1][i].y0) || (OBJECT1.x == myLabs[1][i].x1) || (OBJECT1.y == myLabs[1][i].y1)) {
         //  if ( (OBJECT1.x <= (myLabs[0][42].x0)) && (OBJECT1.y == (myLabs[0][48].y0)) && (OBJECT1.x == (myLabs[0][49].x1)) && (OBJECT1.y >= (myLabs[0][48].y1))) {
         display.clearDisplay();
         display.setTextWrap(false);
@@ -127,38 +132,74 @@ void loop() {
         display.setCursor(0, 0);
         display.setRotation(1);
         display.print("YOU LOST");
+        display.display();
         //display.print("YOU WIN");
         //display.display();
+        if ((OBJECT1.x > OBJECT1.r) && (OBJECT1.x < ( OBJECT1.x + 320)) && ((OBJECT1.y == OBJECT1.r) || ( OBJECT1.y == ( OBJECT1.r + 240)))) {
+          display.clearDisplay();
+          display.setTextWrap(false);
+          display.setTextSize(4);
+          display.setCursor(0, 0);
+          display.setRotation(1);
+          display.print("YOU LOST");
+          display.display();
+        }
 
       }
-//      if ((OBJECT1.x == display.width() + 168) || (OBJECT1.y == display.height())) {
-//        display.clearDisplay();
-//        display.setTextWrap(false);
-//        display.setTextSize(4);
-//        display.setCursor(0, 0);
-//        display.setRotation(1);
-//        display.print("YOU WIN");
+
+//      private function refresh(e: Event): void {
+//        for (var i : int = 0; i < circles.length; i++) {
+//
+//          //calculating line's perpendicular distance to ball
+//var c1_circle: Vector2D = new Vector2D(circles[i].x - x1, circles[i].y - y1);
+//var c1_circle_onNormal: Number = c1_circle.projectionOn(leftNormal);
+//
+//          circles[i].y += 2;
+//
+//          //if collision happened, undo movement
+//          if (Math.abs(c1_circle_onNormal) <= circles[i].radius) {
+//            circles[i].y -= 2;
+//          }
+//        }
 //      }
+      //      if ((OBJECT1.x == myLabs[0][49].x0) || (OBJECT1.y == myLabs[0][49].y0) || (OBJECT1.x == myLabs[0][49].x1) || (OBJECT1.y == myLabs[0][49].y1)) {
+      //        display.clearDisplay();
+      //        display.setTextWrap(false);
+      //        display.setTextSize(4);
+      //        display.setCursor(0, 0);
+      //        display.setRotation(1);
+      //        display.print("YOU WIN");
+      //        display.display();
+      //      }
+      //      if ((OBJECT1.x == display.width() + 168) || (OBJECT1.y == display.height())) {
+      //        display.clearDisplay();
+      //        display.setTextWrap(false);
+      //        display.setTextSize(4);
+      //        display.setCursor(0, 0);
+      //        display.setRotation(1);
+      //        display.print("YOU WIN");
+      //      }
     }
-    display.display();
-
-
-
-    //      if (collided_with(OBJECT1, LINE1)) {  //ako se dogodila kolizija odnosno ako je kuglica na izlazu iz laba napravi sljedeće
-    //        display.clearDisplay();
-    //  //      display.setTextWrap(false);
-    //  //      display.setTextSize(4);
-    //        display.setCursor(0, 0);
-    //        display.setRotation(1);
-    //        display.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
-    //  //      display.print("YOU WON " );
-    //       //display.display();
-    //        while (true);
-    //    }
-
 
   }
 }
+
+
+//      if (collided_with(OBJECT1, LINE1)) {  //ako se dogodila kolizija odnosno ako je kuglica na izlazu iz laba napravi sljedeće
+//        display.clearDisplay();
+//  //      display.setTextWrap(false);
+//  //      display.setTextSize(4);
+//        display.setCursor(0, 0);
+//        display.setRotation(1);
+//        display.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
+//  //      display.print("YOU WON " );
+//       //display.display();
+//        while (true);
+//    }
+
+
+
+
 //bool collided_with(struct OBJECT o, struct LINE l) {
 //  //  funkcija za detekciju kolizije
 //  int i ;
