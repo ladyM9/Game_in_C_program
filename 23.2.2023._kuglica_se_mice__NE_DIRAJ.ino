@@ -21,12 +21,14 @@ typedef struct myline {
   int16_t y0;
   int16_t x1;
   int16_t y1;
-} myline_t;
+} myline_t;    // moje linije u labirintu dakle x0, yo početne točke, a x1, i y1 krajnje točke
 
 
 struct OBJECT {
   int x = 1;
   int y = 1;
+  int xOld = 1;
+  int yOld = 1;
   int r = 2;
 
 
@@ -70,13 +72,14 @@ void setup() {
   //  display.setContrast(50);
   display.setCursor(0, 0);
   display.setTextColor(ILI9341_BLUE);
-  OBJECT1.x = display.width() - 168;
-  OBJECT1.y = display.height() - 265;
+  display.display();
+  OBJECT1.x = display.width() - 168;    //  početna pozicija kuglice po x osi
+  OBJECT1.y = display.height() - 265;   // početna pozicija kuglice po y osi
   //  OBJECT1.x = display.width()/ 2; // gdje iscrtati krug po x osi
   //  OBJECT1.y = display.height()/ 2; // gdje iscrtati krug po y osi
 
 
-  Serial.println(myLabs[1][1].x0, DEC);
+  Serial.println(myLabs[1][1].x0, DEC);   //iscrtavanje labirinta na display
   display.display();
 
 
@@ -86,13 +89,13 @@ void loop() {
   // put your main code here, to run repeatedly:
   int rawX = 1023 - analogRead(A0);
   int rawY = 1023 - analogRead(A1);
-
-
+  int col = checkCollision(OBJECT1 , *myLabs, 49);
   //  OBJECT1.w = digitalRead(D2);
   //mapx = map(locationx, 0 , 1023, 0, 319);
   //mapy = map(locationy, 0 , 1023, 0, 239);
 
   if (rawX < 500 || rawX > 520) {
+    OBJECT1.xOld = OBJECT1.x;
     OBJECT1.x += (511 - rawX) / 100;
     if (OBJECT1.x > 319) OBJECT1.x = 319;
     if (OBJECT1.x < 0) OBJECT1.x = 0;
@@ -100,52 +103,80 @@ void loop() {
 
   }
   if (rawY < 500 || rawY > 520) {
+    OBJECT1.yOld = OBJECT1.y;
     OBJECT1.y += (511 - rawY) / 100;
 
     if (OBJECT1.y > 239) OBJECT1.y = 239;
     if (OBJECT1.y < 0) OBJECT1.y = 0;
     ref = true;
   }
-  if (ref) {
-    ref = false;
+  if (ref = true) {
     display.clearDisplay();
     //    odabir_lab(x, OD1, OBJECT1);
     display.fillCircle(OBJECT1.x, OBJECT1.y, OBJECT1.r , ILI9341_WHITE);
+
+
+    //    if((OBJECT1.x >= 49) && (OBJECT1.x <= 59))
+    //    for ( int i = 0 ; i < 49 ; i++) {
     for ( int i = 0 ; i < 49 ; i++) //petlja za iscrtavanje svih linija u labirintu
     {
       display.drawLine(myLabs[0][i].x0, myLabs[0][i].y0, myLabs[0][i].x1, myLabs[0][i].y1, ILI9341_WHITE);
       //display.drawLine(myLabs[1][i].x0, myLabs[1][i].y0, myLabs[1][i].x1, myLabs[1][i].y1, ILI9341_BLACK);
     }
+    if (col & 1)
+    { 
+      Serial.begin(9600);
+      Serial.println("Collision detected in due y change");
+
+      //      ref = true;
+      //        display.clearDisplay();
+      //        display.setTextWrap(false);
+      //        display.setTextSize(4);
+      //        display.setCursor(0, 0);
+      //        display.setRotation(1);
+      //        display.print("Collision detected in due y change");
+      //        display.display();
+    }
+    ref = false;
+    if (col & 2)
+    {
+      Serial.begin(9600);
+      Serial.println("Collision detected in due x change");
+   
+      //      ref = true;
+      //        display.clearDisplay();
+      //        display.setTextWrap(false);
+      //        display.setTextSize(4);
+      //        display.setCursor(0, 0);
+      //        display.setRotation(1);
+      //        display.print("Collision detected in due x change");
+      //        display.display();
+    }ref = false;
     display.display();
+    ref = true;
 
-    //    if((OBJECT1.x >= 49) && (OBJECT1.x <= 59))
-    for ( int i = 0 ; i < 49 ; i++) {
+  }
+}
 
-      int d = ((myLabs[0][i].y1 - myLabs[0][i].y0) / (myLabs[0][i].x1 - myLabs[0][i].x0)) * (OBJECT1.x - myLabs[0][i].x0) + myLabs[0][i].y0;
-      if ( OBJECT1.x && OBJECT1.y == d ) {
-        //      if ((OBJECT1.x < myLabs[1][i].x0) && (OBJECT1.x > ( myLabs[1][i].x1 + 240)) && ( OBJECT1.y < myLabs[1][i].y0) && ( OBJECT1.y > ( myLabs[1][i].y1 + 320))) {
-        //      if ((OBJECT1.x == myLabs[1][i].x0) || (OBJECT1.y == myLabs[1][i].y0) || (OBJECT1.x == myLabs[1][i].x1) || (OBJECT1.y == myLabs[1][i].y1)) {
-        //  if ( (OBJECT1.x <= (myLabs[0][42].x0)) && (OBJECT1.y == (myLabs[0][48].y0)) && (OBJECT1.x == (myLabs[0][49].x1)) && (OBJECT1.y >= (myLabs[0][48].y1))) {
-        display.clearDisplay();
-        display.setTextWrap(false);
-        display.setTextSize(4);
-        display.setCursor(0, 0);
-        display.setRotation(1);
-        display.print("YOU LOST");
-        display.display();
-        //display.print("YOU WIN");
-        //display.display();
-        if ((OBJECT1.x > OBJECT1.r) && (OBJECT1.x < ( OBJECT1.x + 320)) && ((OBJECT1.y == OBJECT1.r) || ( OBJECT1.y == ( OBJECT1.r + 240)))) {
-          display.clearDisplay();
-          display.setTextWrap(false);
-          display.setTextSize(4);
-          display.setCursor(0, 0);
-          display.setRotation(1);
-          display.print("YOU LOST");
-          display.display();
-        }
+//      int d = ((myLabs[0][i].y1 - myLabs[0][i].y0) / (myLabs[0][i].x1 - myLabs[0][i].x0)) * (OBJECT1.x - myLabs[0][i].x0) + myLabs[0][i].y0;
+//      if ( OBJECT1.x && OBJECT1.y == d ) {
+//      if ((OBJECT1.x < myLabs[1][i].x0) && (OBJECT1.x > ( myLabs[1][i].x1 + 240)) && ( OBJECT1.y < myLabs[1][i].y0) && ( OBJECT1.y > ( myLabs[1][i].y1 + 320))) {
+//      if ((OBJECT1.x == myLabs[1][i].x0) || (OBJECT1.y == myLabs[1][i].y0) || (OBJECT1.x == myLabs[1][i].x1) || (OBJECT1.y == myLabs[1][i].y1)) {
+//  if ( (OBJECT1.x <= (myLabs[0][42].x0)) && (OBJECT1.y == (myLabs[0][48].y0)) && (OBJECT1.x == (myLabs[0][49].x1)) && (OBJECT1.y >= (myLabs[0][48].y1))) {
 
-      }
+//display.print("YOU WIN");
+//display.display();
+//        if ((OBJECT1.x > OBJECT1.r) && (OBJECT1.x < ( OBJECT1.x + 320)) && ((OBJECT1.y == OBJECT1.r) || ( OBJECT1.y == ( OBJECT1.r + 240)))) {
+//          display.clearDisplay();
+//          display.setTextWrap(false);
+//          display.setTextSize(4);
+//          display.setCursor(0, 0);
+//          display.setRotation(1);
+//          display.print("YOU LOST");
+//          display.display();
+//        }
+//
+//      }
 
 //      private function refresh(e: Event): void {
 //        for (var i : int = 0; i < circles.length; i++) {
@@ -162,28 +193,45 @@ void loop() {
 //          }
 //        }
 //      }
-      //      if ((OBJECT1.x == myLabs[0][49].x0) || (OBJECT1.y == myLabs[0][49].y0) || (OBJECT1.x == myLabs[0][49].x1) || (OBJECT1.y == myLabs[0][49].y1)) {
-      //        display.clearDisplay();
-      //        display.setTextWrap(false);
-      //        display.setTextSize(4);
-      //        display.setCursor(0, 0);
-      //        display.setRotation(1);
-      //        display.print("YOU WIN");
-      //        display.display();
-      //      }
-      //      if ((OBJECT1.x == display.width() + 168) || (OBJECT1.y == display.height())) {
-      //        display.clearDisplay();
-      //        display.setTextWrap(false);
-      //        display.setTextSize(4);
-      //        display.setCursor(0, 0);
-      //        display.setRotation(1);
-      //        display.print("YOU WIN");
-      //      }
+//      if ((OBJECT1.x == myLabs[0][49].x0) || (OBJECT1.y == myLabs[0][49].y0) || (OBJECT1.x == myLabs[0][49].x1) || (OBJECT1.y == myLabs[0][49].y1)) {
+//        display.clearDisplay();
+//        display.setTextWrap(false);
+//        display.setTextSize(4);
+//        display.setCursor(0, 0);
+//        display.setRotation(1);
+//        display.print("YOU WIN");
+//        display.display();
+//      }
+//      if ((OBJECT1.x == display.width() + 168) || (OBJECT1.y == display.height())) {
+//        display.clearDisplay();
+//        display.setTextWrap(false);
+//        display.setTextSize(4);
+//        display.setCursor(0, 0);
+//        display.setRotation(1);
+//        display.print("YOU WIN");
+//      }
+
+
+
+
+
+uint8_t checkCollision(struct OBJECT _b, const myline* _l, int _n)
+{
+  uint8_t _cd = 0;
+  for ( int i = 0; i < _n; i++)
+  {
+    if (( myLabs[0][i].x1 != 0) && ( OBJECT1.x >= myLabs[0][i].x0) && (OBJECT1.x < (myLabs[0][i].x0 + myLabs[0][i].x1)))
+    {
+      if (((OBJECT1.xOld > myLabs[0][i].y0) && (OBJECT1.y < myLabs[0][i].y0)) || ((OBJECT1.yOld < myLabs[0][i].y0) && (OBJECT1.y > myLabs[0][i].y0))) _cd |= 1;
     }
+    if (( myLabs[0][i].y1 != 0 ) && (OBJECT1.y >= myLabs[0][i].y0) && (OBJECT1.y < (myLabs[0][i].y0 + myLabs[0][i].y1)))
+    {
 
+      if ((( OBJECT1.xOld > myLabs[0][i].x0) && (OBJECT1.x < myLabs[0][i].x0)) || ((OBJECT1.xOld < myLabs[0][i].x0) && (OBJECT1.x > myLabs[0][i].x0))) _cd |= 2;
+    }
   }
+  return _cd;
 }
-
 
 //      if (collided_with(OBJECT1, LINE1)) {  //ako se dogodila kolizija odnosno ako je kuglica na izlazu iz laba napravi sljedeće
 //        display.clearDisplay();
