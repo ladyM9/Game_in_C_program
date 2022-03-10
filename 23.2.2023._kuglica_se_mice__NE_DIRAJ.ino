@@ -57,9 +57,9 @@ const myline_t myLab2[] = {    {2, 2, 66, 2}, {82, 2, 162, 2}, {82, 18, 114, 18}
 const myline_t myLab3[] = {42, 48, 49, 48}; //linija za izlaz
 const myline_t myLab4[] = {{0, 0, 99, 0 } , {126, 0, 249, 0} , {0, 0, 0, 141} , {0, 141, 123, 141} , {150, 141, 249, 141}, {249, 141, 249, 0} , {1, 27, 18, 27} , {27, 15, 48, 15} , {51, 15, 51, 42}, {24, 42, 17, 42} , {24, 42, 24, 69} , {24, 69, 51, 69}, {51, 69, 51, 126}, {3, 84, 24, 84}, {84, 84, 24, 111}, {75, 3, 75, 81}, {57, 57, 72, 57} , {54, 99, 96, 99} , {75, 114, 75, 138} , {99, 15, 99, 141}, {102, 27, 150, 27} , {150, 27, 150, 42}, {126, 42, 150, 42} , {126, 36, 126, 54} , {174, 15, 174, 57} , {153, 57, 174, 57}, {150, 57, 150, 69}, {141, 69, 150, 69}, {177, 42, 198, 42}, {99, 3, 99, 42}, {225, 15, 225, 69} , {201, 84, 225, 69}, {99, 66, 198, 99}, {225, 84, 225, 84} , {126, 84, 195, 84} , {126, 84, 126, 111}, {198, 99, 222, 99} , {102, 114, 147, 114} , {150, 99, 174, 99}, {174, 99, 174, 114}, {174, 114, 249, 114}, {135, 129, 198, 129}, {147, 129, 147, 141}};
 const myline_t *myLabs[] = {myLab1 , myLab2, myLab3, myLab4};
-void setup() {
-  // put your setup code here, to run once:
-  pinMode(1, INPUT);
+
+void setup()
+{
   pinMode(A0, INPUT);
   pinMode(A1, INPUT);
 
@@ -85,14 +85,10 @@ void setup() {
 
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
+void loop()
+{
   int rawX = 1023 - analogRead(A0);
   int rawY = 1023 - analogRead(A1);
-  int col = checkCollision(OBJECT1 , *myLabs, 49);
-  //  OBJECT1.w = digitalRead(D2);
-  //mapx = map(locationx, 0 , 1023, 0, 319);
-  //mapy = map(locationy, 0 , 1023, 0, 239);
 
   if (rawX < 500 || rawX > 520) {
     OBJECT1.xOld = OBJECT1.x;
@@ -110,51 +106,19 @@ void loop() {
     if (OBJECT1.y < 0) OBJECT1.y = 0;
     ref = true;
   }
-  if (ref = true) {
+  if (ref == true) {
+    ref = false;
+    int col = checkCollision(OBJECT1, myLabs[0], 49);
     display.clearDisplay();
-    //    odabir_lab(x, OD1, OBJECT1);
     display.fillCircle(OBJECT1.x, OBJECT1.y, OBJECT1.r , ILI9341_WHITE);
 
-
-    //    if((OBJECT1.x >= 49) && (OBJECT1.x <= 59))
-    //    for ( int i = 0 ; i < 49 ; i++) {
     for ( int i = 0 ; i < 49 ; i++) //petlja za iscrtavanje svih linija u labirintu
     {
-      display.drawLine(myLabs[0][i].x0, myLabs[0][i].y0, myLabs[0][i].x1, myLabs[0][i].y1, ILI9341_WHITE);
+      display.drawLine(myLabs[0][i].x0, myLabs[0][i].y0, myLabs[0][i].x1, myLabs[0][i].y1, col == 0 ? ILI9341_WHITE : ILI9341_RED);
       //display.drawLine(myLabs[1][i].x0, myLabs[1][i].y0, myLabs[1][i].x1, myLabs[1][i].y1, ILI9341_BLACK);
     }
-    if (col & 1)
-    { 
-      Serial.begin(9600);
-      Serial.println("Collision detected in due y change");
 
-      //      ref = true;
-      //        display.clearDisplay();
-      //        display.setTextWrap(false);
-      //        display.setTextSize(4);
-      //        display.setCursor(0, 0);
-      //        display.setRotation(1);
-      //        display.print("Collision detected in due y change");
-      //        display.display();
-    }
-    ref = false;
-    if (col & 2)
-    {
-      Serial.begin(9600);
-      Serial.println("Collision detected in due x change");
-   
-      //      ref = true;
-      //        display.clearDisplay();
-      //        display.setTextWrap(false);
-      //        display.setTextSize(4);
-      //        display.setCursor(0, 0);
-      //        display.setRotation(1);
-      //        display.print("Collision detected in due x change");
-      //        display.display();
-    }ref = false;
     display.display();
-    ref = true;
-
   }
 }
 
@@ -215,19 +179,23 @@ void loop() {
 
 
 
-uint8_t checkCollision(struct OBJECT _b, const myline* _l, int _n)
+uint8_t checkCollision(struct OBJECT _b, const myline_t *_l, int _n)
 {
   uint8_t _cd = 0;
-  for ( int i = 0; i < _n; i++)
+  for (int i = 0; i < _n; i++)
   {
-    if (( myLabs[0][i].x1 != 0) && ( OBJECT1.x >= myLabs[0][i].x0) && (OBJECT1.x < (myLabs[0][i].x0 + myLabs[0][i].x1)))
+    int _w = abs(_l[i].x0 - _l[i].x1);
+    int _h = abs(_l[i].y0 - _l[i].y1);
+    int _x = _l[i].x0 >= _l[i].x1?_l[i].x1:_l[i].x0;
+    int _y = _l[i].y0 >= _l[i].y1?_l[i].y1:_l[i].y0;
+    if ((_w != 0) && (_b.x >= _x) && (_b.x < (_x + _w)))
     {
-      if (((OBJECT1.xOld > myLabs[0][i].y0) && (OBJECT1.y < myLabs[0][i].y0)) || ((OBJECT1.yOld < myLabs[0][i].y0) && (OBJECT1.y > myLabs[0][i].y0))) _cd |= 1;
+      if (((_b.yOld >= _y) && (_b.y <= _y)) || ((_b.yOld <= _y) && (_b.y >= _y))) _cd |= 1;
     }
-    if (( myLabs[0][i].y1 != 0 ) && (OBJECT1.y >= myLabs[0][i].y0) && (OBJECT1.y < (myLabs[0][i].y0 + myLabs[0][i].y1)))
-    {
 
-      if ((( OBJECT1.xOld > myLabs[0][i].x0) && (OBJECT1.x < myLabs[0][i].x0)) || ((OBJECT1.xOld < myLabs[0][i].x0) && (OBJECT1.x > myLabs[0][i].x0))) _cd |= 2;
+    if ((_h != 0) && (_b.y >= _y) && (_b.y < (_y + _h)))
+    {
+      if (((_b.xOld >= _x) && (_b.x <= _x)) || ((_b.xOld <= _x) && (_b.x >= _x))) _cd |= 2;
     }
   }
   return _cd;
