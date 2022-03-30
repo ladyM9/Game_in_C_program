@@ -110,6 +110,7 @@ void setup() {
   //  OBJECT1.y = display.height()/ 2; // gdje iscrtati krug po y osi
 
 
+
   Serial.println(myLabs[1][1].x0, DEC);   //iscrtavanje labirinta na display
   display.display();
 
@@ -120,17 +121,12 @@ void loop() {
   // put your main code here, to run repeatedly:
   int rawX = 1023 - analogRead(A0);
   int rawY = 1023 - analogRead(A1);
+  //  z = random(0, 5);
   //  OBJECT1.w = digitalRead(D2);
   //mapx = map(locationx, 0 , 1023, 0, 319);
   //mapy = map(locationy, 0 , 1023, 0, 239);
   //  int w = youwin(OBJECT1 , izl_1, 1);
 
-  display.clearDisplay();
-  display.setTextWrap(false);
-  display.setTextSize(4);
-  display.setCursor(0, 0);
-  display.setRotation(1);
-  display.print("YOU WIN");
 
   if (rawX < 500 || rawX > 520) {
     OBJECT1.xOld = OBJECT1.x;
@@ -151,13 +147,14 @@ void loop() {
   if (ref == true) {
     ref = false;
 
-    int col = checkCollision(OBJECT1 , myLabs[0], 53);
-    int col_1 = checkCollision(OBJECT1 , myLabs[4], 1);
+    int col = checkCollision(OBJECT1 , myLabs[5], 49);
+    int col_1 = checkCollision(OBJECT1 , myLabs[6], 1);
+    //    drawLines(myLabs[5], 49, ILI9341_WHITE);
     display.clearDisplay();
     //    odabir_lab(x, OD1, OBJECT1);
     display.fillCircle(OBJECT1.x, OBJECT1.y, OBJECT1.r , ILI9341_WHITE);
     //    display.drawLine(izl_1.m0, izl_1.n0 , izl_1.m1 , izl_1.n1 , ILI9341_BLUE);
-    display.drawLine(myLabs[4][0].x0 , myLabs[4][0].y0, myLabs[4][0].x1, myLabs[4][0].y1, ILI9341_BLUE);
+    display.drawLine(myLabs[6][0].x0 , myLabs[6][0].y0, myLabs[6][0].x1, myLabs[6][0].y1, ILI9341_BLUE);
     display.drawTriangle(TRIANGLE_1.x0,  TRIANGLE_1.y0, TRIANGLE_1.x1, TRIANGLE_1.y1, TRIANGLE_1.x2, TRIANGLE_1.y2, ILI9341_YELLOW );
     display.drawTriangle(TRIANGLE_2.x0,  TRIANGLE_2.y0, TRIANGLE_2.x1, TRIANGLE_2.y1, TRIANGLE_2.x2, TRIANGLE_2.y2, ILI9341_YELLOW );
     display.fillTriangle( TRIANGLE_1.x0, TRIANGLE_1.y0, TRIANGLE_1.x1, TRIANGLE_1.y1, TRIANGLE_1.x2, TRIANGLE_1.y2, ILI9341_YELLOW );
@@ -165,29 +162,38 @@ void loop() {
 
 
 
-
     //    if((OBJECT1.x >= 49) && (OBJECT1.x <= 59))
     //    for ( int i = 0 ; i < 53 ; i++) {
-    for ( int i = 0 ; i < 53 ; i++) //petlja za iscrtavanje svih linija u labirintu
+    //    for ( int i = 0 ; i < 49 ; i++) //petlja za iscrtavanje svih linija u labirintu
+    //    {
+    //      //      z = random(0, 5);
+    //      display.drawLine(myLabs[5][i].x0, myLabs[5][i].y0, myLabs[5][i].x1, myLabs[5][i].y1, col == 0 ? ILI9341_WHITE : ILI9341_RED);
+    //      //      display.drawLine(myLabs[0][i].x0, myLabs[0][i].y0, myLabs[0][i].x1, myLabs[0][i].y1, ILI9341_WHITE);
+    //      //display.drawLine(myLabs[1][i].x0, myLabs[1][i].y0, myLabs[1][i].x1, myLabs[1][i].y1, ILI9341_BLACK);
+    //    }
+    if ( col == 0)
     {
-      //      z = random(0, 5);
-      display.drawLine(myLabs[0][i].x0 * 1.75, myLabs[0][i].y0 * 1.75, myLabs[0][i].x1 * 1.75, myLabs[0][i].y1 * 1.75, col == 0 ? ILI9341_WHITE : ILI9341_RED);
-      //      display.drawLine(myLabs[0][i].x0, myLabs[0][i].y0, myLabs[0][i].x1, myLabs[0][i].y1, ILI9341_WHITE);
-      //display.drawLine(myLabs[1][i].x0, myLabs[1][i].y0, myLabs[1][i].x1, myLabs[1][i].y1, ILI9341_BLACK);
+      drawLines(myLabs[5], 49 , ILI9341_WHITE);
+
+    }
+    if ( col != 0)
+    {
+      drawLines(myLabs[5], 49 , ILI9341_RED);
     }
     if ( col_1 != 0)
     {
-      display.clearDisplay();
-      display.setTextWrap(false);
-      display.setTextSize(4);
+      //display.clearDisplay();
       display.setCursor(0, 0);
+//      setTextColor(ILI9341_BLUE);
+      display.setTextColor(ILI9341_BLUE,ILI9341_BLACK );
+      display.setTextSize(4);
+      display.setTextWrap(false);
       display.setRotation(1);
       display.print("YOU WIN");
       display.clearDisplay();
-
-
+      display.display();
     }
-    z += 1;
+
 
 
     //    OBJECT1.x = display.width() - 168;    //  početna pozicija kuglice po x osi
@@ -244,28 +250,42 @@ void loop() {
 //        display.print("YOU WIN");
 //      }
 
+void drawLines(const myline * _m, int _bl, uint16_t _c)
+{
+  int col = 0;
+  uint16_t color = ILI9341_WHITE ;
+  uint16_t color1 = ILI9341_RED;
+  for ( int i = 0 ; i < _bl ; i++) //petlja za iscrtavanje svih linija u labirintu
+  {
 
+    //    display.drawLine(_m[z][i].x0, _m[z][i].y0, _m[z][i].x1, _m[z][i].y1, col == 0 ? ILI9341_WHITE : ILI9341_RED);
+    display.drawLine(_m[i].x0 * 1.75 , _m[i].y0 * 1.75 , _m[i].x1 * 1.75 , _m[i].y1 * 1.75, _c);
+    //      display.drawLine(myLabs[0][i].x0, myLabs[0][i].y0, myLabs[0][i].x1, myLabs[0][i].y1, ILI9341_WHITE);
+    //display.drawLine(myLabs[1][i].x0, myLabs[1][i].y0, myLabs[1][i].x1, myLabs[1][i].y1, ILI9341_BLACK);
+  }
+}
 
 
 
 uint8_t checkCollision(struct OBJECT _b, const myline * _l, int _n)
 {
   uint8_t _cd = 0;
+
   //  int w = x1 - x0;
   //  int.h = y1 - y0;   //ne valja, PAZI, pogledaj red 223 kako je trebalo napravit
   for ( int i = 0; i < _n; i++)
   {
-    int _w = abs(_l[i].x0 - _l[i].x1);
-    int _h = abs(_l[i].y0 - _l[i].y1);
-    int _x = _l[i].x0 >= _l[i].x1 ? _l[i].x1 : _l[i].x0;  // ovo si prije radila u void loop petlji sa ispitivanjem if (col %ss 1) i ( col % 2)
-    int _y = _l[i].y0 >= _l[i].y1 ? _l[i].y1 : _l[i].y0;
+    int _w = abs(_l[i].x0 * 1.75 - _l[i].x1 * 1.75 );
+    int _h = abs(_l[i].y0 * 1.75  - _l[i].y1 * 1.75 );
+    int _x = _l[i].x0 * 1.75  >= _l[i].x1 * 1.75  ? _l[i].x1 * 1.75  : _l[i].x0 * 1.75 ;  // ovo si prije radila u void loop petlji sa ispitivanjem if (col %ss 1) i ( col % 2)
+    int _y = _l[i].y0 * 1.75  >= _l[i].y1 * 1.75  ? _l[i].y1 * 1.75  : _l[i].y0 * 1.75 ;
     if ((_w != 0) && (_b.x >= _x) && (_b.x < (_x + _w)))
     {
-      if (((_b.yOld >= _y) && (_b.y <= _y)) || (_b.yOld <= _y) && (_b.y >= _y)) _cd |= 1;
+      if (((_b.yOld >= _y) && (_b.y <= _y)) || (_b.yOld <= _y) && (_b.y >= _y)) _cd |= 1 ;
     }
     if ((_h != 0) && (_b.y >= _y) && (_b.y < (_y + _h)))
     {
-      if (((_b.xOld >= _x) && (_b.x <= _x)) || ((_b.xOld <= _x) && (_b.x >= _x))) _cd |= 2;
+      if (((_b.xOld >= _x) && (_b.x <= _x)) || ((_b.xOld <= _x) && (_b.x >= _x))) _cd |= 2 ;
     }
 
   }
