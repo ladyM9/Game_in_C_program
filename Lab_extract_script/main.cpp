@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <conio.h>
 
 char buffer[50000];
 struct line
@@ -12,15 +13,20 @@ struct line
 
 struct line myLines[500];
 
+void myExit();
+
 int main()
 {
 	FILE *f;
 	char fileName[200];
-	char arrayName[50];
-	char outputFileName[50];
+	char arrayName[51];
+	char outputFileName[51];
 	
 	printf("Unesi ime datoteke labirinta (mora biti u istom folderu kao i ovaj file!):\n");
-	scanf("%s", fileName);
+	fgets(fileName, 100, stdin);
+	
+	fileName[strlen(fileName) - 1] = 0;
+	
 	printf("Unesi ime arraya (max 50 znakova!):\n");
 	scanf("%s", arrayName);
 	
@@ -65,6 +71,7 @@ int main()
 			}
 			fprintf(f, "};\n");
 			printf("Gotovo! :)");
+			fclose(f);
 		}
 	}
 	else
@@ -72,5 +79,13 @@ int main()
 		printf("Nije moguce otvoriti file... :(");
 	}
 	
+	myExit();
+	
 	return 0;
+}
+
+void myExit()
+{
+	printf("\nPress any key to exit");
+	getch();
 }
