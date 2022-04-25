@@ -26,8 +26,8 @@ typedef struct myline {
 
 
 struct OBJECT {
-  int x = 1;
-  int y = 1;
+  int x ;
+  int y ;
   int xOld ;
   int yOld ;
   int r = 2;
@@ -49,12 +49,12 @@ struct izl {
 //}, LINE1;
 
 
-struct OD {
-  int X = 10;
-  int Y = 10;
-  int h = 8;
-  int w = 8;
-} OD1;
+//struct OD {
+//  int X = 10;
+//  int Y = 10;
+//  int h = 8;
+//  int w = 8;
+//} OD1;
 
 struct triangle {
   int x0 = 20;
@@ -105,11 +105,11 @@ void setup() {
   display.setTextWrap(false);
   display.setTextSize(4);
   //  display.setContrast(50);
-  display.setCursor(0, 0);
+  // display.setCursor(0, 0);
   display.setTextColor(ILI9341_BLUE);
   display.display();
   OBJECT1.x = display.width() - 150;    //  početna pozicija kuglice po x osi
-  OBJECT1.y = display.height() - 5;   // početna pozicija kuglice po y osi
+  OBJECT1.y = display.height();   // početna pozicija kuglice po y osi
   //  OBJECT1.x = display.width() - 168;    //  početna pozicija kuglice po x osi
   //  OBJECT1.y = display.height() - 265;   // početna pozicija kuglice po y osi
   //  OBJECT1.x = display.width()/ 2; // gdje iscrtati krug po x osi
@@ -158,14 +158,17 @@ void loop() {
     int col_2 = checkPoint(OBJECT1 , myLabs[0], 49);
     //    drawLines(myLabs[5], 49, ILI9341_WHITE);
     display.clearDisplay();
-    //    odabir_lab(x, OD1, OBJECT1);
-    display.fillCircle(OBJECT1.x, OBJECT1.y, OBJECT1.r , ILI9341_WHITE);
-    //    display.drawLine(izl_1.m0, izl_1.n0 , izl_1.m1 , izl_1.n1 , ILI9341_BLUE);
     display.drawLine(myLabs[6][0].x0 , myLabs[6][0].y0, myLabs[6][0].x1, myLabs[6][0].y1, ILI9341_BLUE);
     display.drawTriangle(TRIANGLE_1.x0,  TRIANGLE_1.y0, TRIANGLE_1.x1, TRIANGLE_1.y1, TRIANGLE_1.x2, TRIANGLE_1.y2, ILI9341_YELLOW );
     display.drawTriangle(TRIANGLE_2.x0,  TRIANGLE_2.y0, TRIANGLE_2.x1, TRIANGLE_2.y1, TRIANGLE_2.x2, TRIANGLE_2.y2, ILI9341_YELLOW );
     display.fillTriangle( TRIANGLE_1.x0, TRIANGLE_1.y0, TRIANGLE_1.x1, TRIANGLE_1.y1, TRIANGLE_1.x2, TRIANGLE_1.y2, ILI9341_YELLOW );
     display.fillTriangle( TRIANGLE_2.x0, TRIANGLE_2.y0, TRIANGLE_2.x1, TRIANGLE_2.y1, TRIANGLE_2.x2, TRIANGLE_2.y2, ILI9341_YELLOW );
+    //    odabir_lab(x, OD1, OBJECT1);
+    display.fillCircle(OBJECT1.x, OBJECT1.y, OBJECT1.r , ILI9341_WHITE);
+    //    display.drawLine(izl_1.m0, izl_1.n0 , izl_1.m1 , izl_1.n1 , ILI9341_BLUE);
+
+
+
 
 
 
@@ -178,6 +181,13 @@ void loop() {
     //      //      display.drawLine(myLabs[0][i].x0, myLabs[0][i].y0, myLabs[0][i].x1, myLabs[0][i].y1, ILI9341_WHITE);
     //      //display.drawLine(myLabs[1][i].x0, myLabs[1][i].y0, myLabs[1][i].x1, myLabs[1][i].y1, ILI9341_BLACK);
     //    },
+    if (col_2 != 0)
+    {
+      checkPoint(OBJECT1, myLabs[0], 49);
+      OBJECT1.x = OBJECT1.xOld;
+      OBJECT1.y = OBJECT1.yOld;
+
+    }
     if ( col == 0)
     {
       drawLines(myLabs[0], 49 , ILI9341_WHITE);
@@ -188,31 +198,20 @@ void loop() {
     }
     if ( col_1 != 0)
     {
-      //display.clearDisplay();
-      display.setCursor(0, 0);
-      //      setTextColor(ILI9341_BLUE);
-      display.setTextColor(ILI9341_BLUE, ILI9341_BLACK );
-      display.setTextSize(4);
-      display.setTextWrap(false);
-      display.setRotation(1);
-      display.print("YOU WIN");
       display.clearDisplay();
+      drawLines(myLabs[2], 49 , ILI9341_WHITE);
+      //display.setCursor(0, 0);
+      //      setTextColor(ILI9341_BLUE);
       display.display();
     }
-    if (col_2 != 0)
-    {
-      checkPoint(OBJECT1, myLabs[0], 49);
-      OBJECT1.x = OBJECT1.xOld;
-      OBJECT1.y = OBJECT1.yOld;
-      //OBJECT1.y = OBJECT1.y;
-    }
-//    if (col_2 == 2 )
-//    {
-//    //  checkPoint(OBJECT1, myLabs[0], 55);
-//      OBJECT1.y = OBJECT1.yOld;
-//      OBJECT1.y = OBJECT1.yOld;
-//      //OBJECT1.x = OBJECT1.x;
-//    }
+
+    //    if (col_2 == 2 )
+    //    {
+    //    //  checkPoint(OBJECT1, myLabs[0], 55);
+    //      OBJECT1.y = OBJECT1.yOld;
+    //      OBJECT1.y = OBJECT1.yOld;
+    //      //OBJECT1.x = OBJECT1.x;
+    //    }
 
 
 
@@ -306,8 +305,8 @@ uint8_t checkPoint( struct OBJECT _b, const myline * _l, int _n)
     }
     if ((_h != 0) && (_b.y >= _y) && (_b.y < (_y + _h)))
     {
-      if (((_b.xOld >= _x) && (_b.x <= _x)) || ((_b.xOld <= _x) && (_b.x >= _x))) _dc|= 2;
- 
+      if (((_b.xOld >= _x) && (_b.x <= _x)) || ((_b.xOld <= _x) && (_b.x >= _x))) _dc |= 2;
+
     }//return _dc;
   }
   return _dc;
@@ -328,8 +327,8 @@ uint8_t checkCollision(struct OBJECT _b, const myline * _l, int _n)
   //  int.h = y1 - y0;   //ne valja, PAZI, pogledaj red 223 kako je trebalo napravit
   for ( int i = 0; i < _n; i++)
   {
-    int _w = abs(_l[i].x0  - _l[i].x1);
-    int _h = abs(_l[i].y0   - _l[i].y1);
+    int _w = abs(_l[i].x1  - _l[i].x0);
+    int _h = abs(_l[i].y1   - _l[i].y0);
     int _x = _l[i].x0   >= _l[i].x1   ? _l[i].x1   : _l[i].x0  ;  // ovo si prije radila u void loop petlji sa ispitivanjem if (col %ss 1) i ( col % 2)
     int _y = _l[i].y0   >= _l[i].y1   ? _l[i].y1   : _l[i].y0  ;
     if ((_w != 0) && (_b.x >= _x) && (_b.x < (_x + _w)))
