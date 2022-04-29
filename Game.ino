@@ -88,9 +88,10 @@ const myline_t myLab4[] = {{2, 2 , 146, 2 }, {162, 2 , 306, 2 }, {18, 18, 34, 18
 const myline_t myLab5[] = { {3, 3 , 123 , 3}, {147, 3, 267, 3}, {51, 27, 75, 27}, {147, 27, 219, 27}, {27, 51, 75, 51}, {99, 51, 147, 51}, {195, 51, 243, 51}, {3, 75, 27, 75}, {75, 75, 99, 75}, {147, 75, 171, 75}, {27, 99, 51, 99}, {99, 99, 123, 99}, {195, 99, 219, 99}, {243, 99, 267, 99}, {3, 123, 27, 123}, {75, 123, 99, 123}, {123, 123, 147, 123}, {171, 123, 195, 123}, {219, 123, 243, 123}, {3, 147, 51, 147}, {99, 147 , 147, 147}, {171, 147, 243, 147}, {27, 171, 75, 171}, {99 , 171, 123, 171}, { 147, 171, 171, 171}, {243, 171, 267, 171}, {3, 195, 123, 195}, {147, 195, 267, 195}, {3, 3, 3, 195}, {27, 27, 27, 51}, {51, 51, 51, 147}, {75, 27, 75, 51}, {75, 75, 75, 123}, {75, 147, 75, 195}, { 99, 27, 99, 75}, {99, 123, 99, 147}, {123, 3, 123, 27}, {123, 51, 123, 99}, {123, 171, 123, 195}, {147, 27, 147, 51}, {147, 99, 147, 195}, {171, 27, 171, 99}, {171, 123, 171, 147}, {195, 51, 195, 75}, {195, 99, 195, 123}, {195, 147, 195, 195}, {219, 75, 219, 99}, {219, 171, 219, 195}, {243, 3, 243, 75}, {243, 99, 243, 123}, {267, 3, 267, 195}}; //ispravan lab, 51 LINIJA
 //const myline_t myLab6[] = {{2, 2, 82, 2}, {98, 2, 178, 2}, {34, 18, 50, 18}, {98, 18, 146, 18}, {18, 34, 50, 34}, {66, 34, 98, 34}, {130, 34, 162, 34}, {2, 50, 18, 50}, {50, 50, 66, 50}, {98, 50, 114, 50}, {18, 66, 34, 66}, {66, 66, 82, 66}, {130, 66, 146, 66}, {162, 66, 178, 66}, {2, 82, 18, 82}, {50, 82, 66, 82}, {82, 82, 98, 82}, {114, 82, 130, 82}, {146, 82, 162, 82}, {2, 98, 34, 98}, {66, 98, 98, 98}, {114, 98, 162, 98}, {18, 114, 50, 114}, {66, 114, 82, 114}, {98, 114, 114, 114}, {162, 114, 178, 114}, {2, 130, 82, 130}, {98, 130, 178, 130}, {2, 2, 2, 130}, {18, 18, 18, 34}, {34, 34, 34, 98}, {50, 18, 50, 34}, {50, 50, 50, 82}, {50, 98, 50, 130}, {66, 18, 66, 50}, {66, 82, 66, 98}, {82, 2, 82, 18}, {82, 34, 82, 66}, {82, 114, 82, 130}, {98, 18, 98, 34}, {98, 66, 98, 130}, {114, 18, 114, 66}, {114, 82, 114, 98}, {130, 34, 130, 50}, {130, 66, 130, 82}, {130, 98, 130, 130}, {146, 50, 146, 66}, {146, 114, 146, 130}, {162, 2, 162, 50}, {162, 66, 162, 82}, {178, 2, 178, 130},},; //51 LINIJA, ispravan
 const myline_t myLab6[] = {{3 , 3 , 143 , 3}, {171 , 3 , 311 , 3}, {59 , 31 , 87 , 31}, {171 , 31 , 255 , 31}, {31 , 59 , 87 , 59}, {115 , 59 , 171 , 59}, {227 , 59 , 283 , 59}, {3 , 87 , 31 , 87}, {87 , 87 , 115 , 87}, {171 , 87 , 199 , 87}, {31 , 115 , 59 , 115}, {115 , 115 , 143 , 115}, {227 , 115 , 255 , 115}, {283 , 115 , 311 , 115}, {3 , 143 , 31 , 143}, {87 , 143 , 115 , 143}, {143 , 143 , 171 , 143}, {199 , 143 , 227 , 143}, {255 , 143 , 283 , 143}, {3 , 171 , 59 , 171}, {115 , 171 , 171 , 171}, {199 , 171 , 283 , 171}, {31 , 199 , 87 , 199}, {115 , 199 , 143 , 199}, {171 , 199 , 199 , 199}, {283 , 199 , 311 , 199}, {3 , 227 , 143 , 227}, {171 , 227 , 311 , 227}, {3 , 3 , 3 , 227}, {31 , 31 , 31 , 59}, {59 , 59 , 59 , 171}, {87 , 31 , 87 , 59}, {87 , 87 , 87 , 143}, {87 , 171 , 87 , 227}, {115 , 31 , 115 , 87}, {115 , 143 , 115 , 171}, {143 , 3 , 143 , 31}, {143 , 59 , 143 , 115}, {143 , 199 , 143 , 227}, {171 , 31 , 171 , 59}, {171 , 115 , 171 , 227}, {199 , 31 , 199 , 115}, {199 , 143 , 199 , 171}, {227 , 59 , 227 , 87}, {227 , 115 , 227 , 143}, {227 , 171 , 227 , 227}, {255 , 87 , 255 , 115}, {255 , 199 , 255 , 227}, {283 , 3 , 283 , 87}, {283, 115, 283, 143}, {311, 3, 311, 227}}; // ispravan i skaliran lab, 51 linija
-const myline_t myLab7[] = { { 128, 1, 163, 1 }};
+const myline_t myLab7[] = { {170, 229, 140, 230}} ; // { 128, 1, 163, 1 }
 const myline_t myLab8[] = {{65, 59, 152, 59} , {65, 59, 65, 128}};
 const myline_t *myLabs[] = {myLab1 , myLab2, myLab3, myLab4, myLab5, myLab6, myLab7, myLab8};
+unsigned long myTime;
 
 void setup() {
   // put your setup code here, to run once:
@@ -108,12 +109,13 @@ void setup() {
   // display.setCursor(0, 0);
   display.setTextColor(ILI9341_BLUE);
   display.display();
-  OBJECT1.x = display.width() - 150;    //  početna pozicija kuglice po x osi
-  OBJECT1.y = display.height();   // početna pozicija kuglice po y osi
+  OBJECT1.x = display.width() - 160;    //  početna pozicija kuglice po x osi
+  OBJECT1.y = display.height() - 242;   // početna pozicija kuglice po y osi
   //  OBJECT1.x = display.width() - 168;    //  početna pozicija kuglice po x osi
   //  OBJECT1.y = display.height() - 265;   // početna pozicija kuglice po y osi
   //  OBJECT1.x = display.width()/ 2; // gdje iscrtati krug po x osi
   //  OBJECT1.y = display.height()/ 2; // gdje iscrtati krug po y osi
+
 
 
 
@@ -127,6 +129,8 @@ void loop() {
   // put your main code here, to run repeatedly:
   int rawX = 1023 - analogRead(A0);
   int rawY = 1023 - analogRead(A1);
+  myTime = millis();
+
   //  z = random(0, 5);
   //  OBJECT1.w = digitalRead(D2);
   //mapx = map(locationx, 0 , 1023, 0, 319);
@@ -153,9 +157,9 @@ void loop() {
   if (ref == true) {
     ref = false;
 
-    int col = checkCollision(OBJECT1 , myLabs[0], 49);
+    int col = checkCollision(OBJECT1 , myLabs[5], 51);
     int col_1 = checkCollision(OBJECT1 , myLabs[6], 1);
-    int col_2 = checkPoint(OBJECT1 , myLabs[0], 49);
+    int col_2 = checkPoint(OBJECT1 , myLabs[5], 51);
     //    drawLines(myLabs[5], 49, ILI9341_WHITE);
     display.clearDisplay();
     display.drawLine(myLabs[6][0].x0 , myLabs[6][0].y0, myLabs[6][0].x1, myLabs[6][0].y1, ILI9341_BLUE);
@@ -165,6 +169,18 @@ void loop() {
     display.fillTriangle( TRIANGLE_2.x0, TRIANGLE_2.y0, TRIANGLE_2.x1, TRIANGLE_2.y1, TRIANGLE_2.x2, TRIANGLE_2.y2, ILI9341_YELLOW );
     //    odabir_lab(x, OD1, OBJECT1);
     display.fillCircle(OBJECT1.x, OBJECT1.y, OBJECT1.r , ILI9341_WHITE);
+    display.setRotation(1);
+    display.setTextWrap(true);
+    display.setTextSize(2);
+    //  display.setContrast(50);
+    display.setCursor(230, 1);
+    display.setTextColor(ILI9341_BLUE);
+    int ms = myTime / 10;
+    int ss = ms / 100;
+    display.print("Time : ");
+    display.print(ss);
+    display.print(":");
+    display.print(ms);
     //    display.drawLine(izl_1.m0, izl_1.n0 , izl_1.m1 , izl_1.n1 , ILI9341_BLUE);
 
 
@@ -183,26 +199,31 @@ void loop() {
     //    },
     if (col_2 != 0)
     {
-      checkPoint(OBJECT1, myLabs[0], 49);
+      checkPoint(OBJECT1, myLabs[5], 51);
       OBJECT1.x = OBJECT1.xOld;
       OBJECT1.y = OBJECT1.yOld;
 
     }
     if ( col == 0)
     {
-      drawLines(myLabs[0], 49 , ILI9341_WHITE);
+      drawLines(myLabs[5], 51 , ILI9341_WHITE);
     }
     if ( col != 0)
     {
-      drawLines(myLabs[0], 49 , ILI9341_RED);
+      drawLines(myLabs[5], 51 , ILI9341_RED);
     }
     if ( col_1 != 0)
     {
       display.clearDisplay();
-      drawLines(myLabs[2], 49 , ILI9341_WHITE);
+      drawLines(myLabs[2], 49, ILI9341_WHITE);
       //display.setCursor(0, 0);
       //      setTextColor(ILI9341_BLUE);
       display.display();
+    }
+    if ( ss > 6)
+    {
+      display.clearDisplay();
+      display.print("Game over");
     }
 
     //    if (col_2 == 2 )
