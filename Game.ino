@@ -16,6 +16,7 @@ int z = 0;
 
 
 bool ref = false;
+bool time_game = false;
 
 typedef struct myline {
   int16_t x0;
@@ -91,7 +92,7 @@ const myline_t myLab6[] = {{3 , 3 , 143 , 3}, {171 , 3 , 311 , 3}, {59 , 31 , 87
 const myline_t myLab7[] = { {170, 229, 140, 230}} ; // { 128, 1, 163, 1 }
 const myline_t myLab8[] = {{65, 59, 152, 59} , {65, 59, 65, 128}};
 const myline_t *myLabs[] = {myLab1 , myLab2, myLab3, myLab4, myLab5, myLab6, myLab7, myLab8};
-unsigned long myTime;
+unsigned long seconds, reset_time;
 
 void setup() {
   // put your setup code here, to run once:
@@ -129,7 +130,10 @@ void loop() {
   // put your main code here, to run repeatedly:
   int rawX = 1023 - analogRead(A0);
   int rawY = 1023 - analogRead(A1);
-  myTime = millis();
+
+  seconds = (millis() / 1000);
+  reset_time = ((millis() / 1000) / 60);
+
 
   //  z = random(0, 5);
   //  OBJECT1.w = digitalRead(D2);
@@ -156,6 +160,7 @@ void loop() {
   }
   if (ref == true) {
     ref = false;
+    time_game = false;
 
     int col = checkCollision(OBJECT1 , myLabs[5], 51);
     int col_1 = checkCollision(OBJECT1 , myLabs[6], 1);
@@ -173,20 +178,19 @@ void loop() {
     display.setTextWrap(true);
     display.setTextSize(2);
     //  display.setContrast(50);
-    display.setCursor(230, 1);
+    display.setCursor(200, 1);
     display.setTextColor(ILI9341_BLUE);
-    int ms = myTime / 10;
-    int ss = ms / 100;
-    display.print("Time : ");
-    display.print(ss);
-    display.print(":");
-    display.print(ms);
+
+    display.print(seconds);
+
+    //    int ms = myTime / 10;
+    //    int ss = ms / 100;
+    //    display.print("Time : ");
+    //    display.print(ss);
+    //    display.print(":");
+    //    display.print(ms);
     //    display.drawLine(izl_1.m0, izl_1.n0 , izl_1.m1 , izl_1.n1 , ILI9341_BLUE);
-
-
-
-
-
+    //
 
     //    if((OBJECT1.x >= 49) && (OBJECT1.x <= 59))
     //    for ( int i = 0 ; i < 53 ; i++) {
@@ -220,19 +224,18 @@ void loop() {
       //      setTextColor(ILI9341_BLUE);
       display.display();
     }
-    if ( ss > 6)
+    if ( seconds > 6)
     {
+     
       display.clearDisplay();
       display.print("Game over");
+      display.print(seconds);
+      
+      display.clearDisplay();
+
+      drawLines(myLabs[0], 59, ILI9341_WHITE);
     }
 
-    //    if (col_2 == 2 )
-    //    {
-    //    //  checkPoint(OBJECT1, myLabs[0], 55);
-    //      OBJECT1.y = OBJECT1.yOld;
-    //      OBJECT1.y = OBJECT1.yOld;
-    //      //OBJECT1.x = OBJECT1.x;
-    //    }
 
 
 
@@ -332,6 +335,7 @@ uint8_t checkPoint( struct OBJECT _b, const myline * _l, int _n)
   }
   return _dc;
 }
+
 
 
 
