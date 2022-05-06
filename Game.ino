@@ -42,20 +42,6 @@ struct izl {
   int n1 = 5;
 } izl_1;
 
-//struct LINE {
-//  int m = 162;
-//  int n = 238;
-//  int m1 = 188;
-//  int n1 = 239;
-//}, LINE1;
-
-
-//struct OD {
-//  int X = 10;
-//  int Y = 10;
-//  int h = 8;
-//  int w = 8;
-//} OD1;
 
 struct triangle {
   int x0 = 20;
@@ -76,6 +62,12 @@ struct triangle1 {
   int y2 = 219;
 } TRIANGLE_2;
 
+struct TIME {
+  unsigned long seconds;
+  unsigned long reset_time;
+  unsigned long newtime;
+} TIME1;
+
 const myline_t myLab1[] = {{2, 1, 128, 1}, {163, 1, 318, 1}, {318, 1, 318, 239}, {318, 239, 193, 239}, {158, 238, 1, 239}, {1, 239, 2, 1}, {128, 1, 128, 48}, {128, 48, 74, 48}, {74, 48, 74, 25}, {74, 25, 40, 25}, {160, 25, 160, 73}, {160, 73, 35, 73}, {35, 73, 34, 48}, {81, 73, 81, 96}, {1, 96, 35, 96}, {128, 120, 35, 120}, {128, 143, 97, 144}, {1, 144, 65, 144}, {65, 144, 65, 214}, {65, 168, 97, 168}, {101, 192, 127, 192}, {1, 191, 33, 191}, {33, 214, 96, 214}, {127, 97, 127, 239}, {128, 97, 192, 97}, {192, 96, 192, 48}, {192, 48, 161, 48}, {196, 25, 223, 25}, {224, 1, 224, 50}, {192, 71, 255, 71}, {255, 71, 255, 49}, {255, 49, 286, 49}, {286, 49, 286, 25}, {286, 25, 259, 25}, {286, 72, 286, 143}, {286, 96, 222, 96}, {222, 96, 222, 119}, {222, 119, 159, 119}, {159, 119, 159, 213}, {159, 143, 192, 143}, {191, 167, 319, 167}, {222, 167, 222, 144}, {255, 120, 255, 189}, {159, 190, 222, 190}, {222, 190, 222, 214}, {222, 214, 284, 214},
   {285, 191, 319, 191}, {161, 214, 192, 214}, {192, 214, 192, 235}
 }; // 59 linija imas
@@ -93,6 +85,7 @@ const myline_t myLab7[] = { {170, 229, 140, 230}} ; // { 128, 1, 163, 1 }
 const myline_t myLab8[] = {{65, 59, 152, 59} , {65, 59, 65, 128}};
 const myline_t *myLabs[] = {myLab1 , myLab2, myLab3, myLab4, myLab5, myLab6, myLab7, myLab8};
 unsigned long seconds, reset_time;
+bool game = false;
 
 void setup() {
   // put your setup code here, to run once:
@@ -109,30 +102,26 @@ void setup() {
   //  display.setContrast(50);
   // display.setCursor(0, 0);
   display.setTextColor(ILI9341_BLUE);
-  display.display();
-  OBJECT1.x = display.width() - 160;    //  početna pozicija kuglice po x osi
-  OBJECT1.y = display.height() - 242;   // početna pozicija kuglice po y osi
+  start_game(OBJECT1, ILI9341_WHITE);
+  // display.display();
+  //  OBJECT1.x = display.width() - 160;    //  početna pozicija kuglice po x osi
+  //  OBJECT1.y = display.height() - 242;   // početna pozicija kuglice po y osi
   //  OBJECT1.x = display.width() - 168;    //  početna pozicija kuglice po x osi
   //  OBJECT1.y = display.height() - 265;   // početna pozicija kuglice po y osi
   //  OBJECT1.x = display.width()/ 2; // gdje iscrtati krug po x osi
   //  OBJECT1.y = display.height()/ 2; // gdje iscrtati krug po y osi
-
-
-
-
   Serial.println(myLabs[1][1].x0, DEC);   //iscrtavanje labirinta na display
   display.display();
-
-
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
+
   int rawX = 1023 - analogRead(A0);
   int rawY = 1023 - analogRead(A1);
-
-  seconds = (millis() / 1000);
-  reset_time = ((millis() / 1000) / 60);
+  //
+  //  seconds = (millis() / 1000);
+  //  reset_time = ((millis() / 1000) / 60);
 
 
   //  z = random(0, 5);
@@ -167,21 +156,25 @@ void loop() {
     int col_2 = checkPoint(OBJECT1 , myLabs[5], 51);
     //    drawLines(myLabs[5], 49, ILI9341_WHITE);
     display.clearDisplay();
-    display.drawLine(myLabs[6][0].x0 , myLabs[6][0].y0, myLabs[6][0].x1, myLabs[6][0].y1, ILI9341_BLUE);
+
+    Exit_line(myLabs[6], 1, ILI9341_BLUE);
+    ///display.drawLine(myLabs[6][0].x0 , myLabs[6][0].y0, myLabs[6][0].x1, myLabs[6][0].y1, ILI9341_BLUE);
     display.drawTriangle(TRIANGLE_1.x0,  TRIANGLE_1.y0, TRIANGLE_1.x1, TRIANGLE_1.y1, TRIANGLE_1.x2, TRIANGLE_1.y2, ILI9341_YELLOW );
     display.drawTriangle(TRIANGLE_2.x0,  TRIANGLE_2.y0, TRIANGLE_2.x1, TRIANGLE_2.y1, TRIANGLE_2.x2, TRIANGLE_2.y2, ILI9341_YELLOW );
     display.fillTriangle( TRIANGLE_1.x0, TRIANGLE_1.y0, TRIANGLE_1.x1, TRIANGLE_1.y1, TRIANGLE_1.x2, TRIANGLE_1.y2, ILI9341_YELLOW );
     display.fillTriangle( TRIANGLE_2.x0, TRIANGLE_2.y0, TRIANGLE_2.x1, TRIANGLE_2.y1, TRIANGLE_2.x2, TRIANGLE_2.y2, ILI9341_YELLOW );
+    drawCircle(OBJECT1, ILI9341_WHITE);
     //    odabir_lab(x, OD1, OBJECT1);
-    display.fillCircle(OBJECT1.x, OBJECT1.y, OBJECT1.r , ILI9341_WHITE);
+    //display.fillCircle(OBJECT1.x, OBJECT1.y, OBJECT1.r , ILI9341_WHITE);
     display.setRotation(1);
     display.setTextWrap(true);
     display.setTextSize(2);
     //  display.setContrast(50);
     display.setCursor(200, 1);
     display.setTextColor(ILI9341_BLUE);
+    TIME_GAME(TIME1, ILI9341_BLUE);
 
-    display.print(seconds);
+    //display.print(seconds);
 
     //    int ms = myTime / 10;
     //    int ss = ms / 100;
@@ -211,6 +204,8 @@ void loop() {
     if ( col == 0)
     {
       drawLines(myLabs[5], 51 , ILI9341_WHITE);
+      
+
     }
     if ( col != 0)
     {
@@ -224,16 +219,20 @@ void loop() {
       //      setTextColor(ILI9341_BLUE);
       display.display();
     }
-    if ( seconds > 6)
+ 
+    if (((millis() / 1000)-TIME1.seconds) >= 10)
     {
-     
       display.clearDisplay();
       display.print("Game over");
       display.print(seconds);
-      
       display.clearDisplay();
-
-      drawLines(myLabs[0], 59, ILI9341_WHITE);
+      display.print(seconds);
+//      drawLines(myLabs[0], 49, ILI9341_WHITE);
+//      Exit_line(myLabs[6], 1, ILI9341_BLUE);
+//      drawCircle(OBJECT1, ILI9341_WHITE);
+//      game = true;
+//      start_game(OBJECT1, ILI9341_WHITE);
+//      game = false;
     }
 
 
@@ -293,6 +292,25 @@ void loop() {
 //        display.print("YOU WIN");
 //      },
 
+void start_game(struct OBJECT _b, uint16_t _c)
+{
+  OBJECT1.x = display.width() - 160;    //  početna pozicija kuglice po x osi
+  OBJECT1.y = display.height() - 242;   // početna pozicija kuglice po y osi
+
+}
+
+void TIME_GAME(struct TIME _t, uint16_t _c)
+{
+  uint16_t color = ILI9341_BLUE; 
+  _t.seconds = (millis() / 1000);
+  
+}
+
+void drawCircle(struct OBJECT _b, uint16_t _c)
+{
+  uint16_t color = ILI9341_WHITE ;
+  display.fillCircle(_b.x, _b.y, _b.r , ILI9341_WHITE);
+}
 
 void drawLines(const myline * _m, int _bl, uint16_t _c)
 {
@@ -310,6 +328,15 @@ void drawLines(const myline * _m, int _bl, uint16_t _c)
     //    if ( h != 0) display.drawFastHLine(_m[i].x0 * 1.75, _m[i].y0 * 1.75, h, _c);
     //      display.drawLine(myLabs[0][i].x0, myLabs[0][i].y0, myLabs[0][i].x1, myLabs[0][i].y1, ILI9341_WHITE);
     //display.drawLine(myLabs[1][i].x0, myLabs[1][i].y0, myLabs[1][i].x1, myLabs[1][i].y1, ILI9341_BLACK);
+  }
+}
+
+void Exit_line(const myline * _m, int _b1, uint16_t _c)
+{
+  uint16_t color = ILI9341_BLUE ;
+  for ( int i = 0 ; i < _b1 ; i++)
+  {
+    display.drawLine(_m[i].x0  , _m[i].y0  , _m[i].x1 , _m[i].y1 , _c);
   }
 }
 
@@ -335,14 +362,6 @@ uint8_t checkPoint( struct OBJECT _b, const myline * _l, int _n)
   }
   return _dc;
 }
-
-
-
-
-
-
-
-
 
 uint8_t checkCollision(struct OBJECT _b, const myline * _l, int _n)
 {
