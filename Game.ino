@@ -64,8 +64,10 @@ struct triangle1 {
 
 struct TIME {
   unsigned long seconds;
-  unsigned long reset_time;
-  unsigned long newtime;
+  //unsigned long reset_time;
+  //unsigned long newtime;
+  unsigned long mytime;
+  unsigned long game_over;
 } TIME1;
 
 const myline_t myLab1[] = {{2, 1, 128, 1}, {163, 1, 318, 1}, {318, 1, 318, 239}, {318, 239, 193, 239}, {158, 238, 1, 239}, {1, 239, 2, 1}, {128, 1, 128, 48}, {128, 48, 74, 48}, {74, 48, 74, 25}, {74, 25, 40, 25}, {160, 25, 160, 73}, {160, 73, 35, 73}, {35, 73, 34, 48}, {81, 73, 81, 96}, {1, 96, 35, 96}, {128, 120, 35, 120}, {128, 143, 97, 144}, {1, 144, 65, 144}, {65, 144, 65, 214}, {65, 168, 97, 168}, {101, 192, 127, 192}, {1, 191, 33, 191}, {33, 214, 96, 214}, {127, 97, 127, 239}, {128, 97, 192, 97}, {192, 96, 192, 48}, {192, 48, 161, 48}, {196, 25, 223, 25}, {224, 1, 224, 50}, {192, 71, 255, 71}, {255, 71, 255, 49}, {255, 49, 286, 49}, {286, 49, 286, 25}, {286, 25, 259, 25}, {286, 72, 286, 143}, {286, 96, 222, 96}, {222, 96, 222, 119}, {222, 119, 159, 119}, {159, 119, 159, 213}, {159, 143, 192, 143}, {191, 167, 319, 167}, {222, 167, 222, 144}, {255, 120, 255, 189}, {159, 190, 222, 190}, {222, 190, 222, 214}, {222, 214, 284, 214},
@@ -84,7 +86,7 @@ const myline_t myLab6[] = {{3 , 3 , 143 , 3}, {171 , 3 , 311 , 3}, {59 , 31 , 87
 const myline_t myLab7[] = { {170, 229, 140, 230}} ; // { 128, 1, 163, 1 }
 const myline_t myLab8[] = {{65, 59, 152, 59} , {65, 59, 65, 128}};
 const myline_t *myLabs[] = {myLab1 , myLab2, myLab3, myLab4, myLab5, myLab6, myLab7, myLab8};
-unsigned long seconds, reset_time;
+unsigned long seconds, mytime;
 bool game = false;
 
 void setup() {
@@ -119,6 +121,7 @@ void loop() {
 
   int rawX = 1023 - analogRead(A0);
   int rawY = 1023 - analogRead(A1);
+
   //
   //  seconds = (millis() / 1000);
   //  reset_time = ((millis() / 1000) / 60);
@@ -154,9 +157,9 @@ void loop() {
     int col = checkCollision(OBJECT1 , myLabs[5], 51);
     int col_1 = checkCollision(OBJECT1 , myLabs[6], 1);
     int col_2 = checkPoint(OBJECT1 , myLabs[5], 51);
+    int g_m = GAME_OVER(TIME1, ILI9341_BLUE);
     //    drawLines(myLabs[5], 49, ILI9341_WHITE);
     display.clearDisplay();
-
     Exit_line(myLabs[6], 1, ILI9341_BLUE);
     ///display.drawLine(myLabs[6][0].x0 , myLabs[6][0].y0, myLabs[6][0].x1, myLabs[6][0].y1, ILI9341_BLUE);
     display.drawTriangle(TRIANGLE_1.x0,  TRIANGLE_1.y0, TRIANGLE_1.x1, TRIANGLE_1.y1, TRIANGLE_1.x2, TRIANGLE_1.y2, ILI9341_YELLOW );
@@ -170,7 +173,7 @@ void loop() {
     display.setTextWrap(true);
     display.setTextSize(2);
     //  display.setContrast(50);
-    display.setCursor(200, 1);
+    display.setCursor(23, 1);
     display.setTextColor(ILI9341_BLUE);
     TIME_GAME(TIME1, ILI9341_BLUE);
 
@@ -204,7 +207,7 @@ void loop() {
     if ( col == 0)
     {
       drawLines(myLabs[5], 51 , ILI9341_WHITE);
-      
+
 
     }
     if ( col != 0)
@@ -217,31 +220,24 @@ void loop() {
       drawLines(myLabs[2], 49, ILI9341_WHITE);
       //display.setCursor(0, 0);
       //      setTextColor(ILI9341_BLUE);
-      display.display();
+      //display.display();
     }
- 
-    if (((millis() / 1000)-TIME1.seconds) >= 10)
+
+    if (((millis() / 1000) - TIME1.seconds) >= 5)
     {
-      display.clearDisplay();
-      display.print("Game over");
-      display.print(seconds);
-      display.clearDisplay();
-      display.print(seconds);
-//      drawLines(myLabs[0], 49, ILI9341_WHITE);
-//      Exit_line(myLabs[6], 1, ILI9341_BLUE);
-//      drawCircle(OBJECT1, ILI9341_WHITE);
-//      game = true;
-//      start_game(OBJECT1, ILI9341_WHITE);
-//      game = false;
+      GAME_OVER(TIME1,ILI9341_BLUE);
+      if (g_m == 1)
+      {
+        //display.print("Game over");
+        drawLines(myLabs[4], 51, ILI9341_WHITE);
+      }
+
+
     }
-
-
-
 
     //    OBJECT1.x = display.width() - 168;    //  početna pozicija kuglice po x osi
     //    OBJECT1.y = display.height() - 265;   // početna pozicija kuglice po y osi
     display.display();
-
   }
 }
 
@@ -301,9 +297,37 @@ void start_game(struct OBJECT _b, uint16_t _c)
 
 void TIME_GAME(struct TIME _t, uint16_t _c)
 {
-  uint16_t color = ILI9341_BLUE; 
+  uint16_t color = ILI9341_BLUE;
+  _t.mytime = millis() / 1000;
+  display.printf("%2ld" , (unsigned long)( _t.mytime));
   _t.seconds = (millis() / 1000);
-  
+
+  //display.printf("%2ld" ,(unsigned long)(_t.mytime - _t.seconds)/1000/60%60 );
+
+}
+
+uint8_t GAME_OVER(struct TIME _t, uint16_t _c)
+{
+  uint16_t color = ILI9341_BLUE;
+  uint8_t _gm = 0;
+  display.setRotation(1);
+  display.setTextWrap(true);
+  display.setTextSize(2);
+  //  display.setContrast(50);
+  display.setCursor(180, 1);
+  display.setTextColor(ILI9341_BLUE);
+  //  _t.game_over = (millis() / 1000);
+  //  display.printf("%2ld" , (unsigned long)( _t.game_over));
+  display.print("Game over");
+
+  if (((millis() / 1000) - _t.game_over) >= 5) 
+  {
+    display.clearDisplay();
+    _gm |= 1;
+  }
+
+  return _gm;
+
 }
 
 void drawCircle(struct OBJECT _b, uint16_t _c)
