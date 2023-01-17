@@ -1,5 +1,6 @@
 #include "Adafruit_GFX.h"
 #include "ILI9341_STM32.h"
+#include "labirint.h"
 
 #define TFT_DC 9
 #define TFT_CS 10
@@ -112,7 +113,7 @@ void setup() {
   //  OBJECT1.y = display.height() - 265;   // početna pozicija kuglice po y osi
   //  OBJECT1.x = display.width()/ 2; // gdje iscrtati krug po x osi
   //  OBJECT1.y = display.height()/ 2; // gdje iscrtati krug po y osi
-  Serial.println(myLabs[1][1].x0, DEC);   //iscrtavanje labirinta na display
+  Serial.println(labirint[1][53], DEC);   //iscrtavanje labirinta na display
   display.display();
 }
 
@@ -223,13 +224,17 @@ void loop() {
       //display.display();
     }
 
-    if (((millis() / 1000) - TIME1.seconds) >= 5)
+    if (((millis() / 1000) - TIME1.seconds) >= 10)
     {
-      GAME_OVER(TIME1,ILI9341_BLUE);
+      display.clearDisplay();
+      GAME_OVER(TIME1, ILI9341_BLUE);
+
       if (g_m == 1)
-      {
+      {  
+        
         //display.print("Game over");
         drawLines(myLabs[4], 51, ILI9341_WHITE);
+        //drawCircle(OBJECT1, ILI9341_WHITE);
       }
 
 
@@ -320,11 +325,7 @@ uint8_t GAME_OVER(struct TIME _t, uint16_t _c)
   //  display.printf("%2ld" , (unsigned long)( _t.game_over));
   display.print("Game over");
 
-  if (((millis() / 1000) - _t.game_over) >= 5) 
-  {
-    display.clearDisplay();
-    _gm |= 1;
-  }
+  if (((millis() / 1000) - _t.game_over) >= 5) _gm |= 1;
 
   return _gm;
 
