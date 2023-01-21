@@ -14,11 +14,7 @@ int z = 0;
 bool ref = false;
 bool time_game = false;
 
-
-
-bool ref = false;
-bool time_game = false;
-myline_t myline; //tip podatka
+myline_t myline; // tip podatka
 OBJECT_t OBJECT1;
 
 
@@ -37,18 +33,7 @@ void setup()
     display.clearDisplay();
     display.setTextWrap(false);
     display.setTextSize(4);
-    //  display.setContrast(50);
-    // display.setCursor(0, 0);
     display.setTextColor(ILI9341_BLUE);
-    //  start_game(OBJECT1, ILI9341_WHITE);
-    // display.display();
-    //  OBJECT1.x = display.width() - 160;    //  početna pozicija kuglice po x osi
-    //  OBJECT1.y = display.height() - 242;   // početna pozicija kuglice po y osi
-    //  OBJECT1.x = display.width() - 168;    //  početna pozicija kuglice po x osi
-    //  OBJECT1.y = display.height() - 265;   // početna pozicija kuglice po y osi
-    //  OBJECT1.x = display.width()/ 2; // gdje iscrtati krug po x osi
-    //  OBJECT1.y = display.height()/ 2; // gdje iscrtati krug po y osi
-    // Serial.println(lab1[55][4], DEC); // iscrtavanje labirinta na display
     start_game(OBJECT1, ILI9341_WHITE);
     display.display();
 }
@@ -59,33 +44,40 @@ void loop()
     int rawX = 1023 - analogRead(A0);
     int rawY = 1023 - analogRead(A1);
 
-    drawLines(lab2, 55, ILI9341_WHITE);
+    int labSelect = random(0, 1); //Varijabla pomoću koje se ispisuje random labirint na zaslon
+
+    drawLines(labs[labSelect], labElements[labSelect], ILI9341_WHITE); //ispis labirinta, dakle prvi argument je koji lab, drugi broj linija i treći boja
     drawCircle(OBJECT1, ILI9341_WHITE);
 
-     if (rawX < 500 || rawX > 520) {
-    OBJECT1.xOld = OBJECT1.x;
-    OBJECT1.x += (511 - rawX) / 100;
-    if (OBJECT1.x > 319) OBJECT1.x = 319;
-    if (OBJECT1.x < 0) OBJECT1.x = 0;
-    ref = true;
+    if (rawX < 500 || rawX > 520)
+    {
+        OBJECT1.xOld = OBJECT1.x;
+        OBJECT1.x += (511 - rawX) / 100;
+        if (OBJECT1.x > 319)
+            OBJECT1.x = 319;
+        if (OBJECT1.x < 0)
+            OBJECT1.x = 0;
+        ref = true;
+    }
+    if (rawY < 500 || rawY > 520)
+    {
+        OBJECT1.yOld = OBJECT1.y;
+        OBJECT1.y += (511 - rawY) / 100;
 
-  }
-  if (rawY < 500 || rawY > 520) {
-    OBJECT1.yOld = OBJECT1.y;
-    OBJECT1.y += (511 - rawY) / 100;
+        if (OBJECT1.y > 239)
+            OBJECT1.y = 239;
+        if (OBJECT1.y < 0)
+            OBJECT1.y = 0;
+        ref = true;
+    }
+    if (ref == true)
+    {
+        ref = false;
+        display.display();
+    }
+};
 
-    if (OBJECT1.y > 239) OBJECT1.y = 239;
-    if (OBJECT1.y < 0) OBJECT1.y = 0;
-    ref = true;
-  }
-  if (ref == true) {
-    ref = false;
-    
-
-  display.display();
-}};
-
-void drawLines(const struct myline_t *_m, int _bl, uint16_t _c)
+void drawLines(const myline_t *_m, int _bl, uint16_t _c)
 {
     int col = 0;
     uint16_t color = ILI9341_WHITE;
@@ -93,28 +85,20 @@ void drawLines(const struct myline_t *_m, int _bl, uint16_t _c)
 
     for (int i = 0; i < _bl; i++) // petlja za iscrtavanje svih linija u labirintu
     {
-        //    uint16_t w = abs(_m[i].x0 * 1.75 - _m[i].x1 * 1.75 );
-        //    uint16_t h = abs(_m[i].y0 * 1.75  - _m[i].y1 * 1.75 );
-        //    display.drawLine(_m[z][i].x0, _m[z][i].y0, _m[z][i].x1, _m[z][i].y1, col == 0 ? ILI9341_WHITE :
-        //    ILI9341_RED);
         display.drawLine(_m[i].x0, _m[i].y0, _m[i].x1, _m[i].y1, _c);
-        //    if ( w != 0) display.drawFastVLine(_m[i].x0 * 1.75, _m[i].y0 * 1.75, w, _c);
-        //    if ( h != 0) display.drawFastHLine(_m[i].x0 * 1.75, _m[i].y0 * 1.75, h, _c);
-        //      display.drawLine(myLabs[0][i].x0, myLabs[0][i].y0, myLabs[0][i].x1, myLabs[0][i].y1, ILI9341_WHITE);
-        // display.drawLine(myLabs[1][i].x0, myLabs[1][i].y0, myLabs[1][i].x1, myLabs[1][i].y1, ILI9341_BLACK);
     };
 }
 
-void drawCircle( struct OBJECT_t _b, uint16_t _c)
+void drawCircle(OBJECT_t _b, uint16_t _c)
 {
-  uint16_t color = ILI9341_WHITE ;
-  display.fillCircle(_b.x, _b.y, _b.r , ILI9341_WHITE);
+    uint16_t color = ILI9341_WHITE;
+    display.fillCircle(_b.x, _b.y, _b.r, ILI9341_WHITE);
 }
 
-void start_game(struct OBJECT _b, uint16_t _c)//poćetna pozicija kuglice kada se upali display
+void start_game(OBJECT_t _b, uint16_t _c) // poćetna pozicija kuglice kada se upali display
 {
-  OBJECT1.x = display.width() - 160;    //  početna pozicija kuglice po x osi
-  OBJECT1.y = display.height() - 242;   // početna pozicija kuglice po y osi
+    OBJECT1.x = display.width() - 160;  //  početna pozicija kuglice po x osi
+    OBJECT1.y = display.height() - 242; // početna pozicija kuglice po y osi
 }
 
 extern "C" void SystemClock_Config(void)

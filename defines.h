@@ -9,7 +9,7 @@ typedef struct myline_t
     int16_t y1;
 };
 
- struct OBJECT_t {
+typedef struct OBJECT_t {
   int x ;
   int y ;
   int xOld ;
