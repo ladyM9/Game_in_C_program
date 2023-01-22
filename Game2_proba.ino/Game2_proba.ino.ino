@@ -46,7 +46,7 @@ void loop()
 
     int labSelect = random(0, 1); //Varijabla pomoću koje se ispisuje random labirint na zaslon
 
-    drawLines(labs[labSelect], labElements[labSelect], ILI9341_WHITE); //ispis labirinta, dakle prvi argument je koji lab, drugi broj linija i treći boja
+    drawLines(labList[labSelect], labElements[labSelect], ILI9341_WHITE); //ispis labirinta, dakle prvi argument je koji lab, drugi broj linija i treći boja
     drawCircle(OBJECT1, ILI9341_WHITE);
 
     if (rawX < 500 || rawX > 520)

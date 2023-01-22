@@ -27,7 +27,7 @@ const myline_t lab2[50] = {
     {222, 214, 284, 214}, {285, 191, 319, 191}, {161, 214, 192, 214}, {192, 214, 192, 235}};
 
 
-const myline_t* labs[] = {lab1, lab2};
+const myline_t* labList[] = {lab1, lab2};
 const int labElements[] = {(sizeof(lab1) / sizeof(myline_t)), (sizeof(lab2) / sizeof(myline_t))};
 
 
