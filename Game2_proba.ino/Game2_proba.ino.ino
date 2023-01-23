@@ -44,10 +44,8 @@ void loop()
     int rawX = 1023 - analogRead(A0);
     int rawY = 1023 - analogRead(A1);
 
-    int labSelect = random(0, 1); //Varijabla pomoću koje se ispisuje random labirint na zaslon
+    int labSelect = random(0, 1); // Varijabla pomoću koje se ispisuje random labirint na zaslon
 
-    drawLines(labs[labSelect], labElements[labSelect], ILI9341_WHITE); //ispis labirinta, dakle prvi argument je koji lab, drugi broj linija i treći boja
-    drawCircle(OBJECT1, ILI9341_WHITE);
 
     if (rawX < 500 || rawX > 520)
     {
@@ -73,6 +71,26 @@ void loop()
     if (ref == true)
     {
         ref = false;
+        int col = checkCollision(OBJECT1, myLabs[labSelect] , 50);
+        int col_1 = checkPoint(OBJECT1, myLabs[labSelect] ,50);
+        display.clearDisplay();
+        // drawLines(myLabs[labSelect], labElements[labSelect], ILI9341_WHITE); // ispis labirinta, dakle prvi argument
+        // je koji lab, drugi broj linija i treći boja
+        drawCircle(OBJECT1, ILI9341_WHITE);
+        if (col == 0)
+        {
+            drawLines(myLabs[labSelect], labElements[labSelect], ILI9341_WHITE);
+        }
+        if (col != 0)
+        {
+           drawLines(myLabs[labSelect], labElements[labSelect], ILI9341_RED); 
+        }
+        if (col_1 != 0)
+        {
+            checkPoint(OBJECT1, myLabs[labSelect],50);
+            OBJECT1.x = OBJECT1.xOld;
+            OBJECT1.y = OBJECT1.yOld;
+        }
         display.display();
     }
 };
@@ -99,6 +117,54 @@ void start_game(OBJECT_t _b, uint16_t _c) // poćetna pozicija kuglice kada se u
 {
     OBJECT1.x = display.width() - 160;  //  početna pozicija kuglice po x osi
     OBJECT1.y = display.height() - 242; // početna pozicija kuglice po y osi
+}
+uint8_t checkPoint( OBJECT_t _b, const myline_t * _l, int _n)
+{
+  uint8_t _dc = 0;
+  for ( int i = 0; i < _n; i++)
+  {
+    int _w = abs(_l[i].x1  - _l[i].x0);
+    int _h = abs(_l[i].y1   - _l[i].y0);
+    int _x = _l[i].x0   >= _l[i].x1   ? _l[i].x1   : _l[i].x0  ;  // ovo si prije radila u void loop petlji sa ispitivanjem if (col %ss 1) i ( col % 2)
+    int _y = _l[i].y0   >= _l[i].y1   ? _l[i].y1   : _l[i].y0  ;
+    if ((_w != 0) && (_b.x >= _x) && (_b.x < (_x + _w)))
+    {
+      if (((_b.yOld >= _y) && (_b.y <= _y)) || (_b.yOld <= _y) && (_b.y >= _y)) _dc |= 1;
+
+    }
+    if ((_h != 0) && (_b.y >= _y) && (_b.y < (_y + _h)))
+    {
+      if (((_b.xOld >= _x) && (_b.x <= _x)) || ((_b.xOld <= _x) && (_b.x >= _x))) _dc |= 2;
+
+    }//return _dc;
+  }
+  return _dc;
+}
+
+uint8_t checkCollision(OBJECT_t _b, const myline_t *_l, int _n) //detekcija kolizije, odnosno da li je objekt dodirnuo liniju u labirintu
+{
+    uint8_t _cd = 0;
+
+    for (int i = 0; i < _n; i++)
+    {
+        int _w = abs(_l[i].x1 - _l[i].x0);
+        int _h = abs(_l[i].y1 - _l[i].y0);
+        int _x = _l[i].x0 >= _l[i].x1
+                     ? _l[i].x1
+                     : _l[i].x0; // ovo si prije radila u void loop petlji sa ispitivanjem if (col %ss 1) i ( col % 2)
+        int _y = _l[i].y0 >= _l[i].y1 ? _l[i].y1 : _l[i].y0;
+        if ((_w != 0) && (_b.x >= _x) && (_b.x < (_x + _w)))
+        {
+            if (((_b.yOld >= _y) && (_b.y <= _y)) || (_b.yOld <= _y) && (_b.y >= _y))
+                _cd |= 1;
+        }
+        if ((_h != 0) && (_b.y >= _y) && (_b.y < (_y + _h)))
+        {
+            if (((_b.xOld >= _x) && (_b.x <= _x)) || ((_b.xOld <= _x) && (_b.x >= _x)))
+                _cd |= 2;
+        }
+    }
+    return _cd;
 }
 
 extern "C" void SystemClock_Config(void)
