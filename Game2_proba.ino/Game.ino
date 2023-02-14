@@ -2,6 +2,7 @@
 #include "ILI9341_STM32.h"
 #include "defines.h"
 #include "labirint.h"
+#include <HardwareSerial.h>
 
 #define TFT_DC 9
 #define TFT_CS 10
@@ -15,7 +16,9 @@ bool ref = false;
 bool time_game = false;
 
 myline_t myline; // tip podatka
+
 OBJECT_t OBJECT1;
+TIME_t TIME1;
 
 
 // uint8_t myline = labirint[55][4];
@@ -44,8 +47,8 @@ void loop()
     int rawX = 1023 - analogRead(A0);
     int rawY = 1023 - analogRead(A1);
 
-    int labSelect = random(0, 1); // Varijabla pomoću koje se ispisuje random labirint na zaslon
-
+    int labSelect = random(0, 3); // Varijabla pomoću koje se ispisuje random labirint na zaslon
+    int maze = (0);
 
     if (rawX < 500 || rawX > 520)
     {
@@ -71,26 +74,52 @@ void loop()
     if (ref == true)
     {
         ref = false;
-        int col = checkCollision(OBJECT1, labirint[labSelect] , 50);
-        int col_1 = checkPoint(OBJECT1, labirint[labSelect] ,50);
+        int col = checkCollision(OBJECT1, labirint[labSelect] , 80);
+        int col_1 = checkCollision(OBJECT1,  p[maze], 1);
+        int col_2 = checkPoint(OBJECT1, labirint[labSelect] ,80);
+        int g_m = GAME_OVER(TIME1, ILI9341_MAGENTA);
         display.clearDisplay();
+        display.setRotation(1);
+        display.setTextWrap(true);
+        display.setTextSize(2);
+        display.setCursor(23,1);
+        display.setTextColor(ILI9341_BLUE);
+        TIME_GAME(TIME1, ILI9341_BLUE);
+
         // drawLines(myLabs[labSelect], labElements[labSelect], ILI9341_WHITE); // ispis labirinta, dakle prvi argument
         // je koji lab, drugi broj linija i treći boja
         drawCircle(OBJECT1, ILI9341_WHITE);
+        Exit_line(p[maze], 1, ILI9341_BLUE);
+        if (col_2 != 0)
+        {
+            checkPoint(OBJECT1, labirint[labSelect], labElements[labSelect]);
+            OBJECT1.x = OBJECT1.xOld;
+            OBJECT1.y = OBJECT1.yOld;
+        }
         if (col == 0)
         {
             drawLines(labirint[labSelect], labElements[labSelect], ILI9341_WHITE);
         }
         if (col != 0)
         {
-           drawLines(labirint[labSelect], labElements[labSelect], ILI9341_RED); 
+            drawLines(labirint[labSelect], labElements[labSelect], ILI9341_RED);
         }
-        if (col_1 != 0)
+        if(col_1 != 0)
         {
-            checkPoint(OBJECT1, labirint[labSelect],50);
-            OBJECT1.x = OBJECT1.xOld;
-            OBJECT1.y = OBJECT1.yOld;
+            display.clearDisplay();
+            drawLines(labirint[labSelect], labElements[labSelect], ILI9341_WHITE);
         }
+
+        if(((millis()/1000) - TIME1.seconds) >= 10)
+        {
+            display.clearDisplay();
+            GAME_OVER(TIME1, ILI9341_BLUE);
+            if(g_m == 1)
+            {
+                drawLines(labirint[1], labElements[labSelect], ILI9341_WHITE);
+            }
+        }
+
         display.display();
     }
 };
@@ -167,6 +196,37 @@ uint8_t checkCollision(OBJECT_t _b, const myline_t *_l, int _n) //detekcija koli
     return _cd;
 }
 
+void TIME_GAME(TIME_t _t, uint16_t _c)
+{
+    uint16_t color = ILI9341_BLUE;
+    _t.mytime = millis()/ 1000;
+    display.printf("%2ld", (unsigned long)(_t.mytime));
+    _t.seconds = millis()/1000;
+}
+
+uint8_t GAME_OVER(TIME_t _t, uint16_t _c)
+{
+    uint16_t color = ILI9341_BLUE;
+    uint8_t _gm = 0;
+    display.setRotation(1);
+    display.setTextWrap(true);
+    display.setTextSize(2);
+    display.setCursor(180,1);
+    display.setTextColor(ILI9341_BLUE);
+    display.print("Game over");
+
+    if(((millis()/1000) - _t.game_over) >= 5) _gm |=1;
+    return _gm;
+}
+void Exit_line(const myline_t *_m, int _b1, uint16_t _c)
+{
+    uint16_t color = ILI9341_BLUE ;
+    for ( int i = 0 ; i < _b1 ; i++)
+    {
+    display.drawLine(_m[i].x0  , _m[i].y0  , _m[i].x1 , _m[i].y1 , _c);
+    }
+
+}
 extern "C" void SystemClock_Config(void)
 {
     RCC_OscInitTypeDef RCC_OscInitStruct = {0};
