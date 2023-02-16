@@ -46,8 +46,10 @@ void loop()
     // put your main code here, to run repeatedly:
     int rawX = 1023 - analogRead(A0);
     int rawY = 1023 - analogRead(A1);
+    int i;
 
-    int labSelect = random(0, 3); // Varijabla pomoću koje se ispisuje random labirint na zaslon
+    int labSelect = random(0, 2);
+     // Varijabla pomoću koje se ispisuje random labirint na zaslon
     int maze = (0);
 
     if (rawX < 500 || rawX > 520)
@@ -120,7 +122,7 @@ void loop()
             }
         }
 
-        display.display();
+         display.display();
     }
 };
 
@@ -144,8 +146,8 @@ void drawCircle(OBJECT_t _b, uint16_t _c)
 
 void start_game(OBJECT_t _b, uint16_t _c) // poćetna pozicija kuglice kada se upali display
 {
-    OBJECT1.x = display.width() - 160;  //  početna pozicija kuglice po x osi
-    OBJECT1.y = display.height() - 242; // početna pozicija kuglice po y osi
+    OBJECT1.x = display.width() - 170;  //  početna pozicija kuglice po x osi
+    OBJECT1.y = display.height() - 252; // početna pozicija kuglice po y osi
 }
 uint8_t checkPoint( OBJECT_t _b, const myline_t * _l, int _n)
 {

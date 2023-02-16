@@ -56,6 +56,7 @@ def funkcija1():
         
         a = int
         b = int
+        c = int
         print(out)
     with open(r'labirint.h' , 'w') as file:  #open file  
         file.write("#ifndef __LABIRINT_H__ \n") #Make header source in open file
@@ -83,25 +84,25 @@ def funkcija1():
                 a4+=4
 
         file.write("\nconst myline_t lab4[80] = { ")
-        while a5 <= 824 and a6 <= 825 and a7 <= 826 and a8 <= 827:
-                b = ("{" + str(int(out[a5])/0.71473) + ", " + str(int(out[a6])/0.619246)+ ", " + str(int(out[a7])/0.71473)+ ", " + str(int(out[a8])/0.619246) + "},")
-                file.write(str(b))
+        while a5 <= 820 and a6 <= 821 and a7 <= 822 and a8 <= 823:
+                c = ("{" + str(int(out[a5])/0.71473) + ", " + str(int(out[a6])/0.619246)+ ", " + str(int(out[a7])/0.71473)+ ", " + str(int(out[a8])/0.619246) + "},")
+                file.write(str(c))
                 a5+=4
                 a6+=4
                 a7+=4
                 a8+=4
 
-        file.write("\nconst myline_t lab5[80] = { ")
-        while b1 <= 1056 and b2 <= 1057 and b3 <= 1058 and b4 <= 1059:
-                b = ("{" + str(int(out[b1])/0.71473) + ", " + str(int(out[b2])/0.619246)+ ", " + str(int(out[b3])/0.71473)+ ", " + str(int(out[b4])/0.619246) + "},")
-                file.write(str(b))
-                b1+=4
-                b2+=4
-                b3+=4
-                b4+=4
+        #file.write("\nconst myline_t lab5[80] = { ")
+        #while b1 <= 1000 and b2 <= 1001 and b3 <= 1002 and b4 <= 1003:
+         #       b = ("{" + str(int(out[b1])/0.71473) + ", " + str(int(out[b2])/0.619246)+ ", " + str(int(out[b3])/0.71473)+ ", " + str(int(out[b4])/0.619246) + "},")
+          #      file.write(str(b))
+           #     b1+=4
+            #    b2+=4
+             #   b3+=4
+              #  b4+=4
         
 
-        file.write("\nconst lab3[] = {{170,229,140,230}};\n")
+        file.write("\nconst myline_t lab3[] = {{170,229,140,230}};\n")
 
                 
         file.write("\nconst myline_t *labirint[] = {lab1, lab2, lab4, lab5};\n")
