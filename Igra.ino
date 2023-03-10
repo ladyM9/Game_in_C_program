@@ -16,24 +16,35 @@ void setup()
     Serial.begin(115200);
     display.begin();
     display.setRotation(1);
-    display.clearDisplay();
+   // display.clearDisplay();
     display.setTextWrap(false);
     display.setTextSize(4);
     display.setTextColor(ILI9341_BLUE);
    // start_game(OBJECT1, ILI9341_WHITE);
-    display.display();
+   // display.display();
 }
 
 void loop()
 {
     Ball o;
+   // display.clearDisplay();
+    display.setRotation(1);
+    display.setTextWrap(true);
+    display.setTextSize(2);
+    display.setCursor(23,1);
+   // int a,b,c,d,e, w,h;
+    uint16_t color = ILI9341_WHITE;
+    //o.updateBallPosition(a,b,c,d,e);
+    //o.updateScreen(display);
+    o.drawCircle(2,2,color);
+    display.setTextColor(ILI9341_BLUE);
+    printf("Hello");
+    o.updateScreen(display);
+    int X;
     int rawX = 1023 - analogRead(A0);
     int rawY = 1023 - analogRead(A1);
-    uint16_t color = ILI9341_WHITE;
-    display.drawCircle(o.xOld, o.yOld , o.r,ILI9341_WHITE );
     display.display();
-
-    display.display();
+    
 }
 
 

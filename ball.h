@@ -6,15 +6,18 @@
 class Ball
 {
     public:
-        Ball();
-        void updateBallPosition(int _x, int _y);
+        Ball(); //konstruktor, mora biti public, defaultni konstruktor
+        //Ball(int a, int b, int c); //overload konstruktor
+        void updateBallPosition(int x, int y, int X, int Y, int R);
+        void updateScreen(Adafruit_ILI9341&lcd);
+        void drawCircle(int _x, int _y, uint16_t color);
 
-    private:
-        int xCurrent = 0;
-        int yCurrent = 0;
-        int xOld = 0;
-        int yOld = 0;
-        int r = 2;
+    private: //kad su varijable private tu im ne daješ vrijednost
+        int xCurrent;
+        int yCurrent;
+        int xOld ;
+        int yOld ;
+        int r ;
 };
 
 #endif
