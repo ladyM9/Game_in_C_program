@@ -1,13 +1,13 @@
 #include "Adafruit_GFX.h"
 #include "ILI9341_STM32.h"
 #include "ball.h"
-//#include <HardwareSerial.h>
+#include <HardwareSerial.h>
 
 #define TFT_DC 9
 #define TFT_CS 10
 Adafruit_ILI9341 display = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
-
+Ball o;
 void setup()
 {
     pinMode(A0, INPUT);
@@ -16,35 +16,29 @@ void setup()
     Serial.begin(115200);
     display.begin();
     display.setRotation(1);
-   // display.clearDisplay();
+    display.clearDisplay();
     display.setTextWrap(false);
     display.setTextSize(4);
     display.setTextColor(ILI9341_BLUE);
-   // start_game(OBJECT1, ILI9341_WHITE);
+    //start_game(OBJECT1, ILI9341_WHITE);
    // display.display();
 }
 
 void loop()
 {
-    Ball o;
    // display.clearDisplay();
-    display.setRotation(1);
-    display.setTextWrap(true);
-    display.setTextSize(2);
-    display.setCursor(23,1);
+    int _x, _y, _r;
+    uint16_t _c;
    // int a,b,c,d,e, w,h;
-    uint16_t color = ILI9341_WHITE;
+   // uint16_t color = ILI9341_WHITE;
     //o.updateBallPosition(a,b,c,d,e);
     //o.updateScreen(display);
-    o.drawCircle(2,2,color);
-    display.setTextColor(ILI9341_BLUE);
-    printf("Hello");
+  //  o.drawCircle(2,2,color);
+   // display.setTextColor(ILI9341_BLUE);
+    //display.print("Hello");
+    o.drawCircle(_x, _y,_r,_c);
     o.updateScreen(display);
-    int X;
-    int rawX = 1023 - analogRead(A0);
-    int rawY = 1023 - analogRead(A1);
-    display.display();
-    
+   // display.display();
 }
 
 
