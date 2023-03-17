@@ -8,18 +8,22 @@
 Adafruit_ILI9341 display = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
 Ball o;
+int _x,_y,_r;
+uint16_t color;
+int _xCurrent, _yCurrent;
+
 void setup()
 {
     pinMode(A0, INPUT);
     pinMode(A1, INPUT);
-
-    Serial.begin(115200);
     display.begin();
-    display.setRotation(1);
-    display.clearDisplay();
-    display.setTextWrap(false);
-    display.setTextSize(4);
-    display.setTextColor(ILI9341_BLUE);
+    Serial.begin(115200);
+   // display.setRotation(1);
+   // display.clearDisplay();
+    //display.setTextWrap(false);
+    //display.setTextSize(4);
+    //display.setTextColor(ILI9341_BLUE);
+
     //start_game(OBJECT1, ILI9341_WHITE);
    // display.display();
 }
@@ -27,17 +31,15 @@ void setup()
 void loop()
 {
    // display.clearDisplay();
-    int _x, _y, _r;
-    uint16_t _c;
-   // int a,b,c,d,e, w,h;
+    //o.drawCircle(_x,_y,_r,color);
+    o.updateBallposition(_xCurrent, _yCurrent);
+    o.updateScreen(display);
    // uint16_t color = ILI9341_WHITE;
     //o.updateBallPosition(a,b,c,d,e);
     //o.updateScreen(display);
   //  o.drawCircle(2,2,color);
    // display.setTextColor(ILI9341_BLUE);
     //display.print("Hello");
-    o.drawCircle(_x, _y,_r,_c);
-    o.updateScreen(display);
    // display.display();
 }
 
