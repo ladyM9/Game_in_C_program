@@ -3,6 +3,15 @@
 
 #include "ILI9341_STM32.h"
 
+
+typedef struct myline_t
+{
+    int16_t x0;
+    int16_t y0;
+    int16_t x1;
+    int16_t y1;
+};
+
 class Ball
 {
     public:
@@ -28,11 +37,15 @@ class Maze
 {
     public:
         Maze();
-        void drawLine(int _x0, int _y0, int _x1, int _y1, uint16_t _color1);
-        void drawMaze(int *p);
-    private:
+        void updateScreen2(Adafruit_ILI9341 &lcd);
+        void drawLines(myline_t _m, int _bl, uint16_t _c);
         int x0,y0,x1,y1;
-        int *p1;
+        
+    private:
+        
+        //int *p1;
+        myline_t n;
+        int b;
         uint16_t color1;
 };
 

@@ -2,26 +2,17 @@
 
 Ball::Ball()
 {
-    X = 20;
+    X = 20; //početna pozicija objekta po x i y osi, boja objekta i polumjer
     Y = 20;
     _color = ILI9341_BLUE;
     R = 2;
        
 }
 
-Maze::Maze()
-{
-    color1 = ILI9341_ORANGE;
-    x0;
-    x1;
-    y0;
-    y1;
-    color1;
-}
 
 void Ball::updateScreen(Adafruit_ILI9341 &lcd)
 {
-    lcd.drawCircle(X,Y,R,_color);
+    lcd.drawCircle(X,Y,R,_color); //ispis objekta na display
     lcd.display();
     lcd.clearDisplay();
 }
@@ -56,16 +47,26 @@ void Ball::updateBallposition(int _xCurrent, int _yCurrent)
     }
 
 }
-
-
-void Maze::drawLine(int _x0, int _y0, int _x1, int _y1, uint16_t _color1)
+Maze::Maze()
 {
-    x0 = _x0;
-    y0 = _y0;
-    x1 = _x1;
-    y1 = _y1;
-    color1 = _color1;
+    color1 = ILI9341_ORANGE; 
+    b = 80;
+    n;
+}
+void Maze::updateScreen2(Adafruit_ILI9341 &lcd)
+{
+    lcd.drawLine(x0,y0,x1,y1,color1);
+    lcd.display();
+}
+
+
+void Maze::drawLines(myline_t _m, int _bl, uint16_t _c)
+{
+    color1 = _c;
+    b = _bl;
+    n = _m;
 }
 
 
 
+ 
