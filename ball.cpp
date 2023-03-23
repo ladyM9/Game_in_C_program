@@ -47,26 +47,35 @@ void Ball::updateBallposition(int _xCurrent, int _yCurrent)
     }
 
 }
+
 Maze::Maze()
 {
     color1 = ILI9341_ORANGE; 
-    b = 80;
-    n;
+    X0;
+    Y0;
+    X1;
+    Y1;
+
 }
 void Maze::updateScreen2(Adafruit_ILI9341 &lcd)
 {
-    lcd.drawLine(x0,y0,x1,y1,color1);
+    lcd.drawLine(X0,Y0,X1,Y1,color1);
     lcd.display();
 }
 
 
-void Maze::drawLines(myline_t _m, int _bl, uint16_t _c)
+void Maze::drawLines(const myline_t *_m, int _bl)
 {
-    color1 = _c;
     b = _bl;
-    n = _m;
+    *_n = *_m;
 }
 
+void Maze::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t _c)
+{
+    X0 = x0;
+    Y0 = y0;
+    X1 = x1;
+    Y1 = y1;
+    color1 = _c;
+}
 
-
- 
