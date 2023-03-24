@@ -9,7 +9,6 @@ typedef struct myline_t
     int16_t y0;
     int16_t x1;
     int16_t y1;
-    int16_t *_m;
 };
 
 class Ball
@@ -41,7 +40,6 @@ public:
 
 private:
     // int *p1;
-    const myline_t *_n;
     int b;
     uint16_t color1;
     int16_t X0, Y0, X1, Y1;
