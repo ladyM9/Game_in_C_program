@@ -9,6 +9,7 @@ Adafruit_ILI9341 display = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
 Ball o;
 Maze L;
+Zaslon g;
 int _x, _y, _r;
 uint16_t color, _c;
 int _xCurrent, _yCurrent;
@@ -19,7 +20,6 @@ void setup()
 {
     pinMode(A0, INPUT);
     pinMode(A1, INPUT);
-    display.begin();
     Serial.begin(115200);
     // display.setRotation(1);
     // display.clearDisplay();
@@ -38,7 +38,12 @@ void loop()
     //o.updateBallposition(_xCurrent, _yCurrent);
     //o.updateScreen(display);
     L.drawLines(polje, _b1);
-    L.updateScreen2(display);
+    MyClass myClass;
+	LibraryClass libraryClass;
+
+	// Provide the instance and function to call
+	libraryClass.passACallbackToMe(&myClass, &MyClass::onMsg);
+    //L.updateScreen2(display);
     // uint16_t color = ILI9341_WHITE;
     // o.updateBallPosition(a,b,c,d,e);
     // o.updateScreen(display);

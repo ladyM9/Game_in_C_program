@@ -10,12 +10,12 @@ Ball::Ball()
 }
 
 
-void Ball::updateScreen(Adafruit_ILI9341 &lcd)
-{
-    lcd.drawCircle(X,Y,R,_color); //ispis objekta na display
-    lcd.display();
-    lcd.clearDisplay();
-}
+//void Ball::updateScreen(Adafruit_ILI9341 &lcd)
+//{
+  //  lcd.drawCircle(X,Y,R,_color); //ispis objekta na display
+   // lcd.display();
+    //lcd.clearDisplay();
+//}
 
 void Ball::drawCircle(int _x, int _y, int _r, uint16_t color)
 {
@@ -58,11 +58,6 @@ Maze::Maze()
     b = 80;
 
 }
-void Maze::updateScreen2(Adafruit_ILI9341 &lcd)
-{
-    lcd.drawLine(X0,Y0,X1,Y1,color1);
-    lcd.display();
-}
 
 
 void Maze::drawLines(const myline_t *_m, int _bl)
@@ -82,4 +77,25 @@ void Maze::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t _c)
     Y1 = y1;
     color1 = _c;
 }
+
+Zaslon::Zaslon()
+{
+
+}
+void Zaslon::updateScreen(Adafruit_ILI9341 &lcd)
+{
+   // k = l;
+    lcd.display();
+}
+
+void Zaslon::ispis(Ball* ball, void (Ball::* drawCircle)(int _x, int _y, int _r, uint16_t color))
+{
+    
+    (ball->*drawCircle)(2,3,2,ILI9341_BLUE);
+}
+
+
+
+
+
 
