@@ -1,4 +1,5 @@
 #include "ball.h"
+int(*funcPtr)() = NULL;
 
 Ball::Ball()
 {
@@ -29,6 +30,7 @@ void Ball::drawCircle(int _x, int _y, int _r, uint16_t color)
 
 void Ball::updateBallposition(int _xCurrent, int _yCurrent)
 {
+    ((Ball *)p)->drawCircle(X,Y,R, _color);
     xCurrent = _xCurrent;
     yCurrent = _yCurrent;
     drawCircle(X,Y,R,_color);
@@ -39,13 +41,17 @@ void Ball::updateBallposition(int _xCurrent, int _yCurrent)
     {
         xCurrent = X;
         X += (511 - rawX) / 100;
+        return X;
+
     }
     if (rawY < 500 || rawY > 520)
     {
         yCurrent = Y;
         Y += (511 - rawY) / 100;
+        
+        return Y;
     }
-
+    
 }
 
 Maze::Maze()
@@ -85,14 +91,31 @@ Zaslon::Zaslon()
 void Zaslon::updateScreen(Adafruit_ILI9341 &lcd)
 {
    // k = l;
+  
+    if (funcPtr !=)
+    {
+        funcPtr(X,Y):
+    }
     lcd.display();
+
 }
 
-void Zaslon::ispis(Ball* ball, void (Ball::* drawCircle)(int _x, int _y, int _r, uint16_t color))
-{
+//void Zaslon::ispis(Ball* ball, void (Ball::* drawCircle)(int _x, int _y, int _r, uint16_t color))
+//{
     
-    (ball->*drawCircle)(2,3,2,ILI9341_BLUE);
+  //  (ball->*drawCircle)(2,3,2,ILI9341_BLUE);
+//}
+//void Zaslon::myFunction(funcPtr cb,void *p)
+//{
+   // m_cb = cb;
+   // m_p = p;
+//}
+
+void Zaslon::myFunction(*func)(int,int)
+{
+    funcPtr = func;
 }
+
 
 
 

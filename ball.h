@@ -3,6 +3,8 @@
 
 #include "ILI9341_STM32.h"
 
+int(*funcPtr)() = NULL;
+
 typedef struct myline_t
 {
     int16_t x0;
@@ -22,7 +24,8 @@ public:
     // void updateBallPosition(int x, int y, int X, int Y, int R);
     // void updateScreen(Adafruit_ILI9341 &lcd);
     void drawCircle(int _x, int _y, int _r, uint16_t color);
-    void updateBallposition(int _xCurrent, int _yCurrent);
+    //int updateBallposition(void *p,int _xCurrent, int _yCurrent);
+    int updateBallposition(int _xCurrent, int _yCurrent);
 
 
 private: // kad su varijable private tu im ne daješ vrijednost
@@ -58,12 +61,14 @@ public:
     Zaslon();
     //void updateScreen(Adafruit_ILI9341 &lcd, int(*l)(void));
     void updateScreen(Adafruit_ILI9341 &lcd);
-    void ispis(Ball* ball, void (Ball::* drawCircle)(int _x, int _y, int _r, uint16_t color));
+    //void ispis(Ball* ball, void (Ball::* drawCircle)(int _x, int _y, int _r, uint16_t color));
+   // void myFunction(funcPtr cb,void *p);
+    void myFunction(*func)(int,int);
     
 
 private:
-    int a,b,_R;
-    uint16_t C;
+    funcPtr m_cb;
+    void *m_p;
     
 };
 
