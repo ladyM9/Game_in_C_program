@@ -1,5 +1,4 @@
 #include "ball.h"
-int(*funcPtr)() = NULL;
 
 Ball::Ball()
 {
@@ -41,16 +40,16 @@ void Ball::updateBallposition(int _xCurrent, int _yCurrent)
     {
         xCurrent = X;
         X += (511 - rawX) / 100;
-        return X;
-
+    
     }
+    return X;
     if (rawY < 500 || rawY > 520)
     {
         yCurrent = Y;
         Y += (511 - rawY) / 100;
         
-        return Y;
-    }
+
+    }return Y;
     
 }
 
@@ -86,18 +85,23 @@ void Maze::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t _c)
 
 Zaslon::Zaslon()
 {
-
+    
 }
 void Zaslon::updateScreen(Adafruit_ILI9341 &lcd)
 {
    // k = l;
-  
-    if (funcPtr !=)
-    {
-        funcPtr(X,Y):
-    }
+    
+    //if (funcPtr !=  NULL)
+    //{
+      //  funcPtr(X,Y);
+       // lcd.display();
+    //}
     lcd.display();
-
+}
+void Zaslon::run()
+{
+    fptr p = &(Ball::updateBallposition);
+    (mb->*p)(X,Y);
 }
 
 //void Zaslon::ispis(Ball* ball, void (Ball::* drawCircle)(int _x, int _y, int _r, uint16_t color))
@@ -111,10 +115,11 @@ void Zaslon::updateScreen(Adafruit_ILI9341 &lcd)
    // m_p = p;
 //}
 
-void Zaslon::myFunction(*func)(int,int)
-{
-    funcPtr = func;
-}
+//void Zaslon::myFunction(int(*func)(int,int))
+//{
+    
+  //  funcPtr = func;//pokazivač koji pokazuje na drugu funkciju
+//}
 
 
 
