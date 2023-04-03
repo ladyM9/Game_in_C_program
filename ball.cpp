@@ -2,37 +2,35 @@
 
 Ball::Ball()
 {
-    X = 20; //početna pozicija objekta po x i y osi, boja objekta i polumjer
+    X = 20; // početna pozicija objekta po x i y osi, boja objekta i polumjer
     Y = 20;
     _color = ILI9341_BLUE;
     R = 2;
-       
 }
 
-
-//void Ball::updateScreen(Adafruit_ILI9341 &lcd)
+// void Ball::updateScreen(Adafruit_ILI9341 &lcd)
 //{
-  //  lcd.drawCircle(X,Y,R,_color); //ispis objekta na display
-   // lcd.display();
-    //lcd.clearDisplay();
+//   lcd.drawCircle(X,Y,R,_color); //ispis objekta na display
+//  lcd.display();
+// lcd.clearDisplay();
 //}
 
 void Ball::drawCircle(int _x, int _y, int _r, uint16_t color)
 {
-    //tu pišeš što tvoja funkcija treba raditi
+    // tu pišeš što tvoja funkcija treba raditi
     X = _x;
     Y = _y;
     _color = color;
     R = _r;
-
+    Serial.printf("Hello");
 }
 
 void Ball::updateBallposition(int _xCurrent, int _yCurrent)
 {
-    ((Ball *)p)->drawCircle(X,Y,R, _color);
+    //((Ball *)p)->drawCircle(X,Y,R, _color);
     xCurrent = _xCurrent;
     yCurrent = _yCurrent;
-    drawCircle(X,Y,R,_color);
+    drawCircle(X, Y, R, _color);
     int rawX = 1023 - analogRead(A0);
     int rawY = 1023 - analogRead(A1);
 
@@ -40,35 +38,30 @@ void Ball::updateBallposition(int _xCurrent, int _yCurrent)
     {
         xCurrent = X;
         X += (511 - rawX) / 100;
-    
     }
-    return X;
+
     if (rawY < 500 || rawY > 520)
     {
         yCurrent = Y;
         Y += (511 - rawY) / 100;
-        
-
-    }return Y;
+    }
     
 }
 
 Maze::Maze()
 {
-    color1 = ILI9341_ORANGE; 
-    X0 ;
-    Y0 ;
-    X1 ;
-    Y1 ;
+    color1 = ILI9341_ORANGE;
+    X0;
+    Y0;
+    X1;
+    Y1;
     b = 80;
-
 }
-
 
 void Maze::drawLines(const myline_t *_m, int _bl)
 {
     b = _bl;
-    for(int i = 0; i < b; i++)
+    for (int i = 0; i < b; i++)
     {
         drawLine(_m[i].x0, _m[i].y0, _m[i].x1, _m[i].y1, color1);
     };
@@ -83,47 +76,30 @@ void Maze::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t _c)
     color1 = _c;
 }
 
-Zaslon::Zaslon()
+
+void Zaslon::passCallbackToMe(Ball *ball, void (Ball::*updateBallposition)(int _xCurrent, int _yCurrent), Adafruit_ILI9341 &lcd)
 {
-    
-}
-void Zaslon::updateScreen(Adafruit_ILI9341 &lcd)
-{
-   // k = l;
-    
-    //if (funcPtr !=  NULL)
-    //{
-      //  funcPtr(X,Y);
-       // lcd.display();
-    //}
+
+    (ball->*updateBallposition)(_xC, _yC);
     lcd.display();
-}
-void Zaslon::run()
-{
-    fptr p = &(Ball::updateBallposition);
-    (mb->*p)(X,Y);
-}
-
-//void Zaslon::ispis(Ball* ball, void (Ball::* drawCircle)(int _x, int _y, int _r, uint16_t color))
-//{
     
-  //  (ball->*drawCircle)(2,3,2,ILI9341_BLUE);
-//}
-//void Zaslon::myFunction(funcPtr cb,void *p)
+};
+
+
+
+// void Zaslon::ispis(Ball* ball, void (Ball::* drawCircle)(int _x, int _y, int _r, uint16_t color))
 //{
-   // m_cb = cb;
-   // m_p = p;
-//}
 
-//void Zaslon::myFunction(int(*func)(int,int))
+//  (ball->*drawCircle)(2,3,2,ILI9341_BLUE);
+//}
+// void Zaslon::myFunction(funcPtr cb,void *p)
 //{
-    
-  //  funcPtr = func;//pokazivač koji pokazuje na drugu funkciju
+// m_cb = cb;
+// m_p = p;
 //}
 
+// void Zaslon::myFunction(int(*func)(int,int))
+//{
 
-
-
-
-
-
+//  funcPtr = func;//pokazivač koji pokazuje na drugu funkciju
+//}

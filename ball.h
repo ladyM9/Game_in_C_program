@@ -25,7 +25,7 @@ public:
     //  void updateScreen(Adafruit_ILI9341 &lcd);
     void drawCircle(int _x, int _y, int _r, uint16_t color);
     // int updateBallposition(void *p,int _xCurrent, int _yCurrent);
-    int updateBallposition(int _xCurrent, int _yCurrent);
+    void updateBallposition(int _xCurrent, int _yCurrent);
 
 private: // kad su varijable private tu im ne daješ vrijednost
     int X;
@@ -56,19 +56,30 @@ private:
 class Zaslon
 {
 public:
-    Zaslon();
-    typedef int (Ball::*fptr)(int, int);
-    // void updateScreen(Adafruit_ILI9341 &lcd, int(*l)(void));
-    void updateScreen(Adafruit_ILI9341 &lcd);
-    void run();
-    Ball *mb;
-    // void ispis(Ball* ball, void (Ball::* drawCircle)(int _x, int _y, int _r, uint16_t color));
-    // void myFunction(funcPtr cb,void *p);
-    // void myFunction(int(*func)(int,int));
+    void passCallbackToMe(Ball *ball, void (Ball::*updateBallposition)(int _xCurrent, int _yCurrent), Adafruit_ILI9341 &lcd);
+   // void updateScreen2(Adafruit_ILI9341 &lcd);
 
 private:
-    // funcPtr m_cb;
-    // void *m_p;
+    int _xC, _yC;
 };
+
+// class Zaslon
+//{
+// public:
+//   Zaslon();
+//  int (Ball::*fptr)(int, int);
+//  void updateScreen(Adafruit_ILI9341 &lcd, int(*l)(void));
+// void updateScreen(Adafruit_ILI9341 &lcd);
+// void run();
+// Ball *mb;
+// void ispis(Ball* ball, void (Ball::* drawCircle)(int _x, int _y, int _r, uint16_t color));
+// void myFunction(funcPtr cb,void *p);
+// void myFunction(int(*func)(int,int));
+
+// private:
+//  funcPtr m_cb;
+//  void *m_p;
+//  int A,B;
+//};
 
 #endif
