@@ -3,6 +3,7 @@
 
 #include "ILI9341_STM32.h"
 #include "stdio.h"
+#include "zaslon.h"
 
 // int(*funcPtr)() = NULL;
 typedef struct myline_t
@@ -18,14 +19,14 @@ typedef struct myline_t
 class Ball
 {
 public:
-    Ball();
+    Ball(void(*_callBack)());
     // Ball(ToScreenfunc func); // konstruktor, mora biti public, defaultni konstruktor
     //  Ball(int a, int b, int c); //overload konstruktor
     //  void updateBallPosition(int x, int y, int X, int Y, int R);
-    void updateScreen(Adafruit_ILI9341 &lcd);
+    void updateScreen();
     void drawCircle(int _x, int _y, int _r, uint16_t color);
     // int updateBallposition(void *p,int _xCurrent, int _yCurrent);
-    void updateBallposition(int _xCurrent, int _yCurrent);
+    void updateBallposition(Adafruit_ILI9341 &lcd,  int _xCurrent, int _yCurrent);
     
 
 private: // kad su varijable private tu im ne daješ vrijednost
@@ -35,6 +36,10 @@ private: // kad su varijable private tu im ne daješ vrijednost
     uint16_t _color;
     int xCurrent;
     int yCurrent;
+
+    void(*_requestForRefreshCallBack)();
+
+
     // ToScreenfunc func;
     // Zaslon*;
 };
@@ -52,16 +57,6 @@ private:
     int b;
     uint16_t color1;
     int16_t X0, Y0, X1, Y1;
-};
-
-class Zaslon
-{
-public:
-    void passCallbackToMe(Ball *ball, void (Ball::*updateScreen2)(Adafruit_ILI9341 &lcd));
-
-private:
-    Adafruit_ILI9341 &l;
-    
 };
 
 #endif

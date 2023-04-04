@@ -1,18 +1,21 @@
 #include "ball.h"
 
-Ball::Ball()
+Ball::Ball(void(*_callBack)())
 {
     X = 20; // početna pozicija objekta po x i y osi, boja objekta i polumjer
     Y = 20;
     _color = ILI9341_BLUE;
-    R = 2;
+    R = 5;
+
+    _requestForRefreshCallBack = _callBack;
 }
 
-void Ball::updateScreen(Adafruit_ILI9341 &lcd)
+void Ball::updateScreen()
 {
-   lcd.drawCircle(X,Y,R,_color); //ispis objekta na display
-   lcd.display();
+   //lcd.drawCircle(X,Y,R,_color); //ispis objekta na display
+   //lcd.display();
 // lcd.clearDisplay();
+    _requestForRefreshCallBack();
 }
 
 void Ball::drawCircle(int _x, int _y, int _r, uint16_t color)
@@ -25,26 +28,31 @@ void Ball::drawCircle(int _x, int _y, int _r, uint16_t color)
     Serial.printf("Hello");
 }
 
-void Ball::updateBallposition(int _xCurrent, int _yCurrent)
+void Ball::updateBallposition(Adafruit_ILI9341 &lcd,  int _xCurrent, int _yCurrent)
 {
     //((Ball *)p)->drawCircle(X,Y,R, _color);
     xCurrent = _xCurrent;
     yCurrent = _yCurrent;
-    drawCircle(X, Y, R, _color);
-    int rawX = 1023 - analogRead(A0);
-    int rawY = 1023 - analogRead(A1);
+    lcd.fillCircle(X, Y, R, _color);
+    //int rawX = 1023 - analogRead(A0);
+    //int rawY = 1023 - analogRead(A1);
+
+    int rawX = 1023;
+    int rawY = 1023;
 
     if (rawX < 500 || rawX > 520)
     {
         xCurrent = X;
-        X += (511 - rawX) / 100;
+        X -= (511 - rawX) / 100;
     }
 
     if (rawY < 500 || rawY > 520)
     {
         yCurrent = Y;
-        Y += (511 - rawY) / 100;
+        Y -= (511 - rawY) / 100;
     }
+
+    updateScreen();
     
 }
 
@@ -77,10 +85,10 @@ void Maze::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t _c)
 }
 
 
-void Zaslon::passCallbackToMe(Ball *ball, void (Ball::*updateScreen2)(Adafruit_ILI9341 &lcd))
-{
-    (ball->*updateScreen2)(Adafruit &l);
-}
+//void Zaslon::passCallbackToMe(Ball *ball, void (Ball::*updateScreen2)(Adafruit_ILI9341 &lcd))
+//{
+//    (ball->*updateScreen2)(Adafruit &l);
+//}
 
    
     

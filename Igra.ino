@@ -1,15 +1,15 @@
 #include "Adafruit_GFX.h"
 #include "ILI9341_STM32.h"
 #include "ball.h"
-#include <HardwareSerial.h>
+#include "zaslon.h"
 
 #define TFT_DC 9
 #define TFT_CS 10
 Adafruit_ILI9341 display = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
-Ball o;
+Zaslon g(&display);
+Ball o(LCDrequestForRefresh);
 Maze L;
-Zaslon g;
 //Zaslon g;
 int _x, _y, _r;
 uint16_t color, _c;
@@ -20,6 +20,9 @@ myline_t polje[80] = {{2.798259482601822, 3.2297342251706107, 137.11471464748928
 
 void setup()
 {
+    // Disable cache on STM32 (needed only if DMA on SPI is used).
+    SCB_DisableDCache();
+    
     pinMode(A0, INPUT);
     pinMode(A1, INPUT);
     display.begin();
@@ -32,6 +35,7 @@ void setup()
 
 void loop()
 {
+    o.updateBallposition(display, 100, 100);
     // display.clearDisplay();
     // o.drawCircle(_x,_y,_r,color);
     // o.updateBallposition(_xCurrent, _yCurrent);
@@ -39,8 +43,8 @@ void loop()
     // L.drawLines(polje, _b1);
     // g.ispis(&o, &Ball::drawCircle);
     // g.myFunction(Ball::updateBallposition, &o);f
-    g.passCallbackToMe(&o, &Ball::updateScreen2);
-    display.display();
+    //g.passCallbackToMe(&o, &Ball::updateScreen2);
+    //display.display();
 
     //g.updateScreen(display);
 
@@ -55,6 +59,7 @@ void loop()
     // display.setTextColor(ILI9341_BLUE);
     // display.print("Hello");
     // display.display();
+    g.checkForRefresh();
 }
 
 extern "C" void SystemClock_Config(void)
@@ -81,7 +86,7 @@ extern "C" void SystemClock_Config(void)
     RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
     RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
     RCC_OscInitStruct.PLL.PLLM = 1;
-    RCC_OscInitStruct.PLL.PLLN = 120;
+    RCC_OscInitStruct.PLL.PLLN = 160;
     RCC_OscInitStruct.PLL.PLLP = 2;
     RCC_OscInitStruct.PLL.PLLQ = 2;
     RCC_OscInitStruct.PLL.PLLR = 2;
