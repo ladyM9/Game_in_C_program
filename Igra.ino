@@ -24,12 +24,7 @@ void setup()
     pinMode(A1, INPUT);
     display.begin();
     Serial.begin(115200);
-    display.setCursor(20,20);
-    display.setRotation(1);
-    // display.clearDisplay();
-    display.setTextWrap(false);
-    display.setTextSize(4);
-    display.setTextColor(ILI9341_BLUE);
+
 
     // start_game(OBJECT1, ILI9341_WHITE);
     // display.display();
@@ -44,7 +39,9 @@ void loop()
     // L.drawLines(polje, _b1);
     // g.ispis(&o, &Ball::drawCircle);
     // g.myFunction(Ball::updateBallposition, &o);f
-    g.passCallbackToMe(&o, &Ball::updateBallposition, display);
+    g.passCallbackToMe(&o, &Ball::updateScreen2);
+    display.display();
+
     //g.updateScreen(display);
 
 

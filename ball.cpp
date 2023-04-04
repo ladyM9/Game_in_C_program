@@ -8,12 +8,12 @@ Ball::Ball()
     R = 2;
 }
 
-// void Ball::updateScreen(Adafruit_ILI9341 &lcd)
-//{
-//   lcd.drawCircle(X,Y,R,_color); //ispis objekta na display
-//  lcd.display();
+void Ball::updateScreen(Adafruit_ILI9341 &lcd)
+{
+   lcd.drawCircle(X,Y,R,_color); //ispis objekta na display
+   lcd.display();
 // lcd.clearDisplay();
-//}
+}
 
 void Ball::drawCircle(int _x, int _y, int _r, uint16_t color)
 {
@@ -77,29 +77,14 @@ void Maze::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t _c)
 }
 
 
-void Zaslon::passCallbackToMe(Ball *ball, void (Ball::*updateBallposition)(int _xCurrent, int _yCurrent), Adafruit_ILI9341 &lcd)
+void Zaslon::passCallbackToMe(Ball *ball, void (Ball::*updateScreen2)(Adafruit_ILI9341 &lcd))
 {
+    (ball->*updateScreen2)(Adafruit &l);
+}
 
-    (ball->*updateBallposition)(_xC, _yC);
-    lcd.display();
+   
     
-};
+    
+    
 
 
-
-// void Zaslon::ispis(Ball* ball, void (Ball::* drawCircle)(int _x, int _y, int _r, uint16_t color))
-//{
-
-//  (ball->*drawCircle)(2,3,2,ILI9341_BLUE);
-//}
-// void Zaslon::myFunction(funcPtr cb,void *p)
-//{
-// m_cb = cb;
-// m_p = p;
-//}
-
-// void Zaslon::myFunction(int(*func)(int,int))
-//{
-
-//  funcPtr = func;//pokazivač koji pokazuje na drugu funkciju
-//}
