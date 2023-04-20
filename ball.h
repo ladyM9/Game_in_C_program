@@ -5,6 +5,7 @@
 #include "stdio.h"
 
 
+
 // int(*funcPtr)() = NULL;
 typedef struct myline_t
 {
@@ -15,20 +16,21 @@ typedef struct myline_t
 };
 
 // typedef void (ToScreenfunc)(Zaslon*);
+void collision();
 
 class Ball
 {
 public:
-    Ball(void (*_callBack)());
+    Ball(void (*_callBack)(), void(*l)());
     // Ball(ToScreenfunc func); // konstruktor, mora biti public, defaultni konstruktor
-    //  Ball(int a, int b, int c); //overload konstruktor
-    //  void updateBallPosition(int x, int y, int X, int Y, int R);
-    // void updateScreen(Adafruit_ILI9341 &lcd);
     void drawCircle(int _x, int _y, int _r, uint16_t color);
     void updateScreen();
     // int updateBallposition(void *p,int _xCurrent, int _yCurrent);
     void updateBallposition(Adafruit_ILI9341 &lcd, int _xCurrent, int _yCurrent);
     uint8_t checkColision(const myline_t *_m, int _n);
+    uint8_t checkPoint(const myline_t * _m, int _n);
+    //uint8_t checkPoint(const myline_t * _m, int _n);
+
 
 private: // kad su varijable private tu im ne daješ vrijednost
     int X;
@@ -38,7 +40,9 @@ private: // kad su varijable private tu im ne daješ vrijednost
     int xCurrent;
     int yCurrent;
     int n;
+    const myline_t *m;
     void (*requestForCallback)();
+    void(*_l)();
     // ToScreenfunc func;
     // Zaslon*;
 };
@@ -56,6 +60,8 @@ private:
     int b;
     uint16_t color1;
     int16_t X0, Y0, X1, Y1;
+    const myline_t *m;
+    
 };
 
 
