@@ -28,13 +28,12 @@ public:
     // int updateBallposition(void *p,int _xCurrent, int _yCurrent);
     void updateBallposition(Adafruit_ILI9341 &lcd, int _xCurrent, int _yCurrent);
     uint8_t checkColision(const myline_t *_m, int _n);
-    uint8_t checkPoint(const myline_t * _m, int _n);
     //uint8_t checkPoint(const myline_t * _m, int _n);
 
 
 private: // kad su varijable private tu im ne daješ vrijednost
-    int X;
-    int Y;
+    int X, xOld;
+    int Y, yOld;
     int R;
     uint16_t _color;
     int xCurrent;
@@ -61,6 +60,8 @@ private:
     uint16_t color1;
     int16_t X0, Y0, X1, Y1;
     const myline_t *m;
+
+
     
 };
 

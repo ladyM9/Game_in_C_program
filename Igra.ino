@@ -26,10 +26,6 @@ void setup()
     display.begin();
     Serial.begin(115200);
    
-
-
-    // start_game(OBJECT1, ILI9341_WHITE);
-    // display.display();
 }
 
 void loop()

@@ -48,98 +48,78 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd, int _xCurrent, int _yCurren
 
     if (rawX < 500 || rawX > 520)
     {
-        xCurrent = X;
+        xOld = X;
         X += (511 - rawX) / 100;
         if (X > 319)
             X = 319;
         if (X < 0)
             X = 0;
-        ref = true;
+
     }
 
     if (rawY < 500 || rawY > 520)
     {
-        yCurrent = Y;
+        yOld = Y;
         Y += (511 - rawY) / 100;
-        ref = true;
+        if (Y > 239)
+            Y = 239;
+        if (Y < 0)
+            Y = 0;
+    
     }
     if (ref == true)
     {
-        ref = false;
         int col = checkColision(m, n);
-        int col2 = checkPoint(m, n);
         lcd.drawCircle(X,Y,R, _color);
-        if (col != 0)
+        if (col == 1)
         {
             //lcd.drawCircle(X,Y,R, _color);
-            checkPoint(m,n);
-            //lcd.drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, ILI9341_GREEN);
-            //collision();
-            X = xCurrent;
-            Y = yCurrent;
-            //drawCircle(X, Y, R, ILI9341_GREEN);
+            Serial.printf("Hello"); //kad kuglica dotakne liniju X osi ispiši Hello
+            X = xOld; //kad kuglica dotakne liniju vrati kuglicu u prošlo stanje po x osi
+            Y = yOld;
+            drawCircle(X, Y, R, ILI9341_GREEN); 
+           
         }
-        updateScreen();
+
+        updateScreen();    
     }
 
    
 }
 
-uint8_t Ball::checkColision(const myline_t *_m, int _n)
+uint8_t Ball::checkColision(const myline_t *_m, int _n)  //_m je pokazivač na polje, a _n koliko linija imaš u polju
 {
     m = _m;
     n = _n;
     
-    drawCircle(X, Y, R, _color);
+    myline_t p[80]; //ako tu ne deklariraš polje ova funkcija unutar klase ne vidi polje koje se nalazi u klasi Maze u metodi drawLines
+    m = p; //pokazivač na polje
+    drawCircle(X, Y, R, _color); //poziv funkcije drawCircle, moraš ju pozvat jer ova metoda inaće ne vidi X,Y od Circle
+    
     // updateBallposition(Adafruit_ILI9341 &lcd, int _xCurrent, int _yCurrent);
     // uint8_t checkCollision(const myline_t *_l, int _n) // detekcija kolizije, odnosno da li je objekt dodirnuo liniju u labirintu
     uint8_t _cd = 0;
 
     for (int i = 0; i < n; i++)
     {
-        int _w = abs(_m[i].x1 - _m[i].x0);
-        int _h = abs(_m[i].y1 - _m[i].y0);
-        int _x = _m[i].x0 >= _m[i].x1 ? _m[i].x1 : _m[i].x0; // ovo si prije radila u void loop petlji sa ispitivanjem if (col %ss 1) i ( col % 2)
-        int _y = _m[i].y0 >= _m[i].y1 ? _m[i].y1 : _m[i].y0;
+        int _w = abs(p[i].x1 - p[i].x0);
+        int _h = abs(p[i].y1 - p[i].y0);
+        int _x = p[i].x0 >= p[i].x1 ? p[i].x1 : p[i].x0; // ovo si prije radila u void loop petlji sa ispitivanjem if (col %ss 1) i ( col % 2)
+        int _y = p[i].y0 >= p[i].y1 ? p[i].y1 : p[i].y0;
         if ((_w != 0) && (X >= _x) && (X < (_x + _w)))
         {
-            if (((yCurrent >= _y) && (Y <= _y)) || (yCurrent <= _y) && (Y >= _y))
+            if (((yOld >= _y) && (Y <= _y)) || (yOld <= _y) && (Y >= _y))
                 _cd |= 1;
         }
         if ((_h != 0) && (Y >= _y) && (Y < (_y + _h)))
         {
-            if (((xCurrent >= _x) && (X <= _x)) || ((xCurrent <= _x) && (X >= _x)))
+            if (((xOld >= _x) && (X <= _x)) || ((xOld <= _x) && (X >= _x)))
                 _cd |= 2;
         }
 
        
     }
     return _cd;
-}
-
-uint8_t Ball::checkPoint(const myline_t *_m, int _n)
-{
-    uint8_t _dc = 0;
-
-    for (int i = 0; i < n; i++)
-    {
-        int _w = abs(_m[i].x1 - _m[i].x0);
-        int _h = abs(_m[i].y1 - _m[i].y0);
-        int _x = _m[i].x0 >= _m[i].x1 ? _m[i].x1 : _m[i].x0; // ovo si prije radila u void loop petlji sa ispitivanjem if (col %ss 1) i ( col % 2)
-        int _y = _m[i].y0 >= _m[i].y1 ? _m[i].y1 : _m[i].y0;
-        if ((_w != 0) && (X >= _x) && (X < (_x + _w)))
-        {
-            if (((yCurrent >= _y) && (Y <= _y)) || (yCurrent <= _y) && (Y >= _y))
-                _dc |= 1;
-        }
-        if ((_h != 0) && (Y >= _y) && (Y < (_y + _h)))
-        {
-            if (((xCurrent >= _x) && (X <= _x)) || ((xCurrent <= _x) && (X >= _x)))
-                _dc |= 2;
-        }
-
-        return _dc;
-    }
 }
 
 Maze::Maze()
