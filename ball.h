@@ -24,6 +24,7 @@ public:
     Ball(void (*_callBack)(), void(*l)());
     // Ball(ToScreenfunc func); // konstruktor, mora biti public, defaultni konstruktor
     void drawCircle(int _x, int _y, int _r, uint16_t color);
+    void start_Ball(int _x1, int _y1, int _r1, uint16_t _C1);
     void updateScreen();
     // int updateBallposition(void *p,int _xCurrent, int _yCurrent);
     void updateBallposition(Adafruit_ILI9341 &lcd, int _xCurrent, int _yCurrent);
@@ -32,10 +33,10 @@ public:
 
 
 private: // kad su varijable private tu im ne daješ vrijednost
-    int X, xOld;
-    int Y, yOld;
-    int R;
-    uint16_t _color;
+    int X,X1, xOld;
+    int Y,Y1, yOld;
+    int R, pr;
+    uint16_t _color, početnaB;
     int xCurrent;
     int yCurrent;
     int n;

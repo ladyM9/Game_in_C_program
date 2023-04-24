@@ -10,8 +10,8 @@ void collision()
 
 Ball::Ball(void (*_callBack)(), void(*l)())
 {
-    X = 20; // početna pozicija objekta po x i y osi, boja objekta i polumjer
-    Y = 20;
+    X = 18; // početna pozicija objekta po x i y osi, boja objekta i polumjer
+    Y = 18;
     _color = ILI9341_BLUE;
     R = 2;
     n = 80;
@@ -25,7 +25,6 @@ void Ball::updateScreen()
 {
     requestForCallback();
 }
-
 
 void Ball::drawCircle(int _x, int _y, int _r, uint16_t color)
 {
@@ -70,21 +69,33 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd, int _xCurrent, int _yCurren
     if (ref == true)
     {
         int col = checkColision(m, n);
-        lcd.drawCircle(X,Y,R, _color);
+        lcd.drawCircle(xOld,yOld,R, _color);
         if (col == 1)
         {
+           // checkColision(m,n);
             //lcd.drawCircle(X,Y,R, _color);
             Serial.printf("Hello"); //kad kuglica dotakne liniju X osi ispiši Hello
-            X = xOld; //kad kuglica dotakne liniju vrati kuglicu u prošlo stanje po x osi
+            X = xOld;
             Y = yOld;
+           // xCurrent = xOld; //kad kuglica dotakne liniju vrati kuglicu u prošlo stanje po x osi
+           // yCurrent = yOld;
             drawCircle(X, Y, R, ILI9341_GREEN); 
-           
+            ref = false;
         }
-
+        
+        else if(col == 2)
+        {
+            Serial.printf("Hi");
+            X = xOld;
+            Y = yOld;
+            xCurrent = xOld; //kad kuglica dotakne liniju vrati kuglicu u prošlo stanje po x osi
+            yCurrent = yOld;
+            drawCircle(X, Y, R, ILI9341_CYAN); 
+            ref = false;
+        }
+        ref = true;
         updateScreen();    
     }
-
-   
 }
 
 uint8_t Ball::checkColision(const myline_t *_m, int _n)  //_m je pokazivač na polje, a _n koliko linija imaš u polju
