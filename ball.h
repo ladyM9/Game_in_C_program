@@ -16,44 +16,47 @@ typedef struct myline_t
 };
 
 // typedef void (ToScreenfunc)(Zaslon*);
-void collision();
+
 
 class Ball
 {
 public:
-    Ball(void (*_callBack)(), void(*l)());
+    Ball(void (*_callBack)());
     // Ball(ToScreenfunc func); // konstruktor, mora biti public, defaultni konstruktor
     void drawCircle(int _x, int _y, int _r, uint16_t color);
-    void start_Ball(int _x1, int _y1, int _r1, uint16_t _C1);
     void updateScreen();
     // int updateBallposition(void *p,int _xCurrent, int _yCurrent);
     void updateBallposition(Adafruit_ILI9341 &lcd, int _xCurrent, int _yCurrent);
     uint8_t checkColision(const myline_t *_m, int _n);
+    Ball* obj;
     //uint8_t checkPoint(const myline_t * _m, int _n);
 
 
-private: // kad su varijable private tu im ne daješ vrijednost
+protected: // kad su varijable private tu im ne daješ vrijednost
     int X,X1, xOld;
     int Y,Y1, yOld;
     int R, pr;
-    uint16_t _color, početnaB;
+    int xs,ys,rs;
+    uint16_t _color, početnaB, cs;
     int xCurrent;
     int yCurrent;
     int n;
     const myline_t *m;
     void (*requestForCallback)();
     void(*_l)();
+
     // ToScreenfunc func;
     // Zaslon*;
 };
 
-class Maze
+class Maze:public Ball
 {
 public:
     Maze();
     // void updateScreen2(Adafruit_ILI9341 &lcd);
     void drawLines(Adafruit_ILI9341 &lcd, const myline_t *_m, int _bl);
     void drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t _c);
+    Maze* u;
 
 private:
     // int *p1;
