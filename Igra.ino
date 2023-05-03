@@ -9,7 +9,7 @@
 Adafruit_ILI9341 display = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
 Screen screen(&display);
-Ball ball(&LCDforScreenRefresh, &collision);  //objekt klase Ball
+Ball ball(&LCDforScreenRefresh);  //objekt klase Ball
 Maze maze; //objekt klase Maze
  //objekt klase Screen
 int _x, _y, _r;
@@ -31,12 +31,10 @@ void setup()
 void loop()
 {
     
-    maze.drawLines(display, _m, 80);
+    maze.drawLines(display, _m, 120);
     ball.updateBallposition(display, _xCurrent, _yCurrent);
-    ball.checkColision(_m, 80);
+    ball.checkColision(_m, 120);
     screen.checkForRefresh();
-
-    
 }
 
 extern "C" void SystemClock_Config(void)

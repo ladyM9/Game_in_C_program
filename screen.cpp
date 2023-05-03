@@ -19,6 +19,7 @@ void Screen::checkForRefresh()
     {
         _lcd->display();  //ispis na display
         _lcd->clearDisplay(); //brisanje sa display-a
+        _lcd->setRotation(1); //rotacija display-a, mora se rotirat jer se inače ne vidi cijeli labirint na zaslonu
         updateFlag = false;
     }
     
