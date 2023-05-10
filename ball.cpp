@@ -36,71 +36,94 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd, int _xCurrent, int _yCurren
     //  checkColision(const myline_t *_m, n);
     int rawX = 1023 - analogRead(A0);
     int rawY = 1023 - analogRead(A1);
-    lcd.fillCircle(X, Y, R, _color); // ispisivanje kuglice na početnoj poziciji
-
+    lcd.drawCircle(X, Y, R, _color); // ispisivanje kuglice na početnoj poziciji
     xOld = X;
     yOld = Y;
-    X += (511 - rawX) / 100;
-    Y += (511 - rawY) / 100;
-    Serial.print(rawX);
 
-    checkColision(m, n);
+    uint8_t Xnew, Ynew;
+    Xnew = xOld;
+    Ynew = yOld;
+    uint8_t rez = 0;
+    uint8_t rez1 = 1;
+    uint8_t rez2 = 2;
+
+    uint8_t col = checkColision(m, n);
+    bool cold = false;
+    bool ref = false;
+
+    if (rawX < 500 || rawX > 520)
+    {
+          X += (511 - rawX) / 100;
+       
+
+    }
+    if (rawY < 500 || rawY > 520)
+    {
+          Y += (511 - rawY) / 100;
+          
+    }
+    if(col == rez1)
+    {
+        cold = true;
+        X = Xnew;
+        drawCircle(X,Y,R, ILI9341_DARKGREEN);
+    }
+    cold = false;
+    drawCircle(X,Y,R,_color);
+
 
 
     updateScreen();
 }
 
-void Ball::checkColision(const myline_t *_m, int _n) //_m je pokazivač na polje, a _n koliko linija imaš u polju, BUDALO FALI TI KUGLICA 
+uint8_t Ball::checkColision(const myline_t *_m, int _n) //_m je pokazivač na polje, a _n koliko linija imaš u polju
 {
 
     m = _m;
     n = _n;
 
     myline_t p[120]; // ako tu ne deklariraš polje ova funkcija unutar klase ne vidi polje koje se nalazi u klasi Maze u metodi drawLines
-    m = p;           // pokazivač na polje, OVO SE NE RADI TAKO, NE VALJA, TI POKAZUJEŠ NA PRAZNO POLJE, NISI GA NI POPUNILA sa podacima
+    m = p;           // pokazivač na polje
 
     drawLine(X0, Y0, X1, Y1, color1);
     drawCircle(X, Y, R, _color); // poziv funkcije drawCircle, moraš ju pozvat jer ova metoda inaće ne vidi X,Y od Circle
     // updateBallposition(Adafruit_ILI9341 &lcd, int _xCurrent, int _yCurrent);
     // uint 8_t checkCollision(const myline_t *_l, int _n) // detekcija kolizije, odnosno da li je objekt dodirnuo liniju u labirintu
-    uint8_t _cd;
+    uint8_t _cd = 0;
 
     for (int i = 0; i < 120; i++)
     {
-        _cd = false;
         int _w = abs(p[i].x1 - p[i].x0);
         int _h = abs(p[i].y1 - p[i].y0);
-        int _x = p[i].x0 >= p[i].x1 ? p[i].x1 : p[i].x0; // ovo si prije radila u void loop petlji sa ispitivanjem if (col %ss 1) i ( col % 2)
-        int _y = p[i].y0 >= p[i].y1 ? p[i].y1 : p[i].y0;
-        if ((_w != 0) && (X >= _x) && (X < (_x + _w)))
+        int _xos = p[i].x0 >= p[i].x1 ? p[i].x1 : p[i].x0; // ovo si prije radila u void loop petlji sa ispitivanjem if (col %ss 1) i ( col % 2)
+        int _yos = p[i].y0 >= p[i].y1 ? p[i].y1 : p[i].y0;
+        if ((_w != 0) && (X >= _xos) && (X < (_xos + _w)))
         {
-            if (((yOld >= _y) && (Y <= _y)) || (yOld <= _y) && (Y >= _y))
+            if (((yOld >= _yos) && (Y <= _yos)) || (yOld <= _yos) && (Y >= _yos))
             {
-                _cd = true;
-                X = xOld;
-                Y = yOld;
-                drawCircle(X, Y, R, ILI9341_GREEN);
+                _cd = 1;
+            
+                
                 // Serial.printf("Colision y\n");
             }
         }
-        _cd = false;
+        
         
 
-        if ((_h != 0) && (Y >= _y) && (Y < (_y + _h)))
+        if ((_h != 0) && (Y >= _yos) && (Y < (_yos + _h)))
         {
-            if (((xOld >= _x) && (X <= _x)) || ((xOld <= _x) && (X >= _x)))
+            if (((xOld >= _xos) && (X <= _xos)) || ((xOld <= _xos) && (X >= _xos)))
             {
 
-                _cd = true;
-                X = xOld;
-                Y = yOld;
-                drawCircle(X, Y, R, ILI9341_MAGENTA);
+                _cd = 2;
+           
+                
                 // Serial.printf("Colision x");
             }
         }
-        _cd = false;
+        
         
     }
 
-    // return _cd;
+    return _cd;
 }
