@@ -36,7 +36,7 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd, int _xCurrent, int _yCurren
     //  checkColision(const myline_t *_m, n);
     int rawX = 1023 - analogRead(A0);
     int rawY = 1023 - analogRead(A1);
-    lcd.drawCircle(X, Y, R, _color); // ispisivanje kuglice na početnoj poziciji
+    lcd.fillCircle(X, Y, R, _color); // ispisivanje kuglice na početnoj poziciji
 
     xOld = X;
     yOld = Y;
@@ -50,14 +50,14 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd, int _xCurrent, int _yCurren
     updateScreen();
 }
 
-void Ball::checkColision(const myline_t *_m, int _n) //_m je pokazivač na polje, a _n koliko linija imaš u polju
+void Ball::checkColision(const myline_t *_m, int _n) //_m je pokazivač na polje, a _n koliko linija imaš u polju, BUDALO FALI TI KUGLICA 
 {
 
     m = _m;
     n = _n;
 
     myline_t p[120]; // ako tu ne deklariraš polje ova funkcija unutar klase ne vidi polje koje se nalazi u klasi Maze u metodi drawLines
-    m = p;           // pokazivač na polje
+    m = p;           // pokazivač na polje, OVO SE NE RADI TAKO, NE VALJA, TI POKAZUJEŠ NA PRAZNO POLJE, NISI GA NI POPUNILA sa podacima
 
     drawLine(X0, Y0, X1, Y1, color1);
     drawCircle(X, Y, R, _color); // poziv funkcije drawCircle, moraš ju pozvat jer ova metoda inaće ne vidi X,Y od Circle
