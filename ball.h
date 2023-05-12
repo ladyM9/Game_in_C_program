@@ -5,6 +5,8 @@
 #include "stdio.h"
 #include "maze.h"
 
+
+
 // int(*funcPtr)() = NULL;
 // typedef void (ToScreenfunc)(Zaslon*);
 
@@ -15,8 +17,9 @@ public:
     // Ball(ToScreenfunc func); // konstruktor, mora biti public, defaultni konstruktor
     void updateScreen();
     // int updateBallposition(void *p,int _xCurrent, int _yCurrent);
-    void updateBallposition(Adafruit_ILI9341 &lcd, int _xCurrent, int _yCurrent);
-    uint8_t checkColision(const myline_t *_m, int _b1, int X, int Y, int R, int _xCurrent, int _yCurrent);
+    void updateBallposition(Adafruit_ILI9341 &lcd);
+    uint8_t checkColision(const myline_t *_m, int _b1);
+   // void loadMaze(const myline_t *_m, const int *b1);
   
     //uint8_t checkPoint(const myline_t * _m, int _n);
 
@@ -28,7 +31,7 @@ private: // kad su varijable private tu im ne daješ vrijednost
     uint16_t _color;
     int xCurrent;
     int yCurrent;
-    int b;
+    const int *_b1;
     const myline_t *m;
     void (*requestForCallback)();
     void(*_l)();

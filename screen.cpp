@@ -24,8 +24,3 @@ void Screen::checkForRefresh()
     }
     
 }
-//void Screen::passCallbackToMe(Ball *ball, void (Ball::*updateBallposition)(Adafruit_ILI9341 &lcd, int _xCurrent, int _yCurrent))
-//{
-  //  (ball->*updateBallposition)(Adafruit_ILI9341 & l, int _xCurrent, int _yCurrent);
-    //l->display();
-//}
