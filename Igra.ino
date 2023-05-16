@@ -27,11 +27,12 @@ void loop()
 {
     //Pozivanje metodi unutar klasa
     //maze.drawLines(display, _m, _b1); //objekt.ime klase
-    maze.drawLines(display,lab1, 80);
+    maze.drawLines(display,lab1,labElements);
     ball.updateBallposition(display);
-    if((ball.checkColision(lab1, 80)) == true)
+    if((ball.checkColision(lab1, labElements)) != 0)
     {
-        Serial.printf("Detection collision");
+        ball.newBallposition(display);
+        //Serial.printf("Detection collision");
     }
  
     screen.checkForRefresh();

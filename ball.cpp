@@ -2,6 +2,7 @@
 #include "screen.h"
 #include "maze.h"
 
+
 Ball::Ball(void (*_callBack)())
 {
 
@@ -9,7 +10,7 @@ Ball::Ball(void (*_callBack)())
     Y = 18;
     _color = ILI9341_BLUE;
     R = 2;
-    b = 80;
+   // b = 80;
 
 
     requestForCallback = _callBack;
@@ -26,7 +27,9 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd)
     //((Ball *)p)->drawCircle(X,Y,R, _color);
     //xCurrent = _xCurrent;
     //yCurrent = _yCurrent;
-
+    X = lcd.width()-160;
+    Y = lcd.height()-160;
+    
     // lcd.drawCircle(X, Y, R, _color);
     //  checkColision(const myline_t *_m, n);
     int rawX = 1023 - analogRead(A0);
@@ -39,33 +42,50 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd)
     lcd.fillCircle(X, Y, R, _color); // ispisivanje kuglice na početnoj poziciji, tu mora pisat ovo( NEPREMJEŠTAJ INAĆE SE NEĆE ISPISAT NA DISPLAY)
     updateScreen();
 }
-
-
-uint8_t Ball::checkColision(const myline_t *_m, int _b1) //_m je pokazivač na polje, a _n koliko linija imaš u polju
+void Ball::loadMaze(const myline_t *_ol, int *_br)
 {
+   // m = _ol;
+    m = _ol;
+   // b = labElements;
+}
+
+
+uint8_t Ball::checkColision(const myline_t *_m,int *_b1) //_m je pokazivač na polje, a _n koliko linija imaš u polju
+{
+    m = _m;
+    b = _b1;
     // updateBallposition(Adafruit_ILI9341 &lcd, int _xCurrent, int _yCurrent);
     // uint 8_t checkCollision(const myline_t *_l, int _n) // detekcija kolizije, odnosno da li je objekt dodirnuo liniju u labirintu
-    uint8_t _cd = false;
+    uint8_t _cd = 0;
 
-    for (int i = 0; i < b; i++)
+    for (int i = 0; i < b[0]; i++)
     {
-        int _w = abs(m[i].x0 - m[i].x0);
+        int _w = abs(m[i].x1 - m[i].x0);
         int _h = abs(m[i].y1 - m[i].y0);
         int _x = m[i].x0 >= m[i].x1 ? m[i].x1 : m[i].x0; // ovo si prije radila u void loop petlji sa ispitivanjem if (col %ss 1) i ( col % 2)
         int _y = m[i].y0 >= m[i].y1 ? m[i].y1 : m[i].y0;
 
         if ((_w != 0) && (X >= _x) && (X < (_x + _w)))
         {
-            if (((yCurrent >= _y) && (Y <= _y)) || (yCurrent <= _y) && (Y >= _y)) _cd |= true;  
-                  
+            if (((yCurrent >= _y) && (Y <= _y)) || (yCurrent <= _y) && (Y >= _y)) 
+            {
+                _cd |= 1;  
+            }      
                 // Serial.printf("Colision y\n");
         }
 
         if ((_h != 0) && (Y >= _y) && (Y < (_y + _h)))
         {
-            if (((xCurrent >= _x) && (X <= _x)) || ((xCurrent <= _x) && (X >= _x)))  _cd |= true; 
+            if (((xCurrent >= _x) && (X <= _x)) || ((xCurrent <= _x) && (X >= _x)))  _cd |= 2; 
                       // Serial.printf("Colision x"); 
         }
     }
     return _cd;
+}
+
+void Ball::newBallposition(Adafruit_ILI9341 &lcd)
+{
+    X = xCurrent;
+    Y = yCurrent;
+    lcd.fillCircle(X,Y,R, ILI9341_GREEN);
 }
