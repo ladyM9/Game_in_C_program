@@ -6,8 +6,10 @@
 Ball::Ball(void (*_callBack)())
 {
 
-    X = 18; // početna pozicija objekta po x i y osi, boja objekta i polumjer
-    Y = 18;
+    //X = 18; // početna pozicija objekta po x i y osi, boja objekta i polumjer
+    //Y = 18;
+    X = 150;
+    Y = 2;
     _color = ILI9341_BLUE;
     R = 2;
    // b = 80;
@@ -27,8 +29,7 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd)
     //((Ball *)p)->drawCircle(X,Y,R, _color);
     //xCurrent = _xCurrent;
     //yCurrent = _yCurrent;
-    X = lcd.width()-160;
-    Y = lcd.height()-160;
+
     
     // lcd.drawCircle(X, Y, R, _color);
     //  checkColision(const myline_t *_m, n);
@@ -83,9 +84,50 @@ uint8_t Ball::checkColision(const myline_t *_m,int *_b1) //_m je pokazivač na p
     return _cd;
 }
 
+ uint8_t Ball::checkExit(const myline_t *_e, int *_lin)
+ {
+    e = _e;
+    lin = _lin;
+    uint8_t _el = false;
+    for (int i = 0; i < lin[1]; i++)
+    {
+        int _w = abs(e[i].x1 - e[i].x0);
+        int _h = abs(e[i].y1 - e[i].y0);
+        int _x = e[i].x0 >= e[i].x1 ? e[i].x1 : e[i].x0; // ovo si prije radila u void loop petlji sa ispitivanjem if (col %ss 1) i ( col % 2)
+        int _y = e[i].y0 >= e[i].y1 ? e[i].y1 : e[i].y0;
+        if ((_w != 0) && (X >= _x) && (X < (_x + _w)))
+        {
+            if (((yCurrent >= _y) && (Y <= _y)) || (yCurrent <= _y) && (Y >= _y)) 
+            {
+                _el |= true;  
+            }      
+                // Serial.printf("Colision y\n");
+        }
+    }
+    return _el;
+ }
+
 void Ball::newBallposition(Adafruit_ILI9341 &lcd)
 {
     X = xCurrent;
     Y = yCurrent;
     lcd.fillCircle(X,Y,R, ILI9341_GREEN);
+}
+void Ball::exitLine(Adafruit_ILI9341 &lcd, const myline_t *_e, int *_lin)
+{
+    e = _e;
+    lin = _lin;
+    for (int i = 0; i < lin[1] ; i++)
+    {
+        lcd.drawLine(e[i].x0, e[i].y0, e[i].x1, e[i].y1, ILI9341_MAGENTA); // ovako ako ne napišeš labirint ti se neće prikazati na zaslonu!!!!!
+    }
+}
+
+void Ball::Time(Adafruit_ILI9341 &lcd)
+{
+    lcd.setCursor(15, 15);
+    lcd.setTextColor(ILI9341_GREEN);
+    lcd.setTextSize(3);
+    lcd.print("Hello");
+    updateScreen();   
 }

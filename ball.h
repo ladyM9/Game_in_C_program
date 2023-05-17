@@ -19,9 +19,12 @@ public:
     // int updateBallposition(void *p,int _xCurrent, int _yCurrent);
     void updateBallposition(Adafruit_ILI9341 &lcd);
     uint8_t checkColision(const myline_t *_m,int *_b1);
+    uint8_t checkExit(const myline_t *_e, int *_lin);
     void loadMaze(const myline_t *_ol, int *_br);
     void newBallposition(Adafruit_ILI9341 &lcd);
-   // void loadMaze(const myline_t *_m, const int *b1);
+    void exitLine(Adafruit_ILI9341 &lcd, const myline_t *_e, int *_lin);
+    void Time(Adafruit_ILI9341 &lcd);
+       // void loadMaze(const myline_t *_m, const int *b1);
   
     //uint8_t checkPoint(const myline_t * _m, int _n);
 
@@ -35,6 +38,8 @@ private: // kad su varijable private tu im ne daješ vrijednost
     int yCurrent;
     int *b;
     const myline_t *m;
+    const myline_t *e;
+    int *lin;
     void (*requestForCallback)();
     void(*_l)();
 

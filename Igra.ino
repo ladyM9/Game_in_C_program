@@ -29,10 +29,19 @@ void loop()
     //maze.drawLines(display, _m, _b1); //objekt.ime klase
     maze.drawLines(display,lab1,labElements);
     ball.updateBallposition(display);
+    ball.exitLine(display, exitLine, labElements);
+    ball.Time(display);
     if((ball.checkColision(lab1, labElements)) != 0)
     {
         ball.newBallposition(display);
         //Serial.printf("Detection collision");
+    }
+    if((ball.checkExit(exitLine, labElements)) == true)
+    {
+        display.clearDisplay();
+        Serial.printf("Exit, congrats");
+        delay(1000);
+        
     }
  
     screen.checkForRefresh();
