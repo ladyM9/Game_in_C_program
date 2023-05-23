@@ -8,14 +8,11 @@ Ball::Ball(void (*_callBack)())
 
     //X = 18; // početna pozicija objekta po x i y osi, boja objekta i polumjer
     //Y = 18;
-    X = 150;
+    X = 150; //početna pozicija kuglice tj objekta na X osi
     Y = 2;
     _color = ILI9341_BLUE;
     R = 2;
-   // b = 80;
-
-
-    requestForCallback = _callBack;
+    requestForCallback = _callBack; 
 }
 
 void Ball::updateScreen()
@@ -26,13 +23,7 @@ void Ball::updateScreen()
 
 void Ball::updateBallposition(Adafruit_ILI9341 &lcd)
 {
-    //((Ball *)p)->drawCircle(X,Y,R, _color);
-    //xCurrent = _xCurrent;
-    //yCurrent = _yCurrent;
 
-    
-    // lcd.drawCircle(X, Y, R, _color);
-    //  checkColision(const myline_t *_m, n);
     int rawX = 1023 - analogRead(A0);
     int rawY = 1023 - analogRead(A1);
     xCurrent = X;
@@ -45,9 +36,9 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd)
 }
 void Ball::loadMaze(const myline_t *_ol, int *_br)
 {
-   // m = _ol;
+
     m = _ol;
-   // b = labElements;
+
 }
 
 
@@ -55,8 +46,6 @@ uint8_t Ball::checkColision(const myline_t *_m,int *_b1) //_m je pokazivač na p
 {
     m = _m;
     b = _b1;
-    // updateBallposition(Adafruit_ILI9341 &lcd, int _xCurrent, int _yCurrent);
-    // uint 8_t checkCollision(const myline_t *_l, int _n) // detekcija kolizije, odnosno da li je objekt dodirnuo liniju u labirintu
     uint8_t _cd = 0;
 
     for (int i = 0; i < b[0]; i++)
@@ -72,13 +61,13 @@ uint8_t Ball::checkColision(const myline_t *_m,int *_b1) //_m je pokazivač na p
             {
                 _cd |= 1;  
             }      
-                // Serial.printf("Colision y\n");
+            
         }
 
         if ((_h != 0) && (Y >= _y) && (Y < (_y + _h)))
         {
             if (((xCurrent >= _x) && (X <= _x)) || ((xCurrent <= _x) && (X >= _x)))  _cd |= 2; 
-                      // Serial.printf("Colision x"); 
+                    
         }
     }
     return _cd;
@@ -89,7 +78,7 @@ uint8_t Ball::checkColision(const myline_t *_m,int *_b1) //_m je pokazivač na p
     e = _e;
     lin = _lin;
     uint8_t _el = false;
-    for (int i = 0; i < lin[1]; i++)
+    for (int i = 0; i < lin[0]; i++)
     {
         int _w = abs(e[i].x1 - e[i].x0);
         int _h = abs(e[i].y1 - e[i].y0);
@@ -101,7 +90,6 @@ uint8_t Ball::checkColision(const myline_t *_m,int *_b1) //_m je pokazivač na p
             {
                 _el |= true;  
             }      
-                // Serial.printf("Colision y\n");
         }
     }
     return _el;
@@ -117,17 +105,29 @@ void Ball::exitLine(Adafruit_ILI9341 &lcd, const myline_t *_e, int *_lin)
 {
     e = _e;
     lin = _lin;
-    for (int i = 0; i < lin[1] ; i++)
+    for (int i = 0; i < lin[0] ; i++)
     {
         lcd.drawLine(e[i].x0, e[i].y0, e[i].x1, e[i].y1, ILI9341_MAGENTA); // ovako ako ne napišeš labirint ti se neće prikazati na zaslonu!!!!!
     }
 }
 
-void Ball::Time(Adafruit_ILI9341 &lcd)
+uint8_t Ball::Time(Adafruit_ILI9341 &lcd)
 {
+    unsigned long _mytime;
+    unsigned long _seconds;
+    uint8_t game_over;
+    unsigned long millis();
+    _mytime = (millis() /1000);
+    _seconds = (millis() /1000);
+    game_over = false;
     lcd.setCursor(15, 15);
     lcd.setTextColor(ILI9341_GREEN);
     lcd.setTextSize(3);
-    lcd.print("Hello");
-    updateScreen();   
+    lcd.printf("%2ld", (unsigned long)(_mytime));
+    
+    if(_mytime >= 5)
+    {
+        game_over = true;
+    }
+    return game_over;
 }

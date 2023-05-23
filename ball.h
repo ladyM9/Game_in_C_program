@@ -6,27 +6,19 @@
 #include "maze.h"
 
 
-
-// int(*funcPtr)() = NULL;
-// typedef void (ToScreenfunc)(Zaslon*);
-
-class Ball: public Maze
+class Ball: public Maze  //klasa Ball nasljeđuje od klase Maze sve ono što je pod public
 {
 public:
     Ball(void (*_callBack)());
     // Ball(ToScreenfunc func); // konstruktor, mora biti public, defaultni konstruktor
     void updateScreen();
-    // int updateBallposition(void *p,int _xCurrent, int _yCurrent);
-    void updateBallposition(Adafruit_ILI9341 &lcd);
-    uint8_t checkColision(const myline_t *_m,int *_b1);
-    uint8_t checkExit(const myline_t *_e, int *_lin);
-    void loadMaze(const myline_t *_ol, int *_br);
-    void newBallposition(Adafruit_ILI9341 &lcd);
-    void exitLine(Adafruit_ILI9341 &lcd, const myline_t *_e, int *_lin);
-    void Time(Adafruit_ILI9341 &lcd);
-       // void loadMaze(const myline_t *_m, const int *b1);
-  
-    //uint8_t checkPoint(const myline_t * _m, int _n);
+    void updateBallposition(Adafruit_ILI9341 &lcd); //funkcija pomoću koje se očitava pozicija kuglice koja se miče po displayu
+    uint8_t checkColision(const myline_t *_m,int *_b1); //funkcija koja provjerava da li se dogodila kolizija između linije i kuglice
+    uint8_t checkExit(const myline_t *_e, int *_lin); //funkcija koja provjerava da li je kuglica dotaknula liniju koja označava izlazak iz labirinta
+    void loadMaze(const myline_t *_ol, int *_br); //funkcija pomoću koje se učitava labirint u igricu
+    void newBallposition(Adafruit_ILI9341 &lcd); //funkcija koja onemogućava da kuglica nakon što dotakne liniju da prijeđe preko te linije
+    void exitLine(Adafruit_ILI9341 &lcd, const myline_t *_e, int *_lin); //funkcija za iscrtavanje izlazne linije
+    uint8_t Time(Adafruit_ILI9341 &lcd); //funkcija za vrijeme u igrici
 
 
 private: // kad su varijable private tu im ne daješ vrijednost
