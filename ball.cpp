@@ -127,7 +127,12 @@ uint8_t Ball::Time(Adafruit_ILI9341 &lcd)
     
     if(_mytime >= 5)
     {
+        int time = 0;
+        lcd.printf("%2ld", (unsigned long)(time));
         game_over = true;
+        
+        
     }
     return game_over;
+    lcd.printf("%2ld", (unsigned long)(_mytime));
 }
