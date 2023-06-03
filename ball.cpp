@@ -47,8 +47,9 @@ uint8_t Ball::checkColision(const myline_t *_m,int *_b1) //_m je pokazivač na p
     m = _m;
     b = _b1;
     uint8_t _cd = 0;
+    int a;
 
-    for (int i = 0; i < b[0]; i++)
+    for (int i = 0; i < b[a]; i++)
     {
         int _w = abs(m[i].x1 - m[i].x0);
         int _h = abs(m[i].y1 - m[i].y0);
@@ -111,6 +112,7 @@ void Ball::exitLine(Adafruit_ILI9341 &lcd, const myline_t *_e, int *_lin)
     }
 }
 
+
 uint8_t Ball::Time(Adafruit_ILI9341 &lcd)
 {
     unsigned long _mytime;
@@ -127,12 +129,11 @@ uint8_t Ball::Time(Adafruit_ILI9341 &lcd)
     
     if(_mytime >= 5)
     {
-        int time = 0;
-        lcd.printf("%2ld", (unsigned long)(time));
+        //int time = 0;
+        //lcd.printf("%2ld", (unsigned long)(time));
+
         game_over = true;
-        
-        
+
     }
     return game_over;
-    lcd.printf("%2ld", (unsigned long)(_mytime));
 }
