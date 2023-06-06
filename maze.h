@@ -24,6 +24,9 @@ public:
     void drawLines(Adafruit_ILI9341 &lcd, const myline_t *_m, int *_bl);
     void drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t _c);
     int elements(int16_t _Brel);
+    void initializeRNG(RNG_HandleTypeDef *_hrng);
+    int getNumber(RNG_HandleTypeDef *_hrng, int min, int max);
+    int LoadNewMaze();
 
 
 

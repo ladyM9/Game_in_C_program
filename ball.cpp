@@ -89,7 +89,12 @@ uint8_t Ball::checkColision(const myline_t *_m,int *_b1) //_m je pokazivač na p
         {
             if (((yCurrent >= _y) && (Y <= _y)) || (yCurrent <= _y) && (Y >= _y)) 
             {
-                _el |= true;  
+                _el |= true;
+                
+            }
+            else
+            {
+                _el |= false;
             }      
         }
     }
@@ -126,14 +131,10 @@ uint8_t Ball::Time(Adafruit_ILI9341 &lcd)
     lcd.setTextColor(ILI9341_GREEN);
     lcd.setTextSize(3);
     lcd.printf("%2ld", (unsigned long)(_mytime));
-    
-    if(_mytime >= 5)
+    if(_mytime >= 40)
     {
-        //int time = 0;
-        //lcd.printf("%2ld", (unsigned long)(time));
-
         game_over = true;
-
     }
     return game_over;
 }
+
