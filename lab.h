@@ -14,5 +14,5 @@ const myline_t lab4[80] = { {2.798259482601822, 3.2297342251706107, 137.11471464
 const myline_t *labirint[] = {lab1, lab2, lab3, lab4};
 const myline_t exitLine[] = {{160, 235, 180, 235}};
 int labElements[4] = {(sizeof(lab1)) / (sizeof(myline_t)), (sizeof(lab2)) / (sizeof(myline_t)),(sizeof(lab3)) / (sizeof(myline_t)), (sizeof(lab4)) / (sizeof(myline_t))};
-int labExitEl[1] = { (sizeof(exitLine)) / (sizeof(myline_t))};
+int labExitEl = (sizeof(exitLine)) / (sizeof(myline_t));
 #endif

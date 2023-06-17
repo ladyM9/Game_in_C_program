@@ -2,6 +2,7 @@
 #include "ball.h"
 #include "screen.h"
 #include "hal_conf_extra.h"
+#include "lab.h"
 RNG_HandleTypeDef hrng = {0};
 
 Maze::Maze()
@@ -14,17 +15,18 @@ Maze::Maze()
 }
 
 
-void Maze::drawLines(Adafruit_ILI9341 &lcd, const myline_t *_m, int *_bl)
+void Maze::drawLines(Adafruit_ILI9341 &lcd)
 {
    
-    b = _bl;
-    m = _m;
-    int a;
+    int maze = getRandomMaze();
+    LoadNewMaze(labirint[maze], b);
     int br = elements(BRel);
-    for (int i = 0; i < b[br] ; i++)
+    for (int i = 0; i < 80 ; i++)
     {
         lcd.drawLine(m[i].x0, m[i].y0, m[i].x1, m[i].y1, color1); // ovako ako ne napišeš labirint ti se neće prikazati na zaslonu!!!!!
     }
+
+
     
 }
 
@@ -95,12 +97,21 @@ int Maze::getNumber(RNG_HandleTypeDef *_hrng, int min, int max)
 
     return myRandom;
 }
-int Maze::LoadNewMaze()
+int Maze::LoadNewMaze(const myline_t *m, int *_b)
+{
+    m = _m;
+    _b = b;
+
+
+}
+
+int Maze::getRandomMaze()
 {
     initializeRNG(&hrng);
-    int r = getNumber(&hrng, 1, 5);
+    int r = getNumber(&hrng, 0, 3);
+    
     return r;
-
+    
 }
 
 

@@ -21,20 +21,22 @@ class Maze
 {
 public:
     Maze();
-    void drawLines(Adafruit_ILI9341 &lcd, const myline_t *_m, int *_bl);
+    void drawLines(Adafruit_ILI9341 &lcd);
     void drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t _c);
     int elements(int16_t _Brel);
     void initializeRNG(RNG_HandleTypeDef *_hrng);
     int getNumber(RNG_HandleTypeDef *_hrng, int min, int max);
-    int LoadNewMaze();
+    int LoadNewMaze( const myline_t *m, int *_b);
+    int getRandomMaze();
 
-
-
-    // int *p1;
-    int *b;
     uint16_t color1;
-    int16_t X0, Y0, X1, Y1;
     const myline_t *m;
+    int16_t X0, Y0, X1, Y1;
+    
     int16_t BRel;
+    private:
+    const myline_t *_m;
+    int *b;
+    
 };
 #endif

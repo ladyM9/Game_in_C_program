@@ -1,6 +1,7 @@
 #include "ball.h"
 #include "screen.h"
 #include "maze.h"
+#include "lab.h"
 
 
 Ball::Ball(void (*_callBack)())
@@ -8,13 +9,17 @@ Ball::Ball(void (*_callBack)())
 
     //X = 18; // početna pozicija objekta po x i y osi, boja objekta i polumjer
     //Y = 18;
+
+    requestForCallback = _callBack; 
+}
+void Ball::firstBallposition(Adafruit_ILI9341 &lcd)
+{
     X = 150; //početna pozicija kuglice tj objekta na X osi
     Y = 2;
     _color = ILI9341_BLUE;
     R = 2;
-    requestForCallback = _callBack; 
+    lcd.fillCircle(X,Y,R, _color);
 }
-
 void Ball::updateScreen()
 {
     requestForCallback();
@@ -34,13 +39,6 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd)
     lcd.fillCircle(X, Y, R, _color); // ispisivanje kuglice na početnoj poziciji, tu mora pisat ovo( NEPREMJEŠTAJ INAĆE SE NEĆE ISPISAT NA DISPLAY)
     updateScreen();
 }
-void Ball::loadMaze(const myline_t *_ol, int *_br)
-{
-
-    m = _ol;
-
-}
-
 
 uint8_t Ball::checkColision(const myline_t *_m,int *_b1) //_m je pokazivač na polje, a _n koliko linija imaš u polju
 {
@@ -74,12 +72,12 @@ uint8_t Ball::checkColision(const myline_t *_m,int *_b1) //_m je pokazivač na p
     return _cd;
 }
 
- uint8_t Ball::checkExit(const myline_t *_e, int *_lin)
+ uint8_t Ball::checkExit(const myline_t *_e, int _lin)
  {
     e = _e;
     lin = _lin;
     uint8_t _el = false;
-    for (int i = 0; i < lin[0]; i++)
+    for (int i = 0; i < lin; i++)
     {
         int _w = abs(e[i].x1 - e[i].x0);
         int _h = abs(e[i].y1 - e[i].y0);
@@ -107,11 +105,11 @@ void Ball::newBallposition(Adafruit_ILI9341 &lcd)
     Y = yCurrent;
     lcd.fillCircle(X,Y,R, ILI9341_GREEN);
 }
-void Ball::exitLine(Adafruit_ILI9341 &lcd, const myline_t *_e, int *_lin)
+void Ball::exitLine(Adafruit_ILI9341 &lcd, const myline_t *_e, int _lin)
 {
     e = _e;
     lin = _lin;
-    for (int i = 0; i < lin[0] ; i++)
+    for (int i = 0; i < lin ; i++)
     {
         lcd.drawLine(e[i].x0, e[i].y0, e[i].x1, e[i].y1, ILI9341_MAGENTA); // ovako ako ne napišeš labirint ti se neće prikazati na zaslonu!!!!!
     }
@@ -137,4 +135,6 @@ uint8_t Ball::Time(Adafruit_ILI9341 &lcd)
     }
     return game_over;
 }
+
+
 
