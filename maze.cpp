@@ -1,41 +1,20 @@
 #include "maze.h"
-#include "ball.h"
-#include "screen.h"
-#include "hal_conf_extra.h"
-#include "lab.h"
-RNG_HandleTypeDef hrng = {0};
+
+myMaze_t *mazes[] = {(myMaze_t*)&lab1, (myMaze_t*)&lab2, (myMaze_t*)&lab3, (myMaze_t*)&lab4};
 
 Maze::Maze()
 {
     color1 = ILI9341_ORANGE;
-    X0;
-    Y0;
-    X1;
-    Y1;
 }
-
 
 void Maze::drawLines(Adafruit_ILI9341 &lcd)
 {
-   
-    int maze = getRandomMaze();
-    LoadNewMaze(labirint[maze], b);
-    int br = elements(BRel);
-    for (int i = 0; i < 80 ; i++)
+    if (_currentMaze == NULL) return;
+
+    for (int i = 0; i < _currentMaze->numberOfLines; i++)
     {
-        lcd.drawLine(m[i].x0, m[i].y0, m[i].x1, m[i].y1, color1); // ovako ako ne napišeš labirint ti se neće prikazati na zaslonu!!!!!
-    }
-
-
-    
-}
-
-int Maze::elements(int16_t _Brel)
-{
-    BRel = _Brel;
-    int i;
-    BRel = (sizeof(m[i])) / (sizeof(myline_t));
-    return BRel;
+        lcd.drawLine(_currentMaze->labLines[i].x0, _currentMaze->labLines[i].y0, _currentMaze->labLines[i].x1, _currentMaze->labLines[i].y1, color1); // ovako ako ne napišeš labirint ti se neće prikazati na zaslonu!!!!!
+    }  
 }
 
 void Maze::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t _c)
@@ -97,21 +76,23 @@ int Maze::getNumber(RNG_HandleTypeDef *_hrng, int min, int max)
 
     return myRandom;
 }
-int Maze::LoadNewMaze(const myline_t *m, int *_b)
+void Maze::LoadNewMaze(myMaze_t *_m)
 {
-    m = _m;
-    _b = b;
-
-
+    _currentMaze = _m;
 }
 
-int Maze::getRandomMaze()
+myMaze_t* Maze::getRandomMaze(RNG_HandleTypeDef *_hrng)
 {
-    initializeRNG(&hrng);
-    int r = getNumber(&hrng, 0, 3);
-    
-    return r;
-    
+    int r;
+    do
+    {
+        r = getNumber(_hrng, 0, sizeof(mazes) / sizeof(myMaze_t*));
+    } while (lastRandomNumber == r);
+    lastRandomNumber = r;
+    return mazes[r];
 }
 
-
+myMaze_t* Maze::getCurrentMaze()
+{
+    return _currentMaze;
+}
