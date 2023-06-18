@@ -1,21 +1,28 @@
 #include "maze.h"
+#include "MyDefines.h"
 
-myMaze_t *mazes[] = {(myMaze_t*)&lab1, (myMaze_t*)&lab2, (myMaze_t*)&lab3, (myMaze_t*)&lab4};
 
+
+myMaze_t *mazes[] = {(myMaze_t*)&lab1, (myMaze_t*)&lab2, (myMaze_t*)&lab3, (myMaze_t*)&lab4}; //polje u kojem se nalaze svi moji labirinti
 Maze::Maze()
 {
     color1 = ILI9341_ORANGE;
 }
 
+
 void Maze::drawLines(Adafruit_ILI9341 &lcd)
 {
-    if (_currentMaze == NULL) return;
+   
 
-    for (int i = 0; i < _currentMaze->numberOfLines; i++)
+    for (int i = 0; i < _currentMaze->numberOfLines ; i++)
     {
         lcd.drawLine(_currentMaze->labLines[i].x0, _currentMaze->labLines[i].y0, _currentMaze->labLines[i].x1, _currentMaze->labLines[i].y1, color1); // ovako ako ne napišeš labirint ti se neće prikazati na zaslonu!!!!!
-    }  
+    }
+
+
+    
 }
+
 
 void Maze::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t _c)
 {
@@ -76,23 +83,22 @@ int Maze::getNumber(RNG_HandleTypeDef *_hrng, int min, int max)
 
     return myRandom;
 }
-void Maze::LoadNewMaze(myMaze_t *_m)
+int Maze::LoadNewMaze(myMaze_t *_m)
 {
     _currentMaze = _m;
 }
 
-myMaze_t* Maze::getRandomMaze(RNG_HandleTypeDef *_hrng)
+myMaze_t * Maze::getRandomMaze(RNG_HandleTypeDef *_hrng)
 {
     int r;
-    do
-    {
-        r = getNumber(_hrng, 0, sizeof(mazes) / sizeof(myMaze_t*));
-    } while (lastRandomNumber == r);
+    do{
+        int r = getNumber(_hrng, 0, 3);
+    }while(lastRandomNumber == r);
     lastRandomNumber = r;
+    
+    
     return mazes[r];
+    
 }
 
-myMaze_t* Maze::getCurrentMaze()
-{
-    return _currentMaze;
-}
+

@@ -11,10 +11,10 @@ Ball::Ball(void (*_callBack)())
 
     requestForCallback = _callBack;
 }
-void Ball::firstBallposition(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab)
+void Ball::firstBallposition(Adafruit_ILI9341 &lcd)
 {
-    X = _currentLab->startPosX; // početna pozicija kuglice tj objekta na X osi
-    Y = _currentLab->startPosY;
+    X = 150; // početna pozicija kuglice tj objekta na X osi
+    Y = 2;
     _color = ILI9341_BLUE;
     R = 2;
     lcd.fillCircle(X, Y, R, _color);
@@ -40,9 +40,9 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd)
 
 uint8_t Ball::checkColision(myMaze_t *_currentLab) //_m je pokazivač na polje, a _n koliko linija imaš u polju
 {
-    myline_t *m = _currentLab->labLines;
     uint8_t _cd = 0;
     int a;
+    myline_t *m = _currentLab->labLines;
 
     for (int i = 0; i < _currentLab->numberOfLines; i++)
     {
@@ -72,6 +72,7 @@ uint8_t Ball::checkExit(myMaze_t *_currentLab)
 {
     e = (_currentLab->endLine);
     uint8_t _el = false;
+
     int _w = abs(e.x1 - e.x0);
     int _h = abs(e.y1 - e.y0);
     int _x = e.x0 >= e.x1 ? e.x1 : e.x0; // ovo si prije radila u void loop petlji sa ispitivanjem if (col %ss 1) i ( col % 2)
@@ -87,6 +88,7 @@ uint8_t Ball::checkExit(myMaze_t *_currentLab)
             _el |= false;
         }
     }
+
     return _el;
 }
 
@@ -98,9 +100,11 @@ void Ball::newBallposition(Adafruit_ILI9341 &lcd)
 }
 void Ball::exitLine(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab)
 {
-    e = _currentLab->endLine;
+    e = (_currentLab->endLine);
 
+    
     lcd.drawLine(e.x0, e.y0, e.x1, e.y1, ILI9341_MAGENTA); // ovako ako ne napišeš labirint ti se neće prikazati na zaslonu!!!!!
+    
 }
 
 uint8_t Ball::Time(Adafruit_ILI9341 &lcd)
