@@ -4,8 +4,10 @@
 #include "ball.h"
 #include "screen.h"
 #include "maze.h"
-#include "lab.h"
 #include "GUI.h"
+#include "lab.h"
+
+
 
 // #include "GUI.h"
 #define TFT_DC 9
@@ -15,7 +17,7 @@ Adafruit_ILI9341 display = Adafruit_ILI9341(TFT_CS, TFT_DC);
 Screen screen(&display);         // objekt klase Screen
 Ball ball(&LCDforScreenRefresh); // objekt klase Ball
 Maze maze;                       // objekt klase Maze
-Button button;
+Button button(&LCDforScreenRefresh);
 RNG_HandleTypeDef hrng = {0};
 
 unsigned long Time = 0;
@@ -29,15 +31,16 @@ void setup()
 
     pinMode(A0, INPUT);
     pinMode(A1, INPUT);
-    pinMode(D6, INPUT);
-    pinMode(USER_BTN, INPUT_PULLDOWN);
+    pinMode(D8, INPUT_PULLUP);
+    pinMode(USER_BTN, INPUT);
     maze.initializeRNG(&hrng);
     display.begin();
     Serial.begin(115200);
     Serial.println("Code has started");
 
+    button.ball(display);
     // Forsiraj da kod misli da je partija igrice pobjeđena da bi se učitao novi random maze.
-    state = 1;
+    //state = 1;
 }
 
 void loop()
@@ -47,38 +50,11 @@ void loop()
     //  maze.drawLines(display, _m, _b1); //objekt.ime klase
     //  button.startButton(display);
     //  Serial.print(a);
-    switch (state)
-    {
-    case 0:
-        maze.drawLines(display);
-        if (ball.checkExit(maze.getCurrentMaze()) == true)
-        {
-            state = 1;
-        }
-        if(Time > 40)
-        {
-            state = 2;
-        }
-        break;
-    case 1:
-        Time = (millis()/1000);
-        maze.LoadNewMaze(maze.getRandomMaze(&hrng));
-        ball.firstBallposition(display, maze.getCurrentMaze());
-        state = 0;
-        break;
-    case 2:
+    //button.startScreen(display);
 
-        display.clearDisplay();
-        button.startButton(display);
-        
-        break;
-    }
-
-
-
-    GameLoop();
-    unsigned long game_time = (millis()/1000) - Time;
-    ball.Time(display, game_time);
+    first();
+    button.startScreen(display);
+    
 
     screen.checkForRefresh();
 }
@@ -93,6 +69,14 @@ void GameLoop()
         ball.newBallposition(display);
         // Serial.printf("Detection collision");
     }
+}
+
+void first()
+{
+    
+    button.ballposition(display);
+    display.display();
+  
 }
 
 
