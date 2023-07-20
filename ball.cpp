@@ -107,25 +107,13 @@ void Ball::Time(Adafruit_ILI9341 &lcd, unsigned long A)  //metoda pomocu koje is
 
 }
 
-void Ball::Score(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab)
+void Ball::Score(Adafruit_ILI9341 &lcd, uint8_t bodovi)
 {
-    bool col = false;
-    uint8_t bodovi = 100;
     lcd.setCursor(200, 3);
     lcd.setTextSize(2);
     lcd.setTextColor(ILI9341_NAVY);
-    
-    
-    if(checkColision(_currentLab))
-    {
-        col = true;
-    }
-    if(col == true)
-    {
-        bodovi-=1;
-        
-    }
     lcd.printf("Score %d", bodovi);
-    col = false;
     
+
+
 }

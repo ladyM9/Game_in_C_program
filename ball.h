@@ -20,7 +20,7 @@ public:
     void newBallposition(Adafruit_ILI9341 &lcd); //funkcija koja onemoguÄ‡ava da kuglica nakon Ĺˇto dotakne liniju da prijeÄ‘e preko te linije
     void exitLine(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab); //funkcija za iscrtavanje izlazne linije
     void Time(Adafruit_ILI9341 &lcd, unsigned long A); //funkcija za vrijeme u igrici
-    void Score(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab);
+    void Score(Adafruit_ILI9341 &lcd, uint8_t bodovi);
     
 
     private: // kad su varijable private tu im ne dajeĹˇ vrijednost
