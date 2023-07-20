@@ -2,46 +2,37 @@
 #define __BALL_H__
 
 #include "ILI9341_STM32.h"
-#include "stdio.h"
 #include "maze.h"
+#include "myDefines.h"
 
 
-class Ball: public Maze  //klasa Ball nasljeđuje od klase Maze sve ono što je pod public
+class Ball //klasa Ball nasljeÄ‘uje od klase Maze sve ono Ĺˇto je pod public
 {
 public:
     Ball(void (*_callBack)());
     // Ball(ToScreenfunc func); // konstruktor, mora biti public, defaultni konstruktor
     void updateScreen();
-    void firstBallposition(Adafruit_ILI9341 &lcd);
-    void updateBallposition(Adafruit_ILI9341 &lcd); //funkcija pomoću koje se očitava pozicija kuglice koja se miče po displayu
-    uint8_t checkColision(const myline_t *_m,int *_b1); //funkcija koja provjerava da li se dogodila kolizija između linije i kuglice
-    uint8_t checkExit(const myline_t _e, int _lin); //funkcija koja provjerava da li je kuglica dotaknula liniju koja označava izlazak iz labirinta
-    //void loadMaze(const myline_t *_ol, int *_br); //funkcija pomoću koje se učitava labirint u igricu
-    void newBallposition(Adafruit_ILI9341 &lcd); //funkcija koja onemogućava da kuglica nakon što dotakne liniju da prijeđe preko te linije
-    void exitLine(Adafruit_ILI9341 &lcd, const myline_t _e, int _lin); //funkcija za iscrtavanje izlazne linije
-    uint8_t Time(Adafruit_ILI9341 &lcd); //funkcija za vrijeme u igrici
-    
-   
-    
+    void firstBallposition(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab);
+    void updateBallposition(Adafruit_ILI9341 &lcd); //funkcija pomoÄ‡u koje se oÄŤitava pozicija kuglice koja se miÄŤe po displayu
+    uint8_t checkColision(myMaze_t *_currentLab); //funkcija koja provjerava da li se dogodila kolizija izmeÄ‘u linije i kuglice
+    uint8_t checkExit(myMaze_t *_currentLab); //funkcija koja provjerava da li je kuglica dotaknula liniju koja oznaÄŤava izlazak iz labirinta
+    //void loadMaze(const myline_t *_ol, int *_br); //funkcija pomoÄ‡u koje se uÄŤitava labirint u igricu
+    void newBallposition(Adafruit_ILI9341 &lcd); //funkcija koja onemoguÄ‡ava da kuglica nakon Ĺˇto dotakne liniju da prijeÄ‘e preko te linije
+    void exitLine(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab); //funkcija za iscrtavanje izlazne linije
+    void Time(Adafruit_ILI9341 &lcd, unsigned long A); //funkcija za vrijeme u igrici
+    void Score(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab);
     
 
-
-private: // kad su varijable private tu im ne daješ vrijednost
+    private: // kad su varijable private tu im ne dajeĹˇ vrijednost
     int X;
     int Y;
-    int R;
+    float R;
     uint16_t _color;
     int xCurrent;
     int yCurrent;
-    int *b;
-    const myline_t *m;
-    const myline_t *e;
-    int lin;
+    myline_t e;
     void (*requestForCallback)();
-    void(*_l)();
 
-    // ToScreenfunc func;
-    // Zaslon*;
 };
 
 #endif

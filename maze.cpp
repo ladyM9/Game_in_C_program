@@ -1,28 +1,25 @@
 #include "maze.h"
-#include "MyDefines.h"
+#include "GUI.h"
 
 
+myMaze_t *mazes_easy[] = {(myMaze_t *)&lab1, (myMaze_t *)&lab2, (myMaze_t *)&lab3, (myMaze_t *)&lab4};
+myMaze_t *mazes_medium[] = {(myMaze_t *)&lab6, (myMaze_t *)&lab7, (myMaze_t *)&lab8, (myMaze_t *)&lab9};
 
-myMaze_t *mazes[] = {(myMaze_t*)&lab1, (myMaze_t*)&lab2, (myMaze_t*)&lab3, (myMaze_t*)&lab4}; //polje u kojem se nalaze svi moji labirinti
 Maze::Maze()
 {
-    color1 = ILI9341_ORANGE;
+    color1 = ILI9341_ORANGE; //boja svakog labirinta
 }
 
-
-void Maze::drawLines(Adafruit_ILI9341 &lcd)
+void Maze::drawLines(Adafruit_ILI9341 &lcd) // metoda pomocu koje se iscrtavaju sve linije iz pojedinog labirinta na display
 {
-   
+    if (_currentMaze == NULL)
+        return;
 
-    for (int i = 0; i < _currentMaze->numberOfLines ; i++)
+    for (int i = 0; i < _currentMaze->numberOfLines; i++)
     {
-        lcd.drawLine(_currentMaze->labLines[i].x0, _currentMaze->labLines[i].y0, _currentMaze->labLines[i].x1, _currentMaze->labLines[i].y1, color1); // ovako ako ne napišeš labirint ti se neće prikazati na zaslonu!!!!!
+        lcd.drawLine(_currentMaze->labLines[i].x0 , _currentMaze->labLines[i].y0 + offset_y , _currentMaze->labLines[i].x1  , _currentMaze->labLines[i].y1 + offset_y, color1); // ovako ako ne napiĹˇeĹˇ labirint ti se neÄ‡e prikazati na zaslonu!!!!!
     }
-
-
-    
 }
-
 
 void Maze::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t _c)
 {
@@ -83,22 +80,40 @@ int Maze::getNumber(RNG_HandleTypeDef *_hrng, int min, int max)
 
     return myRandom;
 }
-int Maze::LoadNewMaze(myMaze_t *_m)
+void Maze::LoadNewMaze(myMaze_t *_m)
 {
     _currentMaze = _m;
 }
 
-myMaze_t * Maze::getRandomMaze(RNG_HandleTypeDef *_hrng)
+myMaze_t *Maze::getRandomMaze(RNG_HandleTypeDef *_hrng)
 {
+    int choose;
+    scanf("%d", choose);
     int r;
-    do{
-        int r = getNumber(_hrng, 0, 3);
-    }while(lastRandomNumber == r);
-    lastRandomNumber = r;
-    
-    
-    return mazes[r];
-    
+    switch (choose)
+    {
+    case 1:
+
+        do
+        {
+            r = getNumber(_hrng, 0, sizeof(mazes_easy) / sizeof(myMaze_t *));
+        } while (lastRandomNumber == r);
+        lastRandomNumber = r;
+        return mazes_easy[r];
+        break;
+
+    case 2:
+        do
+        {
+            r = getNumber(_hrng, 0, sizeof(mazes_medium) / sizeof(myMaze_t *));
+        } while (lastRandomNumber == r);
+        lastRandomNumber = r;
+        return mazes_medium[r];
+        break;
+    }
 }
 
-
+myMaze_t *Maze::getCurrentMaze()
+{
+    return _currentMaze;
+}

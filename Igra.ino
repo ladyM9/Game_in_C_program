@@ -7,8 +7,6 @@
 #include "GUI.h"
 #include "lab.h"
 
-
-
 // #include "GUI.h"
 #define TFT_DC 9
 #define TFT_CS 10
@@ -16,13 +14,15 @@ Adafruit_ILI9341 display = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
 Screen screen(&display);         // objekt klase Screen
 Ball ball(&LCDforScreenRefresh); // objekt klase Ball
-Maze maze;                       // objekt klase Maze
 Button button(&LCDforScreenRefresh);
+Maze maze; // objekt klase Maze
 RNG_HandleTypeDef hrng = {0};
 
 unsigned long Time = 0;
 unsigned long TIMER_CHANGE_INTERVAL = 50000;
 unsigned long millis();
+uint8_t score = 100;
+int sc = false;
 
 int state = 0;
 
@@ -35,50 +35,83 @@ void setup()
     pinMode(USER_BTN, INPUT);
     maze.initializeRNG(&hrng);
     display.begin();
+    display.setRotation(1); // rotiraj display
     Serial.begin(115200);
-    Serial.println("Code has started");
 
-    button.ball(display);
     // Forsiraj da kod misli da je partija igrice pobjeđena da bi se učitao novi random maze.
-    //state = 1;
+    // state = 1;
 }
 
 void loop()
 {
-    // unsigned long currentMillis = millis();
-    //  Pozivanje metodi unutar klasa
-    //  maze.drawLines(display, _m, _b1); //objekt.ime klase
-    //  button.startButton(display);
-    //  Serial.print(a);
-    //button.startScreen(display);
 
-    first();
-    button.startScreen(display);
-    
+    switch (state)
+    {
+    case 0:
+        int x;
+        int y;
+        button.cursor(display, 1);                                              // prikaz kurzora u izborniku za tezinu odabrane igrice
+        if (button.myButton(display, x, y, 20, 20, 100, 50, 3, "Easy", 1) == 1) // ako je kliknuta tipka za easy tezinu igrice odi na state 2
+        {
+            state = 2;
+        }
+        if (button.myButton(display, x, y, 150, 20, 120, 50, 3, "Medium", 1) == 1)
+        {
+            state = 2;
+        }
+
+        break;
+
+    case 1:
+
+        maze.drawLines(display); // iscrtaj labirint na display
+        Time_Game();             // iscrtaj i broji vrijeme u igrici
+        GameLoop();
+
+        if (ball.checkExit(maze.getCurrentMaze()) == true) // ako se kuglica nalazi na izlaznoj igrici iz labirinta odi na state
+        {
+            state = 2;
+        }
+
+        break;
+
+    case 2:
+
+        maze.LoadNewMaze(maze.getRandomMaze(&hrng));            // ucitaj novi random labirint
+        ball.firstBallposition(display, maze.getCurrentMaze()); // iscrtaj kuglicu na pocetnoj poziciji u odabranom labirintu
+        Time = (millis() / 1000);                               // millis podjeli sa 1000 kako bi dobila odbrojavanje vremena u sekundama
+        state = 1;                                              // odi na state 1 kako bi se odabrani random labirint iscrtao na display
+        break;
+    }
 
     screen.checkForRefresh();
 }
 
 void GameLoop()
 {
-    ball.updateBallposition(display);
-    //ball.Time(display);
-    ball.exitLine(display, maze.getCurrentMaze());
-    if ((ball.checkColision(maze.getCurrentMaze())) != 0)
-    {
-        ball.newBallposition(display);
-        // Serial.printf("Detection collision");
-    }
-}
-
-void first()
-{
     
-    button.ballposition(display);
-    display.display();
-  
+    ball.updateBallposition(display); // stalno iscrtavaj novu poziciju kuglice kako se ona pomice pomocu joysticka
+    ball.exitLine(display, maze.getCurrentMaze());        // iscrtaj na display izlaznu liniju u odabranom labirintu
+    if ((ball.checkColision(maze.getCurrentMaze()) != 0)) // ako je kuglica dotaknila liniju u labirintu
+    {
+        ball.newBallposition(display); // kuglicu stavi na poziciju u kojoj je bila prije nego što je dotaknila liniju u labirintu
+        // Serial.printf("Detection collision");
+        sc = true;
+    }
+    if(sc == true)
+    {
+        score-=1;
+    }
+    ball.Score(display, score);
+    sc = false;
+
 }
 
+void Time_Game()
+{
+    unsigned long game_time = (millis() / 1000) - Time;
+    ball.Time(display, game_time);
+}
 
 extern "C" void SystemClock_Config(void)
 {
