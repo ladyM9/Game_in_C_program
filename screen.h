@@ -3,7 +3,7 @@
 
 #include "ILI9341_STM32.h"
 
-void LCDforScreenRefresh(); //ovu funkciju povezujem sa klasom Ball
+void LCDforScreenRefresh(); //ovu funkciju povezujem sa klasom Ball i Button
 
 //klasa za zaslon, u njoj se nalazi metoda za osvježavanje zaslona
 class Screen

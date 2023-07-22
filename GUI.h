@@ -8,26 +8,18 @@
 
 class Button
 {
-    public:
+public:
     Button(void (*_call)());
     void updateFirstScreen();
-    void startScreen(Adafruit_ILI9341 &lcd);
-    void drawRectangle(int16_t x, int16_t y, int16_t w, int16_t h );
-    void ball(Adafruit_ILI9341 &lcd);
-    void ballposition(Adafruit_ILI9341 &lcd);
-    void newposition(Adafruit_ILI9341 &lcd);
+    int myButton(Adafruit_ILI9341 &lcd, int _xcur, int _ycur, int x, int y, int h, int w, int _textscale, char *mytext, int draw);
+    void cursor(Adafruit_ILI9341 &lcd, int draw_cursor);
 
-
-
-    private:
-    int16_t X,Y,W,H, r;
+private:
+    int16_t X, Y, W, H, r;
     int xp, yp;
     int xc, yc;
     float rp;
     void (*request)();
-
-
 };
-
 
 #endif

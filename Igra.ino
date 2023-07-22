@@ -19,10 +19,9 @@ Maze maze; // objekt klase Maze
 RNG_HandleTypeDef hrng = {0};
 
 unsigned long Time = 0;
+unsigned long Times = 0;
 unsigned long TIMER_CHANGE_INTERVAL = 50000;
 unsigned long millis();
-uint8_t score = 100;
-int sc = false;
 
 int state = 0;
 
@@ -67,10 +66,9 @@ void loop()
         maze.drawLines(display); // iscrtaj labirint na display
         Time_Game();             // iscrtaj i broji vrijeme u igrici
         GameLoop();
-
         if (ball.checkExit(maze.getCurrentMaze()) == true) // ako se kuglica nalazi na izlaznoj igrici iz labirinta odi na state
         {
-            state = 2;
+            state = 3;
         }
 
         break;
@@ -82,6 +80,22 @@ void loop()
         Time = (millis() / 1000);                               // millis podjeli sa 1000 kako bi dobila odbrojavanje vremena u sekundama
         state = 1;                                              // odi na state 1 kako bi se odabrani random labirint iscrtao na display
         break;
+
+    case 3:
+        Times = (millis()/1000);
+        state = 4;
+  
+        break;
+    case 4:
+
+        ball.score_Game(display);
+        if(Time_Score() == true)
+        {
+            state = 2;
+        }
+        
+        break;
+
     }
 
     screen.checkForRefresh();
@@ -89,28 +103,37 @@ void loop()
 
 void GameLoop()
 {
-    
-    ball.updateBallposition(display); // stalno iscrtavaj novu poziciju kuglice kako se ona pomice pomocu joysticka
+
+    ball.updateBallposition(display);                     // stalno iscrtavaj novu poziciju kuglice kako se ona pomice pomocu joysticka
     ball.exitLine(display, maze.getCurrentMaze());        // iscrtaj na display izlaznu liniju u odabranom labirintu
     if ((ball.checkColision(maze.getCurrentMaze()) != 0)) // ako je kuglica dotaknila liniju u labirintu
     {
         ball.newBallposition(display); // kuglicu stavi na poziciju u kojoj je bila prije nego što je dotaknila liniju u labirintu
         // Serial.printf("Detection collision");
-        sc = true;
     }
-    if(sc == true)
-    {
-        score-=1;
-    }
-    ball.Score(display, score);
-    sc = false;
-
+    ball.Score(display); // poziv metode za ispis i pracenje scora u igrici
 }
 
 void Time_Game()
 {
     unsigned long game_time = (millis() / 1000) - Time;
     ball.Time(display, game_time);
+
+}
+
+uint8_t Time_Score()
+{
+    uint8_t sc = false;
+    unsigned long game_score = (millis() / 1000) - Times;
+    
+    ball.Time(display, game_score);
+    if(game_score >= 10)
+    {
+        sc = true;
+    }
+    return sc;
+    sc = false;
+
 }
 
 extern "C" void SystemClock_Config(void)

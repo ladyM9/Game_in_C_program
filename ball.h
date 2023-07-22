@@ -20,7 +20,8 @@ public:
     void newBallposition(Adafruit_ILI9341 &lcd); //funkcija koja onemoguÄ‡ava da kuglica nakon Ĺˇto dotakne liniju da prijeÄ‘e preko te linije
     void exitLine(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab); //funkcija za iscrtavanje izlazne linije
     void Time(Adafruit_ILI9341 &lcd, unsigned long A); //funkcija za vrijeme u igrici
-    void Score(Adafruit_ILI9341 &lcd, uint8_t bodovi);
+    void Score(Adafruit_ILI9341 &lcd);
+    void score_Game(Adafruit_ILI9341 &lcd);
     
 
     private: // kad su varijable private tu im ne dajeĹˇ vrijednost
@@ -28,6 +29,12 @@ public:
     int Y;
     float R;
     uint16_t _color;
+    uint8_t score = false;
+    uint8_t game_ov = false;
+    uint8_t scoreOld = score;
+    uint8_t live = 3;
+    uint8_t bodovi = 10; //tu moras postaviti pocetni broj bodova u igrici jer inace ti se bodovi nece ispisivati jer svaki put kad
+    //kod ude u igricu u metodu za score bodove postavi na 100 i onda se nece smanjivati bodovi u igrici
     int xCurrent;
     int yCurrent;
     myline_t e;

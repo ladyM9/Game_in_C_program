@@ -1,5 +1,6 @@
 #include "screen.h"
 #include "ball.h"
+#include "GUI.h"
 
 static uint8_t updateFlag = false;  //zastavica pomoću koje određujem da li će se osvježiti zaslon
 

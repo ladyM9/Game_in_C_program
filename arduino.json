@@ -1,6 +1,0 @@
-{
-    "configuration": "pnum=NUCLEO_H743ZI2,upload_method=MassStorage,xserial=generic,usb=none,xusb=FS,opt=osstd,dbg=none,rtlib=nano",
-    "board": "STMicroelectronics:stm32:Nucleo_144",
-    "port": "COM3",
-    "sketch": "Igra.ino"
-}

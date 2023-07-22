@@ -18,4 +18,15 @@ typedef struct myMaze_t
     int numberOfLines;
 };
 
+typedef struct myRect_t
+{
+    int16_t x;
+    int16_t y;
+    int16_t w;
+    int16_t h;
+    int16_t r;
+};
+
+
+
 #endif
