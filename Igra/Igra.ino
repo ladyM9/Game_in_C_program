@@ -1,5 +1,7 @@
 #include "Adafruit_GFX.h"
 #include "ILI9341_STM32.h"
+#include "SparkFunLSM6DSO.h"
+#include "Wire.h"
 #include "myDefines.h"
 #include "ball.h"
 #include "screen.h"
@@ -11,6 +13,7 @@
 #define TFT_DC 9
 #define TFT_CS 10
 Adafruit_ILI9341 display = Adafruit_ILI9341(TFT_CS, TFT_DC);
+LSM6DSO myIMU; // Default constructor is I2C, addr 0x6B
 
 Screen screen(&display);         // objekt klase Screen
 Ball ball(&LCDforScreenRefresh); // objekt klase Ball
@@ -32,10 +35,15 @@ void setup()
     pinMode(A1, INPUT);
     pinMode(D8, INPUT_PULLUP);
     pinMode(USER_BTN, INPUT);
+    Wire.setSCL(PB8);
+    Wire.setSDA(PB9);
     maze.initializeRNG(&hrng);
     display.begin();
+    Wire.begin();
     display.setRotation(1); // rotiraj display
     Serial.begin(115200);
+    myIMU.begin();
+    myIMU.initialize(BASIC_SETTINGS);
 
     // Forsiraj da kod misli da je partija igrice pobjeđena da bi se učitao novi random maze.
     // state = 1;
@@ -47,6 +55,7 @@ void loop()
     switch (state)
     {
     case 0:
+    {
         int x;
         int y;
         button.cursor(display, 1);                                              // prikaz kurzora u izborniku za tezinu odabrane igrice
@@ -60,9 +69,10 @@ void loop()
         }
 
         break;
-
+    }
     case 1:
 
+    {
         maze.drawLines(display); // iscrtaj labirint na display
         Time_Game();             // iscrtaj i broji vrijeme u igrici
         GameLoop();
@@ -72,30 +82,35 @@ void loop()
         }
 
         break;
+    }
 
     case 2:
-
+    {
         maze.LoadNewMaze(maze.getRandomMaze(&hrng));            // ucitaj novi random labirint
         ball.firstBallposition(display, maze.getCurrentMaze()); // iscrtaj kuglicu na pocetnoj poziciji u odabranom labirintu
         Time = (millis() / 1000);                               // millis podjeli sa 1000 kako bi dobila odbrojavanje vremena u sekundama
         state = 1;                                              // odi na state 1 kako bi se odabrani random labirint iscrtao na display
         break;
+    }
 
     case 3:
-        Times = (millis()/1000);
+    {
+        Times = (millis() / 1000);
         state = 4;
-  
+
         break;
+    }
     case 4:
 
+    {
         ball.score_Game(display);
-        if(Time_Score() == true)
+        if (Time_Score() == true)
         {
             state = 2;
         }
-        
-        break;
 
+        break;
+    }
     }
 
     screen.checkForRefresh();
@@ -104,7 +119,7 @@ void loop()
 void GameLoop()
 {
 
-    ball.updateBallposition(display);                     // stalno iscrtavaj novu poziciju kuglice kako se ona pomice pomocu joysticka
+    ball.updateBallposition(display, myIMU);              // stalno iscrtavaj novu poziciju kuglice kako se ona pomice pomocu joysticka
     ball.exitLine(display, maze.getCurrentMaze());        // iscrtaj na display izlaznu liniju u odabranom labirintu
     if ((ball.checkColision(maze.getCurrentMaze()) != 0)) // ako je kuglica dotaknila liniju u labirintu
     {
@@ -118,22 +133,20 @@ void Time_Game()
 {
     unsigned long game_time = (millis() / 1000) - Time;
     ball.Time(display, game_time);
-
 }
 
 uint8_t Time_Score()
 {
     uint8_t sc = false;
     unsigned long game_score = (millis() / 1000) - Times;
-    
+
     ball.Time(display, game_score);
-    if(game_score >= 10)
+    if (game_score >= 10)
     {
         sc = true;
     }
     return sc;
     sc = false;
-
 }
 
 extern "C" void SystemClock_Config(void)

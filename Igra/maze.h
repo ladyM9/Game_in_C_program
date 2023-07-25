@@ -8,6 +8,7 @@
 #include "hal_conf_extra.h"
 #include "lab.h"
 #include "myDefines.h"
+#include "GUI.h"
 #define offset_x  20
 #define offset_y  20
 
