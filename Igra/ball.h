@@ -4,7 +4,7 @@
 #include "ILI9341_STM32.h"
 #include "maze.h"
 #include "myDefines.h"
-#include "SparkFunLSM6DSO.h"
+#include "SparkFunLSM6DS3.h"
 
 class Ball // klasa Ball nasljeÄ‘uje od klase Maze sve ono Ĺˇto je pod public
 {
@@ -13,7 +13,7 @@ public:
     // Ball(ToScreenfunc func); // konstruktor, mora biti public, defaultni konstruktor
     void updateScreen();
     void firstBallposition(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab);
-    void updateBallposition(Adafruit_ILI9341 &lcd, LSM6DSO myIMU); // funkcija pomoÄ‡u koje se oÄŤitava pozicija kuglice koja se miÄŤe po displayu
+    void updateBallposition(Adafruit_ILI9341 &lcd, LSM6DS3 myIMU); // funkcija pomoÄ‡u koje se oÄŤitava pozicija kuglice koja se miÄŤe po displayu
     uint8_t checkColision(myMaze_t *_currentLab);                  // funkcija koja provjerava da li se dogodila kolizija izmeÄ‘u linije i kuglice
     uint8_t checkExit(myMaze_t *_currentLab);                      // funkcija koja provjerava da li je kuglica dotaknula liniju koja oznaÄŤava izlazak iz labirinta
     // void loadMaze(const myline_t *_ol, int *_br); //funkcija pomoÄ‡u koje se uÄŤitava labirint u igricu

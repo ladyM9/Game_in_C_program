@@ -2,7 +2,7 @@
 #include "screen.h"
 #include "maze.h"
 #include "lab.h"
-#include "SparkFunLSM6DSO.h"
+#include "SparkFunLSM6DS3.h"
 
 Ball::Ball(void (*_callBack)())
 {
@@ -24,7 +24,7 @@ void Ball::updateScreen()
   requestForCallback();
 }
 
-void Ball::updateBallposition(Adafruit_ILI9341 &lcd, LSM6DSO myIMU)
+void Ball::updateBallposition(Adafruit_ILI9341 &lcd, LSM6DS3 myIMU)
 {
   //varijable za akceleraciju kuglice
   float rawX =  myIMU.readFloatAccelX();
@@ -44,7 +44,8 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd, LSM6DSO myIMU)
 
   xCurrent += velX;
   yCurrent += velY;
-  Serial.printf("X: %.2f, Y: %.2f , velX: %.2f, velY: %.2f\r\n", xCurrent,yCurrent,velX, velY);
+  Serial.printf("X: %.2f, Y: %.2f \r\n", rawX, rawY);
+  //Serial.printf("X: %.2f, Y: %.2f , velX: %.2f, velY: %.2f\r\n", xCurrent,yCurrent,velX, velY);
   
 
   lcd.fillCircle(xCurrent, yCurrent, R, _color); // ispisivanje kuglice na poetnoj poziciji, tu mora pisat ovo( NEPREMJEĹ TAJ INAÄ†E SE NEÄ†E ISPISAT NA DISPLAY)
@@ -63,30 +64,30 @@ uint8_t Ball::checkColision(myMaze_t *_currentLab) // metoda koja radi provjeru 
     int _x = m[i].x0 >= m[i].x1 ? m[i].x1 : m[i].x0;           // ovo si prije radila u void loop petlji sa ispitivanjem if (col %ss 1) i ( col % 2)
     int _y = (m[i].y0 + offset_y) >= (m[i].y1 + offset_y) ? (m[i].y1 + offset_y) : (m[i].y0 + offset_y);
 
-    if ((_w != 0) && (X >= _x) && (X < (_x + _w))) // ispitivanje da li se dogodila kolizija na x osi
+    if ((_w != 0) && (xCurrent >= _x) && (xCurrent < (_x + _w))) // ispitivanje da li se dogodila kolizija na x osi
     {
-      if (((yCurrent >= _y) && (Y <= _y)) || (yCurrent <= _y) && (Y >= _y))
+      if (((Y >= _y) && (yCurrent <= _y)) || (Y <= _y) && (yCurrent >= _y))
       {
         _cd |= 1;
         score = true; // ako se dogodila kolizija po x osi zastavicu score stavi na true
       }
     }
 
-    if ((_h != 0) && (Y >= _y) && (Y < (_y + _h))) // ispitivanje da li se dogodila kolizija na y osi
+    if ((_h != 0) && (yCurrent >= _y) && (yCurrent < (_y + _h))) // ispitivanje da li se dogodila kolizija na y osi
     {
-      if (((xCurrent >= _x) && (X <= _x)) || ((xCurrent <= _x) && (X >= _x)))
+      if (((X >= _x) && (xCurrent <= _x)) || ((X <= _x) && (xCurrent >= _x)))
       {
         _cd |= 2;
         score = true;
       }
     }
-    if (X <= 0)
+    if (xCurrent <= 0)
       _cd |= 1;
-    if (Y <= 0)
+    if (yCurrent <= 0)
       _cd |= 2;
-    if (Y <= 20)
+    if (yCurrent <= 20)
       _cd |= 2;
-    if ((Y <= 20) && (X >= 319))
+    if ((yCurrent <= 20) && (xCurrent >= 319))
       _cd |= 1;
   }
 

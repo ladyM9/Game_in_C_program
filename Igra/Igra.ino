@@ -1,6 +1,6 @@
 #include "Adafruit_GFX.h"
 #include "ILI9341_STM32.h"
-#include "SparkFunLSM6DSO.h"
+#include "SparkFunLSM6DS3.h"
 #include "Wire.h"
 #include "myDefines.h"
 #include "ball.h"
@@ -13,7 +13,7 @@
 #define TFT_DC 9
 #define TFT_CS 10
 Adafruit_ILI9341 display = Adafruit_ILI9341(TFT_CS, TFT_DC);
-LSM6DSO myIMU; // Default constructor is I2C, addr 0x6B
+LSM6DS3 myIMU(I2C_MODE, 0x6B); // Default constructor is I2C, addr 0x6B
 
 Screen screen(&display);         // objekt klase Screen
 Ball ball(&LCDforScreenRefresh); // objekt klase Ball
@@ -35,15 +35,22 @@ void setup()
     pinMode(A1, INPUT);
     pinMode(D8, INPUT_PULLUP);
     pinMode(USER_BTN, INPUT);
-    Wire.setSCL(PB8);
-    Wire.setSDA(PB9);
+    Wire.setSCL(D15);
+    Wire.setSDA(D14);
     maze.initializeRNG(&hrng);
     display.begin();
     Wire.begin();
     display.setRotation(1); // rotiraj display
     Serial.begin(115200);
     myIMU.begin();
-    myIMU.initialize(BASIC_SETTINGS);
+    //myIMU.settings.accelRange = 4;         // Max G force readable.  Can be: 2, 4, 8, 16
+    //myIMU.settings.accelSampleRate = 104;   // Hz.  Can be: 13, 26, 52, 104, 208, 416, 833, 1666, 3332, 6664, 13330
+    //myIMU.settings.accelBandWidth = 50;    // Hz.  Can be: 50, 100, 200, 400;
+
+    myIMU.settings.commMode = 0;
+
+
+    // myIMU.initialize(BASIC_SETTINGS);
 
     // Forsiraj da kod misli da je partija igrice pobjeđena da bi se učitao novi random maze.
     // state = 1;
