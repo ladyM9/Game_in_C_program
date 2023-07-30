@@ -16,7 +16,7 @@ public:
 
 private:
     int16_t X, Y, W, H, r;
-    int xp, yp;
+    int xp = 150, yp = 150;
     int xc, yc;
     float rp;
     void (*request)();

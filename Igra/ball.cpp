@@ -13,8 +13,7 @@ void Ball::firstBallposition(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab) // me
 {
   xCurrent = _currentLab->startPosX; // pocetna pozicija kuglice tj objekta na X osi
   yCurrent = _currentLab->startPosY + offset_y;
-  Y = yCurrent;
-  X = xCurrent;
+
   _color = ILI9341_BLUE;
   R = 2.5; // polumjer kuglice tj objekta
   lcd.fillCircle(xCurrent, yCurrent + offset_y, R, _color);
@@ -26,30 +25,36 @@ void Ball::updateScreen()
 
 void Ball::updateBallposition(Adafruit_ILI9341 &lcd, LSM6DS3 myIMU)
 {
-  //varijable za akceleraciju kuglice
-  float rawX =  myIMU.readFloatAccelX();
-  float rawY =  myIMU.readFloatAccelY();
+  // varijable za akceleraciju kuglice
+  float rawX = myIMU.readFloatAccelX();
+  float rawY = myIMU.readFloatAccelY();
 
-  //Serial.printf("Raw x: %d, Raw y: %d\r\n", rawX, rawY);
-  //int rawX = 1023 - analogRead(A1); // citanje analogne vrijednosti trenutno sa joysticka
-  //int rawY = 1023 - analogRead(A0);
+  // Serial.printf("Raw x: %d, Raw y: %d\r\n", rawX, rawY);
+  // int rawX = 1023 - analogRead(A1); // citanje analogne vrijednosti trenutno sa joysticka
+  // int rawY = 1023 - analogRead(A0);
   velX += rawX;
   velY += rawY;
-  //xCurrent = X;
-  //yCurrent = Y;
-  if(velX > 0.5) velX = 0.5;
-  if(velY > 0.5) velY = 0.5;
-  if (velX < -0.5) velX = -0.5;
-  if (velY < -0.5) velY = -0.5;
+  // xCurrent = X;
+  // yCurrent = Y;
+  if (velX > 0.7)
+    velX = 0.7;
+  if (velY > 0.7)
+    velY = 0.7;
+  if (velX < -0.7)
+    velX = -0.7;
+  if (velY < -0.7)
+    velY = -0.7;
+  X = xCurrent;
+  Y = yCurrent;
 
   xCurrent += velX;
   yCurrent += velY;
+
   Serial.printf("X: %.2f, Y: %.2f \r\n", rawX, rawY);
-  //Serial.printf("X: %.2f, Y: %.2f , velX: %.2f, velY: %.2f\r\n", xCurrent,yCurrent,velX, velY);
-  
+  // Serial.printf("X: %.2f, Y: %.2f , velX: %.2f, velY: %.2f\r\n", xCurrent,yCurrent,velX, velY);
 
   lcd.fillCircle(xCurrent, yCurrent, R, _color); // ispisivanje kuglice na poetnoj poziciji, tu mora pisat ovo( NEPREMJEĹ TAJ INAÄ†E SE NEÄ†E ISPISAT NA DISPLAY)
-  updateScreen();                  // pozivanje funkcije za update screena koja nam omogucava da kad mi pomocu joysticka pomicemo kuglicu da tu kuglicu iscrtava na jednoj pozicije a brise na prosloj poziciji
+  updateScreen();                                // pozivanje funkcije za update screena koja nam omogucava da kad mi pomocu joysticka pomicemo kuglicu da tu kuglicu iscrtava na jednoj pozicije a brise na prosloj poziciji
 }
 
 uint8_t Ball::checkColision(myMaze_t *_currentLab) // metoda koja radi provjeru da li se dogodila kolizija izmedu kuglice i linije u pojedinom labirintu, *_currentlab je pokazivac na lab
@@ -87,6 +92,7 @@ uint8_t Ball::checkColision(myMaze_t *_currentLab) // metoda koja radi provjeru 
       _cd |= 2;
     if (yCurrent <= 20)
       _cd |= 2;
+
     if ((yCurrent <= 20) && (xCurrent >= 319))
       _cd |= 1;
   }
@@ -118,8 +124,8 @@ uint8_t Ball::checkExit(myMaze_t *_currentLab) // metoda pomocu koje se provjera
 
 void Ball::newBallposition(Adafruit_ILI9341 &lcd) // pomocu ove metode kad se dogodi kolizija kuglice i linije kuglica ce se vratiti na staru poziciju prije nego sto je dotaknila liniju
 {
-  X = xCurrent; // nova pozicija kuglice po x osi ako je kuglica dotaknila liniju, kuglicu vrati na proslu poziciju po x osi
-  Y = yCurrent; // //nova pozicija kuglice po y osi ako je kuglica dotaknila liniju, kuglicu vrati na proslu poziciju po y osi
+  xCurrent = X; // nova pozicija kuglice po x osi ako je kuglica dotaknila liniju, kuglicu vrati na proslu poziciju po x osi
+  yCurrent = Y; // //nova pozicija kuglice po y osi ako je kuglica dotaknila liniju, kuglicu vrati na proslu poziciju po y osi
 }
 void Ball::exitLine(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab) // metoda pomocu koje iscrtavam izlaznu liniju u pojedinom labirintu na display
 {

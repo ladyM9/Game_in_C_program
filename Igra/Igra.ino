@@ -43,15 +43,6 @@ void setup()
     display.setRotation(1); // rotiraj display
     Serial.begin(115200);
     myIMU.begin();
-    //myIMU.settings.accelRange = 4;         // Max G force readable.  Can be: 2, 4, 8, 16
-    //myIMU.settings.accelSampleRate = 104;   // Hz.  Can be: 13, 26, 52, 104, 208, 416, 833, 1666, 3332, 6664, 13330
-    //myIMU.settings.accelBandWidth = 50;    // Hz.  Can be: 50, 100, 200, 400;
-
-    myIMU.settings.commMode = 0;
-
-
-    // myIMU.initialize(BASIC_SETTINGS);
-
     // Forsiraj da kod misli da je partija igrice pobjeđena da bi se učitao novi random maze.
     // state = 1;
 }
@@ -65,14 +56,16 @@ void loop()
     {
         int x;
         int y;
-        button.cursor(display, 1);                                              // prikaz kurzora u izborniku za tezinu odabrane igrice
+        button.cursor(display, 1);                                             // prikaz kurzora u izborniku za tezinu odabrane igrice
         if (button.myButton(display, x, y, 20, 20, 100, 50, 3, "Easy", 1) == 1) // ako je kliknuta tipka za easy tezinu igrice odi na state 2
         {
             state = 2;
+            //choose = 1;
         }
         if (button.myButton(display, x, y, 150, 20, 120, 50, 3, "Medium", 1) == 1)
         {
             state = 2;
+            //choose = 2;
         }
 
         break;
@@ -93,7 +86,7 @@ void loop()
 
     case 2:
     {
-        maze.LoadNewMaze(maze.getRandomMaze(&hrng));            // ucitaj novi random labirint
+        maze.LoadNewMaze(maze.getRandomMaze(&hrng, display));            // ucitaj novi random labirint
         ball.firstBallposition(display, maze.getCurrentMaze()); // iscrtaj kuglicu na pocetnoj poziciji u odabranom labirintu
         Time = (millis() / 1000);                               // millis podjeli sa 1000 kako bi dobila odbrojavanje vremena u sekundama
         state = 1;                                              // odi na state 1 kako bi se odabrani random labirint iscrtao na display
@@ -131,7 +124,7 @@ void GameLoop()
     if ((ball.checkColision(maze.getCurrentMaze()) != 0)) // ako je kuglica dotaknila liniju u labirintu
     {
         ball.newBallposition(display); // kuglicu stavi na poziciju u kojoj je bila prije nego što je dotaknila liniju u labirintu
-        // Serial.printf("Detection collision");
+        Serial.print("Detection collision");
     }
     ball.Score(display); // poziv metode za ispis i pracenje scora u igrici
 }

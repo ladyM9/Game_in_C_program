@@ -16,7 +16,6 @@ int Button::myButton(Adafruit_ILI9341 &lcd, int _xcur, int _ycur, int x, int y, 
 
     if ((xp > x) && (xp < (w + x)) && (yp > y) && (yp < (h + y)) && (pushb == false)) // ako je kursor postavljen na tipku i ako je pushb pritisnut
         push_button = 1;                                                              // push_button je true odnosno tipka na displayu je pritisnuta
-    
 
     if (draw) // varijabla draw označava to da li će se tipka prikazati na display-u ili ne, dakle ako je istina onda će se prikazati
     {
@@ -38,30 +37,47 @@ int Button::myButton(Adafruit_ILI9341 &lcd, int _xcur, int _ycur, int x, int y, 
 
 void Button::cursor(Adafruit_ILI9341 &lcd, int draw_cursor) // metoda pomocu koje se pomice i ispisuje kursor u prozoru za odabir tezine igrice na display
 {
-
+    int x1 = 0;
+    int x2 = 319;
+    int y1 = 0;
+    int y2 = 239;
+    int width1 = abs(x1 - x2);
+    int he = abs(y1 - y2);
     if (draw_cursor) // ako je zastavica draw_cursor postavljena na true( sto znaci da se se kursor ispisati na zaslon)
     {
         int rawX = 1023 - analogRead(A0); // ocitavaj x os
         int rawY = 1023 - analogRead(A1); // ocitavaj y os
         xp += (511 - rawX) / 100;
         yp += (511 - rawY) / 100;
-
-    if(xp < 0)
-    {
-      xp-=1;
-      yp -=1;
-    }
+        if ((xp > x1) && (xp < (width1 + x1)) && (yp < y1))
+        {
+            xp = 150;
+            yp = 150;
+        }
+        if ((yp > y1) && (yp < (he + y1)) && (xp < 0))
+        {
+            xp = 150;
+            yp = 150;
+        }
+        if ((xp > x1) && (xp < (width1 + x1)) && (yp > y2))
+        {
+            xp = 150;
+            yp = 150;
+           
+        }
+        if ((yp > y1) && (yp < (he + y1)) && (xp > x2))
+        {
+            xp = 150;
+            yp = 150;
+           
+        }
 
         updateFirstScreen();                                                  // updetaj screen odnosno konstatno ispisuj kursor na novoj poziciji a brisi na staroj
         lcd.fillTriangle(xp, yp, xp + 20, yp - 5, xp, yp + 10, ILI9341_BLUE); // iscrtavanje kursora na display( nas kursor je u obliku trokuta)
     }
-
 }
-
 
 void Button::updateFirstScreen() // metoda pomocu koje pozivam metodu za request odnosno refresh zaslona
 {
     request();
 }
-
-
