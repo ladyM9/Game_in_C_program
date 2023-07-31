@@ -2,7 +2,10 @@
 #include "screen.h"
 #include "maze.h"
 #include "lab.h"
+#include "icons.h"
 #include "SparkFunLSM6DS3.h"
+#include "Adafruit_GFX.h"
+#include "ILI9341_STM32.h"
 
 Ball::Ball(void (*_callBack)())
 {
@@ -36,14 +39,14 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd, LSM6DS3 myIMU)
   velY += rawY;
   // xCurrent = X;
   // yCurrent = Y;
-  if (velX > 0.7)
-    velX = 0.7;
-  if (velY > 0.7)
-    velY = 0.7;
-  if (velX < -0.7)
-    velX = -0.7;
-  if (velY < -0.7)
-    velY = -0.7;
+  if (velX > 1)
+    velX = 1;
+  if (velY > 1)
+    velY = 1;
+  if (velX < -1)
+    velX = -1;
+  if (velY < -1)
+    velY = -1;
   X = xCurrent;
   Y = yCurrent;
 
@@ -130,8 +133,15 @@ void Ball::newBallposition(Adafruit_ILI9341 &lcd) // pomocu ove metode kad se do
 void Ball::exitLine(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab) // metoda pomocu koje iscrtavam izlaznu liniju u pojedinom labirintu na display
 {
   e = _currentLab->endLine; // udi u podatak u pojedinom labirintu i dohvati poziciju izlazne linije iz tog labirinta
-
-  lcd.drawLine(e.x0, e.y0 + offset_y, e.x1, e.y1 + offset_y, ILI9341_MAGENTA); // ovako ako ne napises labirint ti se neÄ‡e prikazati na zaslonu!!!!!
+  if(_currentLab->numberOfLines < 70)
+  
+{  
+  lcd.drawLine(e.x0 - 4, e.y0 + offset_y, e.x1 + 4, e.y1 + offset_y, ILI9341_MAGENTA); // ovako ako ne napises labirint ti se neÄ‡e prikazati na zaslonu!!!!!
+}
+else
+{
+  lcd.drawLine(e.x0 , e.y0 + offset_y, e.x1 , e.y1 + offset_y, ILI9341_MAGENTA); // ovako ako ne napises labirint ti se neÄ‡e prikazati na zaslonu!!!!!
+}
 }
 
 void Ball::Time(Adafruit_ILI9341 &lcd, unsigned long A) // metoda pomocu koje ispisujem vrijeme u igrici na zaslon
@@ -185,3 +195,23 @@ void Ball::ukupni_Bodovi(Adafruit_ILI9341 &lcd)
   lcd.setTextColor(ILI9341_NAVY);
   lcd.printf("\n Score in game: %2ld", bodovi_igra);
 }
+
+void Ball::win_Screen(Adafruit_ILI9341 &lcd)
+{
+  lcd.setCursor(100, 80);
+  lcd.setTextSize(3);
+  lcd.setTextColor(ILI9341_MAGENTA);
+  lcd.print("YOU WIN!");
+
+
+  updateScreen();
+}
+
+void Ball::bod(Adafruit_ILI9341 &lcd)
+{
+	lcd.setRotation(1);
+  lcd.drawBitmap(10, 30 , epd_bitmap_Jagoda_za_igricu, 19 ,20, ILI9341_WHITE);
+  updateScreen();
+}
+
+

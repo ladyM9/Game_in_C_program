@@ -85,12 +85,11 @@ void Maze::LoadNewMaze(myMaze_t *_m)
     _currentMaze = _m;
 }
 
-myMaze_t *Maze::getRandomMaze(RNG_HandleTypeDef *_hrng)
+myMaze_t *Maze::getRandomMaze(RNG_HandleTypeDef *_hrng, int tezina)
 {
     int choose;
-    scanf("%d", choose);
     int r;
-    switch (choose)
+    switch (tezina)
     {
     case 1:
 
@@ -99,6 +98,7 @@ myMaze_t *Maze::getRandomMaze(RNG_HandleTypeDef *_hrng)
             r = getNumber(_hrng, 0, sizeof(mazes_easy) / sizeof(myMaze_t *));
         } while (lastRandomNumber == r);
         lastRandomNumber = r;
+        tezina = 1;
         return mazes_easy[r];
         break;
 
@@ -108,6 +108,7 @@ myMaze_t *Maze::getRandomMaze(RNG_HandleTypeDef *_hrng)
             r = getNumber(_hrng, 0, sizeof(mazes_medium) / sizeof(myMaze_t *));
         } while (lastRandomNumber == r);
         lastRandomNumber = r;
+        tezina = 2;
         return mazes_medium[r];
         break;
     }

@@ -23,6 +23,8 @@ public:
     void Score(Adafruit_ILI9341 &lcd);
     void score_Game(Adafruit_ILI9341 &lcd);
     void ukupni_Bodovi(Adafruit_ILI9341 &lcd);
+    void win_Screen(Adafruit_ILI9341 &lcd);
+    void bod(Adafruit_ILI9341 &lcd);
 
 private: // kad su varijable private tu im ne dajeĹˇ vrijednost
     float X, velX;

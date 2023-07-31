@@ -22,7 +22,7 @@ public:
     void initializeRNG(RNG_HandleTypeDef *_hrng);
     int getNumber(RNG_HandleTypeDef *_hrng, int min, int max);
     void LoadNewMaze(myMaze_t *_m);
-    myMaze_t *getRandomMaze(RNG_HandleTypeDef *_hrng, Adafruit_ILI9341 &lcd);
+    myMaze_t *getRandomMaze(RNG_HandleTypeDef *_hrng, int tezina);
     myMaze_t *getCurrentMaze();
     void choosingaMaze(Adafruit_ILI9341 &lcd);
 
