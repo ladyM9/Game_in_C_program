@@ -47,12 +47,14 @@ def parse_svg(fobj_in, displayw, displayh): #displayw i displayh moraju biti arg
 
     return lista, W, scaleX, scaleY
 
-def search_str(fobj_in): #Funkcija pomoću koje se traži pobjednicki put, odnosno startna pozicija u labirintu i pozicija koja oznacava izlaz iz labirinta
+def search_str(fobj_in, lista, scaleX, scaleY): #Funkcija pomoću koje se traži pobjednicki put, odnosno startna pozicija u labirintu i pozicija koja oznacava izlaz iz labirinta
     inFile = open(str(fobj_in), 'r')
     oneLine = inFile.readline()
     
     lista_en = []
-    lista = []
+    e = []
+    d = []
+    
     while (len(oneLine) != 0):
         
         
@@ -81,21 +83,38 @@ def search_str(fobj_in): #Funkcija pomoću koje se traži pobjednicki put, odnos
     startY = firstpos[1]
     print(startX)
     print(startY)
+
+
     exitpos = parse("{},{}", lista_en[0][-2]) #zadnjna tocka u labirintu, ujedno i exitLine
     print(exitpos)
     exitX = exitpos[0]
     exitY = exitpos[1]
-    exitX1 = (int(exitX) + 2) #rastavljanje na exitX1 i exitX2 jer nama treba linija a ne samo jedna točka odnosno pozicija, pa sam morala pravit liniju
-    exitX2 = (int(exitX) - 2)
+
     exitB = exitY
 
+    for i in range(0,2,1):
+            e.append(list(lista[i])) #uzmi prve dvije linije iz liste i spremi ih u listu e
 
-
+    print(e)
+    de = e[0][2]  #u varijablu de spremi x2 od prve linije iz labirinta
+    de2 = e[1][0] #uvarijablu de2 spremi x1 od druge linije iz labirinta
+    
+    print(de)
+    print(de2)
+    duljina = int(de2) - int(de) #oduzmi x1 od druge linije od x2 iz prve linije, tako ces dobit razmak izmedu dvije linije u labirintu odnosno duljinu exit linije
+    print(duljina)
+    du = duljina/2 #podjeli taj razmak sa 2, to radis jer ti imas u pocetku od exit linije samo jednu tocku, i onda toj tocki dodajes taj razmak/2 odnosno oduzimas
+    exitX1 = (int(exitX) + du) #exit tocki koja je na polovini razmaka dodaj polovicu razmaka
+    exitX2 = (int(exitX) - du) #exit tocki koja je na polovini razmaka oduzmi polovicu razmaka
+    print(exitX1)
+    print(exitX2)
+    
+            
     inFile.close()
 
-    return startX, startY, exitX1, exitY, exitX2, exitB
+    return startX, startY, exitX1, exitY, exitX2, exitB, duljina
 
-def save_h(outFile, lista, scaleX, scaleY, startX, startY,exitX2, exitY, exitX1, exitB ): #funkcija pomocu koje upisujemo parsirani labirint u h file
+def save_h(outFile, lista, scaleX, scaleY, startX, startY,exitX2, exitY, exitX1, exitB, duljina ): #funkcija pomocu koje upisujemo parsirani labirint u h file
     
     NameMaze = input("Upisi naziv labirinta: ")
     NameDate = input("Upisi naziv podatka ")
@@ -118,7 +137,7 @@ def save_h(outFile, lista, scaleX, scaleY, startX, startY,exitX2, exitY, exitX1,
     outFile.write(f"(myline_t*){NameMaze} " + ",")
     outFile.write("{} , {} ".format(int(float(startX)/scaleX), int(float(startY)/scaleY))) #upis startne pozicije u h file
     outFile.write(" , {")
-    outFile.write("{}, {}, {}, {} ".format(int((float(exitX1)/ scaleX)-5) ,int(float(exitY)/scaleY), int((float(exitX2)/ scaleX)+6), int(float(exitB)/scaleY))) #upis zadnje linije u h file
+    outFile.write("{}, {}, {}, {} ".format(int((float(exitX1)/scaleX)) ,int(float(exitY)/scaleY), int((float(exitX2)/ scaleX)), int(float(exitB)/scaleY))) #upis zadnje linije u h file
     outFile.write("},")
     outFile.write(f"sizeof({NameMaze}) / sizeof(myline_t)" + "}" + ";")
     outFile.write("\n")
@@ -134,7 +153,7 @@ def headerguide(outFile):
 def main():
 
     displayw = 319
-    displayh = 239
+    displayh = 219
     numberMaze = int(input("Upisi koliko zelis imati labirinteva "))
     fobj_out = input("Upisi gdje zelis da ti se spremi skalirani labirint ")
     outFile = open(fobj_out, 'w') 
@@ -146,9 +165,9 @@ def main():
     for i in range(0, numberMaze):
         
         fobj_in = input("Upisi svg file ") #u ovom fileu su tvoji labirintevi dakle taj file ČITAŠ
-        lista,W, scaleX, scaleY = parse_svg(fobj_in, displayw, displayh)
-        startX, startY, exitX1, exitY, exitX2, exitB = search_str(fobj_in)
-        save_h(outFile, lista, scaleX, scaleY, startX, startY, exitX1, exitY, exitX2, exitB)
+        lista, W, scaleX, scaleY = parse_svg(fobj_in, displayw, displayh)
+        startX, startY, exitX1, exitY, exitX2, exitB, duljina = search_str(fobj_in, lista, scaleX, scaleY)
+        save_h(outFile, lista, scaleX, scaleY, startX, startY, exitX1, exitY, exitX2, exitB, duljina)
     outFile.write("#endif")
     outFile.close()
     
@@ -158,6 +177,5 @@ if __name__ == "__main__":
     
 
 ##credits by Borna Biro
-
 
 
