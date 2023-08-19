@@ -5,9 +5,13 @@
 #include "myDefines.h"
 #include "ball.h"
 #include "screen.h"
+#include "paddle.h"
+#include "paddleLines.h"
 #include "maze.h"
 #include "GUI.h"
 #include "lab.h"
+#include "icons.h"
+
 
 // #include "GUI.h"
 #define TFT_DC 9
@@ -19,7 +23,11 @@ Screen screen(&display);         // objekt klase Screen
 Ball ball(&LCDforScreenRefresh); // objekt klase Ball
 Button button(&LCDforScreenRefresh);
 Maze maze; // objekt klase Maze
+Pong pong(&LCDforScreenRefresh);
 RNG_HandleTypeDef hrng = {0};
+
+
+
 
 unsigned long Time = 0;
 unsigned long Times = 0;
@@ -27,8 +35,12 @@ unsigned long TIMER_CHANGE_INTERVAL = 50000;
 unsigned long millis();
 
 int state = 0;
-int tezina;
 int brojanje_exit = 0;
+
+myPaddle_t1 paddle_el[] = {5,5,5,50};
+myPaddle_t2 paddle_el2[] = {315,95,5,50};
+myPaddle_t1 *padle1[] = {paddle_el};
+myPaddle_t2 *padle2[] = {paddle_el2};
 
 void setup()
 {
@@ -58,25 +70,56 @@ void loop()
     {
         int x;
         int y;
-        
-        button.cursor(display, 1);                                             // prikaz kurzora u izborniku za tezinu odabrane igrice
-        if (button.myButton(display, x, y, 20, 20, 100, 50, 3, "Easy", 1) == 1) // ako je kliknuta tipka za easy tezinu igrice odi na state 2
+        button.cursor(display, 1);
+        if (button.myButton(display, x, y, 150, 150, 100, 50, 3, "START", 1) == 1)
         {
-            tezina = 1;
-            state = 2;
-            
-            
+            state = 1;
         }
-        if (button.myButton(display, x, y, 150, 20, 120, 50, 3, "Medium", 1) == 1)
+        break;
+    }
+    case 1:
+    {
+        int x;
+        int y;
+        button.cursor(display, 1);
+        if (button.myButton(display, x, y, 20, 90, 100, 50, 3, "Game1", 1) == 1)
         {
-            tezina = 2;
             state = 2;
-            
+        }
+        if (button.myButton(display, x, y, 160, 90, 100, 50, 3, "Game2", 1) == 1)
+        {
+            state = 8;
         }
 
         break;
     }
-    case 1:
+    case 2:
+    {
+        int x;
+        int y;
+        int mod1 = 0;
+        int mod2 = 1;
+        int mod3 = 2;
+        button.cursor(display, 1);                                              // prikaz kurzora u izborniku za tezinu odabrane igrice
+        if (button.myButton(display, x, y, 20, 20, 100, 50, 3, "Easy", 1) == 1) // ako je kliknuta tipka za easy tezinu igrice odi na state 2
+        {
+            mod1 = maze.choosing_Mode_Game(0);
+            state = 4;
+        }
+        if (button.myButton(display, x, y, 150, 20, 120, 50, 3, "Medium", 1) == 1)
+        {
+            mod2 = maze.choosing_Mode_Game(1);
+            state = 4;
+        }
+        if (button.myButton(display, x, y, 100, 100, 120, 50, 3, "Hard", 1) == 1)
+        {
+            mod3 = maze.choosing_Mode_Game(2);
+            state = 4;
+        }
+
+        break;
+    }
+    case 3:
 
     {
         maze.drawLines(display); // iscrtaj labirint na display
@@ -85,51 +128,66 @@ void loop()
         if (ball.checkExit(maze.getCurrentMaze()) == true) // ako se kuglica nalazi na izlaznoj liniji iz labirinta odi na state
         {
             brojanje_exit += 1;
-            state = 3;
+            state = 5;
         }
 
         break;
     }
 
-    case 2:
+    case 4:
     {
-        maze.LoadNewMaze(maze.getRandomMaze(&hrng, tezina));            // ucitaj novi random labirint
+        maze.LoadNewMaze(maze.getRandomMaze(&hrng));            // ucitaj novi random labirint
         ball.firstBallposition(display, maze.getCurrentMaze()); // iscrtaj kuglicu na pocetnoj poziciji u odabranom labirintu
         Time = (millis() / 1000);                               // millis podjeli sa 1000 kako bi dobila odbrojavanje vremena u sekundama
-        state = 1;                                              // odi na state 1 kako bi se odabrani random labirint iscrtao na display
+        state = 3;                                              // odi na state 1 kako bi se odabrani random labirint iscrtao na display
         break;
     }
 
-    case 3:
+    case 5:
     {
         Times = (millis() / 1000);
-        state = 4;
+        state = 6;
 
         break;
     }
-    case 4:
+    case 6:
 
     {
         ball.score_Game(display);
-        if(brojanje_exit >= 4)
+        if (brojanje_exit >= 4)
         {
-            state = 5;
+            state = 7;
         }
         if (Time_Score() == true)
         {
-            state = 2;
+            state = 4;
         }
 
         break;
     }
-    case 5:
+    case 7:
     {
         ball.win_Screen(display);
         if (Time_Score() == true)
         {
-            state = 0;
+            state = 2;
         }
     }
+    case 8:
+    {
+        pong.paddle1(display, padle1[0]);
+        pong.paddle2(display, padle2[0]);
+       // pong.movePaddle1(display, myIMU);
+        
+      //  Times = (millis() / 1000);
+        state = 9;
+        break;
+    }
+    case 9:
+    {
+        Game2();
+    }
+    
     }
 
     screen.checkForRefresh();
@@ -137,15 +195,25 @@ void loop()
 
 void GameLoop()
 {
-    ball.bod(display);
+    int n, m;
+    ball.bod(display, 1, 10, 30);
+    ball.collision_bod(n, m);
     ball.updateBallposition(display, myIMU);              // stalno iscrtavaj novu poziciju kuglice kako se ona pomice pomocu akceleometra
     ball.exitLine(display, maze.getCurrentMaze());        // iscrtaj na display izlaznu liniju u odabranom labirintu
     if ((ball.checkColision(maze.getCurrentMaze()) != 0)) // ako je kuglica dotaknila liniju u labirintu
     {
         ball.newBallposition(display); // kuglicu stavi na poziciju u kojoj je bila prije nego što je dotaknila liniju u labirintu
-        Serial.print("Detection collision");
+        // erial.print("Detection collision");
     }
     ball.Score(display); // poziv metode za ispis i pracenje scora u igrici
+}
+
+void Game2()
+{
+    pong.movePaddle1(display,myIMU);
+    pong.movePaddle2(display);
+    pong.moveBall(display);
+
 }
 
 void Time_Game()
