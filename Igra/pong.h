@@ -1,5 +1,5 @@
-#ifndef __PADDLE_H__
-#define __PADDLE_H__
+#ifndef __PONG_H__
+#define __PONG_H__
 
 #include "ILI9341_STM32.h"
 #include "Arduino.h"

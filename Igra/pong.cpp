@@ -33,7 +33,7 @@ void Pong::movePaddle1(Adafruit_ILI9341 &lcd, LSM6DS3 myIMU, myPaddle_t1 *p1) //
 
     float rawX = myIMU.readFloatAccelX();
     float rawY = myIMU.readFloatAccelY();
-    Serial.printf("%d", rawX);
+ 
 
 
     brzinax = rawX * 5;
@@ -63,7 +63,7 @@ void Pong::movePaddle1(Adafruit_ILI9341 &lcd, LSM6DS3 myIMU, myPaddle_t1 *p1) //
     }
     // xPOMAK1 += brzinax;
 
-    p1->sy1 += brzinay;
+    p1->sy1 -= brzinay;
 
     lcd.fillRect(p1->sx1, p1->sy1, p1->w, p1->h, _colorpaddle);
 
@@ -148,6 +148,7 @@ uint8_t Pong::checkCollisionPaddle(myPaddle_t1 *p1, myPaddle_t2 *p2, my_ballPong
     }
 
     return collision;
+     collision = 0;
 }
 
 void Pong::newBallPosition(my_ballPong *b)

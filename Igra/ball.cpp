@@ -34,8 +34,7 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd, LSM6DS3 myIMU)
   lcd.setRotation(3);
   float rawX = myIMU.readFloatAccelX();   //citanje vrijednosti pozicije akcelerometra po x osi
   float rawY = myIMU.readFloatAccelY();     //citanje pozicije akcelerometra po y osi
-  Serial.begin(115200);
-  Serial.printf("\n %d X: ", rawX);
+
 
 
   velX = rawX * 5;
