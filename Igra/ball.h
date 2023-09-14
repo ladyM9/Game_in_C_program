@@ -6,25 +6,27 @@
 #include "myDefines.h"
 #include "SparkFunLSM6DS3.h"
 
-class Ball // klasa Ball nasljeÄ‘uje od klase Maze sve ono Ĺˇto je pod public
+class Ball
 {
 public:
     Ball(void (*_callBack)());
     // Ball(ToScreenfunc func); // konstruktor, mora biti public, defaultni konstruktor
-    void updateScreen();
-    void firstBallposition(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab);
-    void updateBallposition(Adafruit_ILI9341 &lcd, LSM6DS3 myIMU); // funkcija pomoÄ‡u koje se oÄŤitava pozicija kuglice koja se miÄŤe po displayu
-    uint8_t checkColision(myMaze_t *_currentLab);                  // funkcija koja provjerava da li se dogodila kolizija izmeÄ‘u linije i kuglice
-    uint8_t checkExit(myMaze_t *_currentLab);                      // funkcija koja provjerava da li je kuglica dotaknula liniju koja oznaÄŤava izlazak iz labirinta
+    void updateScreen();  //funkcija pomocu koje se nesto ispisuje na display, pomocu koje se celara desplay
+    void firstBallposition(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab); //pocetna pozicija kuglice u labirintu, odnosno kuglica je smjestena na pocetak labirinta
+    void updateBallposition(Adafruit_ILI9341 &lcd, LSM6DS3 myIMU); // funkcija pomocu koje se ocitava pozicija kuglice koja se krece po displayu pomocu akceleometra
+    uint8_t checkColision(Adafruit_ILI9341 &lcd,myMaze_t *_currentLab);                  // funkcija koja provjerava da li se dogodila kolizija izmedu linije u labirintu i kuglice
+    uint8_t checkExit(Adafruit_ILI9341 &lcd,myMaze_t *_currentLab);                      // funkcija koja provjerava da li je kuglica dotaknula liniju koja oznacava izlazak iz labirinta
     // void loadMaze(const myline_t *_ol, int *_br); //funkcija pomoÄ‡u koje se uÄŤitava labirint u igricu
-    void newBallposition(Adafruit_ILI9341 &lcd);                 // funkcija koja onemoguÄ‡ava da kuglica nakon Ĺˇto dotakne liniju da prijeÄ‘e preko te linije
+    void newBallposition(Adafruit_ILI9341 &lcd);                 // funkcija koja onemogucava da kuglica nakon sto dotakne liniju u labirintu ne prijede preko te linije 
     void exitLine(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab); // funkcija za iscrtavanje izlazne linije
-    void Time(Adafruit_ILI9341 &lcd, unsigned long A);           // funkcija za vrijeme u igrici
-    void Score(Adafruit_ILI9341 &lcd);
-    void score_Game(Adafruit_ILI9341 &lcd);
-    void ukupni_Bodovi(Adafruit_ILI9341 &lcd);
-    void win_Screen(Adafruit_ILI9341 &lcd);
-    void bod(Adafruit_ILI9341 &lcd);
+    void Time(Adafruit_ILI9341 &lcd, unsigned long time_game);           // funkcija za vrijeme u igrici
+    void Score(Adafruit_ILI9341 &lcd);                          //funkcija pomocu koje se ispisuje score u igrici i u kojoj se provjerava da li treba smanjiti bodove u igrici ili ne
+    void score_Game(Adafruit_ILI9341 &lcd);                     //funkcija koja se ispisuje nakon sto igrac prode kroz sve levele, odnosno ona pokazuje koliko korisnik ima jos zivota i koliko je skupio bodova
+    void ukupni_Bodovi(Adafruit_ILI9341 &lcd);                  
+    void win_Screen(Adafruit_ILI9341 &lcd);                     //funkcija koja se ispisuje ako je korisnik usojesno prosao kroz labirint          
+    void bod(Adafruit_ILI9341 &lcd, int draw, int Xb, int Yb);  //funkcija koja ispisuje slicicu koja oznacava dodatne bodove u igrici koje igrac moze skupiti
+    int collision_bod(int xc, int yc);                           //funkcija koja provjerava da li je igrac dodtaknio slicicu za bodove
+
 
 private: // kad su varijable private tu im ne dajeĹˇ vrijednost
     float X, velX;
@@ -32,6 +34,7 @@ private: // kad su varijable private tu im ne dajeĹˇ vrijednost
     float xCurrent;
     float yCurrent;
     float R;
+    int Xb, Yb;
     uint16_t _color;
     uint8_t score = false;
     uint8_t game_ov = false;

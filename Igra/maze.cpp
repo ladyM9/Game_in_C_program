@@ -1,13 +1,13 @@
 #include "maze.h"
 #include "GUI.h"
 
-
-myMaze_t *mazes_easy[] = {(myMaze_t *)&lab1, (myMaze_t *)&lab2, (myMaze_t *)&lab3, (myMaze_t *)&lab4};
+myMaze_t *mazes_easy[] = {(myMaze_t *)&lab2, (myMaze_t *)&lab1, (myMaze_t *)&lab3, (myMaze_t *)&lab4};
 myMaze_t *mazes_medium[] = {(myMaze_t *)&lab6, (myMaze_t *)&lab7, (myMaze_t *)&lab8, (myMaze_t *)&lab9};
+myMaze_t *mazes_hard[] = {(myMaze_t *)&lab11, (myMaze_t *)&lab12, (myMaze_t *)&lab13};
 
 Maze::Maze()
 {
-    color1 = ILI9341_ORANGE; //boja svakog labirinta
+    color1 = ILI9341_ORANGE; // boja svakog labirinta
 }
 
 void Maze::drawLines(Adafruit_ILI9341 &lcd) // metoda pomocu koje se iscrtavaju sve linije iz pojedinog labirinta na display
@@ -17,8 +17,10 @@ void Maze::drawLines(Adafruit_ILI9341 &lcd) // metoda pomocu koje se iscrtavaju 
 
     for (int i = 0; i < _currentMaze->numberOfLines; i++)
     {
-        lcd.drawLine(_currentMaze->labLines[i].x0 , _currentMaze->labLines[i].y0 + offset_y , _currentMaze->labLines[i].x1  , _currentMaze->labLines[i].y1 + offset_y, color1); // ovako ako ne napiĹˇeĹˇ labirint ti se neÄ‡e prikazati na zaslonu!!!!!
+        lcd.setRotation(3);
+        lcd.drawLine(_currentMaze->labLines[i].x0, _currentMaze->labLines[i].y0 + offset_y, _currentMaze->labLines[i].x1, _currentMaze->labLines[i].y1 + offset_y, color1); // ovako ako ne napiĹˇeĹˇ labirint ti se neÄ‡e prikazati na zaslonu!!!!!
     }
+    
 }
 
 void Maze::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t _c)
@@ -85,32 +87,58 @@ void Maze::LoadNewMaze(myMaze_t *_m)
     _currentMaze = _m;
 }
 
-myMaze_t *Maze::getRandomMaze(RNG_HandleTypeDef *_hrng, int tezina)
+int Maze::choosing_Mode_Game(int mode_g)
+{
+    if (mode_g == 0)
+    {
+        mode_game = 0;
+    }
+    if (mode_g == 1)
+    {
+        mode_game = 1;
+    }
+    if (mode_g == 2)
+    {
+        mode_game = 2;
+    }
+    
+    return mode_game;
+}
+
+myMaze_t *Maze::getRandomMaze(RNG_HandleTypeDef *_hrng)
 {
     int choose;
     int r;
-    switch (tezina)
+    if (mode_game == 0)
     {
-    case 1:
-
         do
         {
             r = getNumber(_hrng, 0, sizeof(mazes_easy) / sizeof(myMaze_t *));
         } while (lastRandomNumber == r);
         lastRandomNumber = r;
-        tezina = 1;
         return mazes_easy[r];
-        break;
-
-    case 2:
-        do
+    }
+    if (mode_game == 1)
+    {
         {
-            r = getNumber(_hrng, 0, sizeof(mazes_medium) / sizeof(myMaze_t *));
-        } while (lastRandomNumber == r);
-        lastRandomNumber = r;
-        tezina = 2;
-        return mazes_medium[r];
-        break;
+            do
+            {
+                r = getNumber(_hrng, 0, sizeof(mazes_medium) / sizeof(myMaze_t *));
+            } while (lastRandomNumber == r);
+            lastRandomNumber = r;
+            return mazes_medium[r];
+        }
+    }
+    if (mode_game == 2)
+    {
+        {
+            do
+            {
+                r = getNumber(_hrng, 0, sizeof(mazes_hard) / sizeof(myMaze_t *));
+            } while (lastRandomNumber == r);
+            lastRandomNumber = r;
+            return mazes_hard[r];
+        }
     }
 }
 

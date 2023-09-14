@@ -27,6 +27,29 @@ typedef struct myRect_t
     int16_t r;
 };
 
+typedef struct myPaddle_t1
+{
+    
+    int16_t sx1;
+    int16_t sy1;
+    int16_t w ;
+    int16_t h ;
 
+};
+
+typedef struct myPaddle_t2
+{
+    int16_t sx2;
+    int16_t sy2;
+    int16_t w;
+    int16_t h;
+};
+
+typedef struct my_ballPong
+{
+    int startBallx;
+    int startBally;
+    int r;
+};
 
 #endif

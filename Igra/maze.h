@@ -22,9 +22,10 @@ public:
     void initializeRNG(RNG_HandleTypeDef *_hrng);
     int getNumber(RNG_HandleTypeDef *_hrng, int min, int max);
     void LoadNewMaze(myMaze_t *_m);
-    myMaze_t *getRandomMaze(RNG_HandleTypeDef *_hrng, int tezina);
+    myMaze_t *getRandomMaze(RNG_HandleTypeDef *_hrng);
     myMaze_t *getCurrentMaze();
     void choosingaMaze(Adafruit_ILI9341 &lcd);
+    int choosing_Mode_Game(int mode_g);
 
     uint16_t color1;
     int16_t X0, Y0, X1, Y1;
@@ -32,9 +33,11 @@ public:
     int16_t BRel;
 
 private:
+    int mode_game;
+    int mode_g;
     int lastRandomNumber = 0;
     myMaze_t *_currentMaze;
-    myMaze_t *easyLab[50];
+    //myMaze_t *easyLab[50];
     int *b;
 };
 #endif
