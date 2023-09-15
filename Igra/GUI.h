@@ -12,6 +12,7 @@ public:
     Button(void (*_call)());
     void updateFirstScreen();
     int myButton(Adafruit_ILI9341 &lcd, int _xcur, int _ycur, int x, int y, int h, int w, int _textscale, char *mytext, int draw);
+    int back_Button(Adafruit_ILI9341 &lcd, int x, int y, int h, int w, int _textscale, char *mytext, int draw);
     void cursor(Adafruit_ILI9341 &lcd, int draw_cursor);
 
 private:

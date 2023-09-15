@@ -46,6 +46,7 @@ void setup()
     pinMode(D8, INPUT_PULLUP);
     pinMode(USER_BTN, INPUT);
     pinMode(D6, OUTPUT);
+    pinMode(D4, INPUT_PULLUP);
     digitalWrite(D6, HIGH);
     Wire.setSCL(D15);
     Wire.setSDA(D14);
@@ -61,8 +62,6 @@ void setup()
 
 void loop()
 {
-    
-    
 
     switch (state)
     {
@@ -84,7 +83,7 @@ void loop()
     }
     case 1:
     {
-       
+
         int x;
         int y;
 
@@ -140,9 +139,16 @@ void loop()
     {
         int x;
         int y;
-        button.myButton(display, x, y, 250, 0 , 20, 20, 1, "Back", 1);
+        if(button.back_Button(display,250,0,20,20,1, "Back",1 ) == true)
+        {
+            state = 2;
+        }
         maze.drawLines(display); // iscrtaj labirint na display
-        Time_Game();             // iscrtaj i broji vrijeme u igrici
+        // Time_Game();             // iscrtaj i broji vrijeme u igrici
+        if (Time_Game() == true)
+        {
+            state = 14;
+        }
         GameLoop();
         if (ball.checkExit(display, maze.getCurrentMaze()) == true) // ako se kuglica nalazi na izlaznoj liniji iz labirinta odi na state
         {
@@ -194,7 +200,7 @@ void loop()
     }
     case 8:
     {
-       
+
         pong.paddle1(display, padle1[0]);
         pong.paddle2(display, padle2[0]);
 
@@ -206,7 +212,7 @@ void loop()
         int x;
         int y;
         display.fillScreen(ILI9341_WHITE);
-        button.myButton(display, x, y, 110, 0 , 55, 35, 2, "Back", 1);
+        button.myButton(display, x, y, 110, 0, 55, 35, 2, "Back", 1);
         Game2();
         Times = (millis() / 1000);
         if (pong.GAME_OVER() == true)
@@ -217,10 +223,10 @@ void loop()
     }
     case 10:
     {
-      //  pong.gameOverText(display);
-        //if ((Time_Game_Over_GAME2()) == true)
+        //  pong.gameOverText(display);
+        // if ((Time_Game_Over_GAME2()) == true)
         //{
-          //  state = 0;
+        //  state = 0;
         //}
 
         break;
@@ -269,6 +275,14 @@ void loop()
         }
         button.cursor(display, 1);
         break;
+    }
+    case 14:
+    {
+        ball.game_Over(display);
+        if (Time_Score() == true)
+        {
+            state = 0;
+        }
 
     }
     }
@@ -276,13 +290,13 @@ void loop()
     screen.checkForRefresh();
 }
 
-void GameLoop() //game loop za labirint
+void GameLoop() // game loop za labirint
 {
     int n, m;
     ball.bod(display, 1, 10, 30);
     ball.collision_bod(n, m);
-    ball.updateBallposition(display, myIMU);              // stalno iscrtavaj novu poziciju kuglice kako se ona pomice pomocu akceleometra
-    ball.exitLine(display, maze.getCurrentMaze());        // iscrtaj na display izlaznu liniju u odabranom labirintu
+    ball.updateBallposition(display, myIMU);                       // stalno iscrtavaj novu poziciju kuglice kako se ona pomice pomocu akceleometra
+    ball.exitLine(display, maze.getCurrentMaze());                 // iscrtaj na display izlaznu liniju u odabranom labirintu
     if ((ball.checkColision(display, maze.getCurrentMaze()) != 0)) // ako je kuglica dotaknila liniju u labirintu
     {
         ball.newBallposition(display); // kuglicu stavi na poziciju u kojoj je bila prije nego što je dotaknila liniju u labirintu
@@ -298,36 +312,38 @@ void Game2()
     pong.scoreInGame(display);
     pong.scoreInGame2(display);
 
-
-    if(pong.checkCollisionPaddle(padle1[0], padle2[0], ponggame[0]) == 1)
+    if (pong.checkCollisionPaddle(padle1[0], padle2[0], ponggame[0]) == 1)
     {
         pong.newBallPosition(ponggame[0]);
     }
-    if(pong.checkCollisionPaddle(padle1[0], padle2[0], ponggame[0]) == 3)
+    if (pong.checkCollisionPaddle(padle1[0], padle2[0], ponggame[0]) == 3)
     {
         pong.newBallPosition(ponggame[0]);
     }
-    if(pong.checkCollisionPaddle(padle1[0], padle2[0], ponggame[0]) == 2)
+    if (pong.checkCollisionPaddle(padle1[0], padle2[0], ponggame[0]) == 2)
     {
         pong.newBallPosition(ponggame[0]);
-        
-
     }
-    if(pong.checkCollisionPaddle(padle1[0], padle2[0], ponggame[0]) == 4)
+    if (pong.checkCollisionPaddle(padle1[0], padle2[0], ponggame[0]) == 4)
     {
-        pong.newBallPosition(ponggame[0]);   
+        pong.newBallPosition(ponggame[0]);
     }
-
 }
 
-
-void Time_Game() // vrijeme u Game1
+uint16_t Time_Game() // vrijeme u Game1
 {
+    uint16_t time_is_up = false;
     unsigned long game_time = (millis() / 1000) - Time;
     ball.Time(display, game_time);
+    if (game_time >= 60)
+    {
+        time_is_up = true;
+    }
+    return time_is_up;
+    time_is_up = false;
 }
 
-uint8_t Time_Score() //score u game1 tj labirint
+uint8_t Time_Score() // score u game1 tj labirint
 {
     uint8_t sc = false;
     unsigned long game_score = (millis() / 1000) - Times;
@@ -340,8 +356,6 @@ uint8_t Time_Score() //score u game1 tj labirint
     return sc;
     sc = false;
 }
-
-
 
 extern "C" void SystemClock_Config(void)
 {

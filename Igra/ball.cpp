@@ -34,7 +34,8 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd, LSM6DS3 myIMU)
   lcd.setRotation(3);
   float rawX = myIMU.readFloatAccelX();   //citanje vrijednosti pozicije akcelerometra po x osi
   float rawY = myIMU.readFloatAccelY();     //citanje pozicije akcelerometra po y osi
-
+  Serial.begin(115200);
+  Serial.printf("\n %d X: ", rawX);
 
 
   velX = rawX * 5;
@@ -196,6 +197,15 @@ void Ball::win_Screen(Adafruit_ILI9341 &lcd)  //metoda odnosno screen koji se is
 
   updateScreen();
 }
+void Ball::game_Over(Adafruit_ILI9341 &lcd)
+{
+  lcd.setCursor(100, 80); 
+  lcd.setTextSize(3);
+  lcd.setTextColor(ILI9341_CYAN);
+  lcd.print("GAME OVER!"); 
+  updateScreen();
+}
+
 
 void Ball::bod(Adafruit_ILI9341 &lcd, int draw, int Xb, int Yb)
 {

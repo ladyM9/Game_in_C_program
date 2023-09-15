@@ -34,6 +34,34 @@ int Button::myButton(Adafruit_ILI9341 &lcd, int _xcur, int _ycur, int x, int y, 
 
     return push_button;
 }
+int Button::back_Button(Adafruit_ILI9341 &lcd, int x, int y, int h, int w, int _textscale, char *mytext, int draw)
+{
+
+    int push_back = 0;
+    int _color = ILI9341_BLACK; // Boja teksta tipke
+
+    int pushback = digitalRead(D4); // ocitavanje digitalne vrijednosti sa push tipke(SW) na joysticku
+
+    if (pushback == false) // ako je kursor postavljen na tipku i ako je pushb pritisnut
+        push_back = 1;                                                              // push_button je false odnosno tipka na displayu je pritisnuta
+
+    if (draw) // varijabla draw označava to da li će se tipka prikazati na display-u ili ne, dakle ako je istina onda će se prikazati
+    {
+        // TEXT ti je polje tipa char, znaci trebas imati pokazivac na to polje
+        int duljinatexta = strlen(mytext) * 6 * _textscale;
+        int xpos = (w / 2) + x - (duljinatexta / 2);
+        int ypos = (h / 2) + y - (_textscale * 8 / 2);
+
+        lcd.fillRoundRect(x, y, w, h, 2, ILI9341_PURPLE);
+        lcd.drawRoundRect(x - 1, y - 1, w + 2, h, 2, ILI9341_NAVY);
+        lcd.setTextColor(_color);
+        lcd.setTextSize(_textscale);
+        lcd.setCursor(xpos, ypos);
+        lcd.print(mytext);
+    }
+
+    return push_back;
+}
 
 void Button::cursor(Adafruit_ILI9341 &lcd, int draw_cursor) // metoda pomocu koje se pomice i ispisuje kursor u prozoru za odabir tezine igrice na display
 {
