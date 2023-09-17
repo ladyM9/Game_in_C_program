@@ -27,6 +27,9 @@ public:
     void game_Over(Adafruit_ILI9341 &lcd);
     void bod(Adafruit_ILI9341 &lcd, int draw, int Xb, int Yb);  //funkcija koja ispisuje slicicu koja oznacava dodatne bodove u igrici koje igrac moze skupiti
     int collision_bod(int xc, int yc);                           //funkcija koja provjerava da li je igrac dodtaknio slicicu za bodove
+    int Live();
+    int NoL();
+   // bool no_Live();
 
 
 private: // kad su varijable private tu im ne dajeĹˇ vrijednost
@@ -41,7 +44,7 @@ private: // kad su varijable private tu im ne dajeĹˇ vrijednost
     uint8_t game_ov = false;
     uint8_t scoreOld = score;
     uint8_t live = 3;
-    uint8_t bodovi = 100; // tu moras postaviti pocetni broj bodova u igrici jer inace ti se bodovi nece ispisivati jer svaki put kad
+    uint8_t bodovi = 5; // tu moras postaviti pocetni broj bodova u igrici jer inace ti se bodovi nece ispisivati jer svaki put kad
     // kod ude u igricu u metodu za score bodove postavi na 100 i onda se nece smanjivati bodovi u igrici
     uint8_t bodovi_igra = 0;
 

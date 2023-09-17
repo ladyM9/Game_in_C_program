@@ -197,6 +197,8 @@ void Ball::win_Screen(Adafruit_ILI9341 &lcd)  //metoda odnosno screen koji se is
 
   updateScreen();
 }
+
+
 void Ball::game_Over(Adafruit_ILI9341 &lcd)
 {
   lcd.setCursor(100, 80); 
@@ -205,6 +207,41 @@ void Ball::game_Over(Adafruit_ILI9341 &lcd)
   lcd.print("GAME OVER!"); 
   updateScreen();
 }
+/*
+int Ball::Live()
+{
+  
+  int noL = false;
+  live-= 1;
+  if(live == 0)
+  {
+    noL = true;
+    live = 3;
+  }
+  return noL;
+  noL = false;
+
+}
+*/
+
+int Ball::Live()
+{
+  live-=1;
+  return live;
+}
+
+int Ball::NoL()
+{
+  int noL = false;
+  if(Live() == 0)
+  {
+    noL = true;
+  }
+  return noL;
+  noL = false;
+}
+
+
 
 
 void Ball::bod(Adafruit_ILI9341 &lcd, int draw, int Xb, int Yb)

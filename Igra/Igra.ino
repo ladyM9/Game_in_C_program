@@ -25,6 +25,7 @@ RNG_HandleTypeDef hrng = {0};
 
 unsigned long Time = 0;
 unsigned long Times = 0;
+unsigned long game_over = 0;
 unsigned long TIMER_CHANGE_INTERVAL = 50000;
 unsigned long millis();
 
@@ -139,13 +140,18 @@ void loop()
     {
         int x;
         int y;
-        if(button.back_Button(display,250,0,20,20,1, "Back",1 ) == true)
+        if (button.back_Button(display, 250, 0, 20, 20, 1, "Back", 1) == true)
         {
             state = 2;
         }
         maze.drawLines(display); // iscrtaj labirint na display
         // Time_Game();             // iscrtaj i broji vrijeme u igrici
-        if (Time_Game() == true)
+        if (Time_Game() == 1)
+        {
+
+            state = 4;
+        }
+        if (Time_Game() == 2)
         {
             state = 14;
         }
@@ -197,6 +203,7 @@ void loop()
         {
             state = 2;
         }
+        break;
     }
     case 8:
     {
@@ -279,11 +286,11 @@ void loop()
     case 14:
     {
         ball.game_Over(display);
-        if (Time_Score() == true)
+        if (Game_over() == true)
         {
             state = 0;
         }
-
+        break;
     }
     }
 
@@ -332,15 +339,21 @@ void Game2()
 
 uint16_t Time_Game() // vrijeme u Game1
 {
-    uint16_t time_is_up = false;
+    uint16_t time_is_up = 0;
     unsigned long game_time = (millis() / 1000) - Time;
     ball.Time(display, game_time);
     if (game_time >= 60)
     {
-        time_is_up = true;
+        time_is_up = 1;
+        ball.Live();
     }
+    if ((game_time >= 10) && (ball.Live() == true))
+    {
+        time_is_up = 2;
+    }
+
     return time_is_up;
-    time_is_up = false;
+    time_is_up = 0;
 }
 
 uint8_t Time_Score() // score u game1 tj labirint
@@ -355,6 +368,19 @@ uint8_t Time_Score() // score u game1 tj labirint
     }
     return sc;
     sc = false;
+}
+
+uint8_t Game_over()
+{
+    uint8_t gt = false;
+    unsigned long game_o = (millis() / 1000) - game_over;
+
+    if (game_o >= 10)
+    {
+        gt = true;
+    }
+    return gt;
+    gt = false;
 }
 
 extern "C" void SystemClock_Config(void)
