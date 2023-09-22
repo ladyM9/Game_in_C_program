@@ -33,8 +33,6 @@ void Pong::movePaddle1(Adafruit_ILI9341 &lcd, LSM6DS3 myIMU, myPaddle_t1 *p1) //
 
     float rawX = myIMU.readFloatAccelX();
     float rawY = myIMU.readFloatAccelY();
- 
-
 
     brzinax = rawX * 5;
     brzinay = rawY * 5;
@@ -73,13 +71,14 @@ void Pong::movePaddle1(Adafruit_ILI9341 &lcd, LSM6DS3 myIMU, myPaddle_t1 *p1) //
 void Pong::movePaddle2(Adafruit_ILI9341 &lcd, myPaddle_t2 *p2, my_ballPong *b)
 {
 
-    brzina2x += 2;
-    brzina2y += 2;
-
     // kretanje drugog paddle odnosno sa ovim paddle upravlja računalo
 
-    p2->sy2 = b->startBally - (p2->h / 2);
+    p2->sy2 = b->startBally - p2->h;
 
+    if(p2->sy2 <= 0)
+    {
+        p2->sy2 = 0;
+    }
     lcd.fillRect(p2->sx2, p2->sy2, p2->w, p2->h, _colorpaddle);
 
     updateScreenGame1();
@@ -93,8 +92,8 @@ void Pong::ball(Adafruit_ILI9341 &lcd, my_ballPong *b)
 
 void Pong::moveBall(Adafruit_ILI9341 &lcd, my_ballPong *b)
 {
-    Serial.begin(115200);
 
+    
     if (b->startBallx > lcd.width() || b->startBallx < 0)
     {
 
@@ -133,22 +132,22 @@ uint8_t Pong::checkCollisionPaddle(myPaddle_t1 *p1, myPaddle_t2 *p2, my_ballPong
         collision = 3;
     }
 
-    if (((b->startBallx - b->r) <= (p1->sx1)) && ((b->startBally - b->r) <= 240) && (b->startBally >= 0))
+    if (((b->startBallx - b->r) <= 0) && ((b->startBally - b->r) <= 240) && (b->startBally >= 0))
     {
-        collision = 2;
         score = true;
-        // Serial.println("Game over");
+        collision = 2;
+     
+
     }
 
     if (((b->startBallx + b->r) >= 320) && ((b->startBally + b->r) <= 240) && (b->startBally >= 0))
     {
         collision = 4;
         score2 = true;
-        // Serial.println("Game over");
+ 
     }
 
     return collision;
-     collision = 0;
 }
 
 void Pong::newBallPosition(my_ballPong *b)
@@ -168,20 +167,27 @@ void Pong::scoreInGame(Adafruit_ILI9341 &lcd)
     lcd.setCursor(10, 2);
     lcd.setTextSize(2);
     lcd.setTextColor(ILI9341_MAGENTA);
-
-    if (score == true && score1 == false)
-    {
-        live -= 1;
-    }
+    
+    
     lcd.printf("Live: %d", live);
-    if (live == 0)
-    {
-        game_over = true;
-    }
-
-    score1 = score;
-
+    
     updateScreenGame1();
+}
+uint8_t Pong::live_User(Adafruit_ILI9341 &lcd)
+{
+
+    if (score == true)
+    {
+        lives_minus();
+    }
+    
+    return live;
+}
+
+uint8_t Pong::lives_minus()
+{
+    live = live - 1;
+    return live;
 }
 
 void Pong::scoreInGame2(Adafruit_ILI9341 &lcd) // racunanje scora za racunalo
@@ -198,28 +204,31 @@ void Pong::scoreInGame2(Adafruit_ILI9341 &lcd) // racunanje scora za racunalo
     lcd.printf("Live_rac %d", live_rac);
     if (live_rac == 0)
     {
-        live = 5;
-        ;
+        game_over = true;
+        live_rac = 5;
+        
     }
 
     updateScreenGame1();
 }
 
-uint8_t Pong::GAME_OVER()
+uint8_t Pong::GAME_OVER(Adafruit_ILI9341 &lcd)
 {
     gm = false;
-    if (game_over == true)
+    if (live_User(lcd) == 0)
     {
         gm = true;
+        live = 2;
     }
     return gm;
+    gm = false;
 }
 
 void Pong::gameOverText(Adafruit_ILI9341 &lcd)
 {
 
     lcd.setCursor(100, 50);
-    lcd.setTextSize(2);
+    lcd.setTextSize(3);
     lcd.setTextColor(ILI9341_CYAN);
     lcd.print("Game over");
 

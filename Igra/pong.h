@@ -1,5 +1,5 @@
-#ifndef __PONG_H__
-#define __PONG_H__
+#ifndef __PADDLE_H__
+#define __PADDLE_H__
 
 #include "ILI9341_STM32.h"
 #include "Arduino.h"
@@ -21,10 +21,12 @@ public:
     void moveBall(Adafruit_ILI9341 &lcd, my_ballPong *b);
     uint8_t checkCollisionPaddle(myPaddle_t1 *p1, myPaddle_t2 *p2, my_ballPong *b);
     void newBallPosition(my_ballPong *b);
-    uint8_t GAME_OVER();
+    uint8_t GAME_OVER(Adafruit_ILI9341 &lcd);
     void gameOverText(Adafruit_ILI9341 &lcd);
     void scoreInGame(Adafruit_ILI9341 &lcd);
     void scoreInGame2(Adafruit_ILI9341 &lcd);
+    uint8_t live_User(Adafruit_ILI9341 &lcd);
+    uint8_t lives_minus();
   
     //int x, int y, int rectX, int rectY, int rectWidth, int rectHeight
     void updateScreenGame1();

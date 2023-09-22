@@ -148,13 +148,14 @@ void loop()
         // Time_Game();             // iscrtaj i broji vrijeme u igrici
         if (Time_Game() == 1)
         {
-
+            ball.Live(display);
             state = 4;
         }
-        if (Time_Game() == 2)
+        if(Time_Game() == 2)
         {
-            state = 14;
+            state = 10;
         }
+ 
         GameLoop();
         if (ball.checkExit(display, maze.getCurrentMaze()) == true) // ako se kuglica nalazi na izlaznoj liniji iz labirinta odi na state
         {
@@ -210,6 +211,7 @@ void loop()
 
         pong.paddle1(display, padle1[0]);
         pong.paddle2(display, padle2[0]);
+       
 
         state = 9;
         break;
@@ -219,22 +221,28 @@ void loop()
         int x;
         int y;
         display.fillScreen(ILI9341_WHITE);
-        button.myButton(display, x, y, 110, 0, 55, 35, 2, "Back", 1);
-        Game2();
-        Times = (millis() / 1000);
-        if (pong.GAME_OVER() == true)
+        pong.live_User(display);
+        pong.scoreInGame(display);
+        pong.scoreInGame2(display);
+        if (button.back_Button(display, 120, 0, 30, 50, 2 , "Back", 1) == true)
         {
+            state = 0;
+        }
+        Game2();
+        if (pong.GAME_OVER(display) == true)
+        {
+           
             state = 10;
         }
+
         break;
     }
     case 10:
     {
-        //  pong.gameOverText(display);
-        // if ((Time_Game_Over_GAME2()) == true)
-        //{
-        //  state = 0;
-        //}
+        game_over = (millis() / 1000);   
+
+        state = 14;
+        
 
         break;
     }
@@ -316,8 +324,6 @@ void Game2()
     pong.movePaddle1(display, myIMU, padle1[0]);
     pong.movePaddle2(display, padle2[0], ponggame[0]);
     pong.moveBall(display, ponggame[0]);
-    pong.scoreInGame(display);
-    pong.scoreInGame2(display);
 
     if (pong.checkCollisionPaddle(padle1[0], padle2[0], ponggame[0]) == 1)
     {
@@ -330,10 +336,12 @@ void Game2()
     if (pong.checkCollisionPaddle(padle1[0], padle2[0], ponggame[0]) == 2)
     {
         pong.newBallPosition(ponggame[0]);
+        pong.lives_minus();
     }
     if (pong.checkCollisionPaddle(padle1[0], padle2[0], ponggame[0]) == 4)
     {
         pong.newBallPosition(ponggame[0]);
+        pong.lives_minus();
     }
 }
 
@@ -342,12 +350,11 @@ uint16_t Time_Game() // vrijeme u Game1
     uint16_t time_is_up = 0;
     unsigned long game_time = (millis() / 1000) - Time;
     ball.Time(display, game_time);
-    if (game_time >= 60)
+    if (game_time >= 30) 
     {
         time_is_up = 1;
-        ball.Live();
     }
-    if ((game_time >= 10) && (ball.Live() == true))
+    if(GM() == true)
     {
         time_is_up = 2;
     }
@@ -356,9 +363,21 @@ uint16_t Time_Game() // vrijeme u Game1
     time_is_up = 0;
 }
 
-uint8_t Time_Score() // score u game1 tj labirint
+uint8_t GM()
 {
-    uint8_t sc = false;
+  uint8_t gm = false;
+  if (ball.no_l(display) == 1)
+    {
+        gm = true;
+    }
+    return gm;
+    gm = false;
+
+}
+
+uint16_t Time_Score() // score u game1 tj labirint
+{
+    uint16_t sc = false;
     unsigned long game_score = (millis() / 1000) - Times;
 
     ball.Time(display, game_score);
@@ -370,9 +389,9 @@ uint8_t Time_Score() // score u game1 tj labirint
     sc = false;
 }
 
-uint8_t Game_over()
+uint16_t Game_over()
 {
-    uint8_t gt = false;
+    uint16_t gt = false;
     unsigned long game_o = (millis() / 1000) - game_over;
 
     if (game_o >= 10)

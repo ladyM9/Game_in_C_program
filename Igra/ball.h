@@ -20,16 +20,17 @@ public:
     void newBallposition(Adafruit_ILI9341 &lcd);                 // funkcija koja onemogucava da kuglica nakon sto dotakne liniju u labirintu ne prijede preko te linije 
     void exitLine(Adafruit_ILI9341 &lcd, myMaze_t *_currentLab); // funkcija za iscrtavanje izlazne linije
     void Time(Adafruit_ILI9341 &lcd, unsigned long time_game);           // funkcija za vrijeme u igrici
-    void Score(Adafruit_ILI9341 &lcd);                          //funkcija pomocu koje se ispisuje score u igrici i u kojoj se provjerava da li treba smanjiti bodove u igrici ili ne
+    uint8_t Score(Adafruit_ILI9341 &lcd);                          //funkcija pomocu koje se ispisuje score u igrici i u kojoj se provjerava da li treba smanjiti bodove u igrici ili ne
     void score_Game(Adafruit_ILI9341 &lcd);                     //funkcija koja se ispisuje nakon sto igrac prode kroz sve levele, odnosno ona pokazuje koliko korisnik ima jos zivota i koliko je skupio bodova
     void ukupni_Bodovi(Adafruit_ILI9341 &lcd);                  
     void win_Screen(Adafruit_ILI9341 &lcd);                     //funkcija koja se ispisuje ako je korisnik usojesno prosao kroz labirint          
     void game_Over(Adafruit_ILI9341 &lcd);
     void bod(Adafruit_ILI9341 &lcd, int draw, int Xb, int Yb);  //funkcija koja ispisuje slicicu koja oznacava dodatne bodove u igrici koje igrac moze skupiti
     int collision_bod(int xc, int yc);                           //funkcija koja provjerava da li je igrac dodtaknio slicicu za bodove
-    int Live();
-    int NoL();
-   // bool no_Live();
+    int Live(Adafruit_ILI9341 &lcd);
+    int no_l(Adafruit_ILI9341 &lcd);
+    uint8_t GM(Adafruit_ILI9341 &lcd);
+    uint8_t GM_SCORE(Adafruit_ILI9341 &lcd);
 
 
 private: // kad su varijable private tu im ne dajeĹˇ vrijednost
@@ -43,10 +44,13 @@ private: // kad su varijable private tu im ne dajeĹˇ vrijednost
     uint8_t score = false;
     uint8_t game_ov = false;
     uint8_t scoreOld = score;
-    uint8_t live = 3;
+    uint8_t g = false;
+    int live = 3;
+    int live_new = 3;
     uint8_t bodovi = 5; // tu moras postaviti pocetni broj bodova u igrici jer inace ti se bodovi nece ispisivati jer svaki put kad
     // kod ude u igricu u metodu za score bodove postavi na 100 i onda se nece smanjivati bodovi u igrici
     uint8_t bodovi_igra = 0;
+    
 
     myline_t e;
     void (*requestForCallback)();
