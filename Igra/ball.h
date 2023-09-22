@@ -31,6 +31,7 @@ public:
     int no_l(Adafruit_ILI9341 &lcd);
     uint8_t GM(Adafruit_ILI9341 &lcd);
     uint8_t GM_SCORE(Adafruit_ILI9341 &lcd);
+    void Bodovi_igra();
 
 
 private: // kad su varijable private tu im ne dajeĹˇ vrijednost
@@ -47,7 +48,7 @@ private: // kad su varijable private tu im ne dajeĹˇ vrijednost
     uint8_t g = false;
     int live = 3;
     int live_new = 3;
-    uint8_t bodovi = 5; // tu moras postaviti pocetni broj bodova u igrici jer inace ti se bodovi nece ispisivati jer svaki put kad
+    uint8_t bodovi = 50; // tu moras postaviti pocetni broj bodova u igrici jer inace ti se bodovi nece ispisivati jer svaki put kad
     // kod ude u igricu u metodu za score bodove postavi na 100 i onda se nece smanjivati bodovi u igrici
     uint8_t bodovi_igra = 0;
     

@@ -36,8 +36,8 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd, LSM6DS3 myIMU)
   Serial.begin(115200);
   Serial.printf("\n %d X: ", rawX);
 
-  velX = rawX * 5;
-  velY = rawY * 5;
+  velX = rawX * -5;
+  velY = rawY * -5;
 
   X = xCurrent; // X je nova pozicija kuglice, novoj poziciji kuglice po x osi pridruzi staru poziciju
   Y = yCurrent;
@@ -144,14 +144,20 @@ void Ball::Time(Adafruit_ILI9341 &lcd, unsigned long time_game) // metoda pomocu
 uint8_t Ball::Score(Adafruit_ILI9341 &lcd) // metoda koja ispisuje score odnosno bodove u igrici na display tijekom igre
 {
   uint8_t gameover = false;
-  lcd.setCursor(200, 3);
+  lcd.setCursor(60, 3);
   lcd.setTextSize(2);
-  lcd.setTextColor(ILI9341_NAVY);
+  lcd.setTextColor(ILI9341_WHITE);
+  lcd.printf("Live:%2ld",live); // ispisi zivote igraca na display
+  lcd.setCursor(160, 3);
+  lcd.setTextSize(2);
+  lcd.setTextColor(ILI9341_WHITE);
   if (score == true && scoreOld == false) // ako se dogodila kolizija i ako je scoreOld == false
   {
     bodovi -= 1; // bodove u igrici smanji za 1
   }
-  lcd.printf("%2ld", bodovi); // ispisi zivote igraca na display
+  lcd.printf("Score:%2ld",bodovi); // ispisi zivote igraca na display
+
+  
  
   scoreOld = score;         // scoreOldu pridruzi novi score igrice
   return bodovi;
@@ -159,13 +165,15 @@ uint8_t Ball::Score(Adafruit_ILI9341 &lcd) // metoda koja ispisuje score odnosno
 
 uint8_t Ball::GM_SCORE(Adafruit_ILI9341 &lcd)
 {
+  uint8_t score0 = 0;
   if(bodovi == 0)
   {
-    Live(lcd);
+  score0 = 1;
+  bodovi = 50;  
   }
+  return score0;
+  score0 = 0;
 }
-
-
 
 void Ball::score_Game(Adafruit_ILI9341 &lcd) // metoda pomocu koje na display se ispisuje broj bodova u igrici i zivoti u igrici
 {
@@ -181,7 +189,7 @@ void Ball::score_Game(Adafruit_ILI9341 &lcd) // metoda pomocu koje na display se
   updateScreen();
 }
 
-void Ball::ukupni_Bodovi(Adafruit_ILI9341 &lcd)
+void Ball::ukupni_Bodovi(Adafruit_ILI9341 &lcd) 
 {
 
   lcd.setCursor(200, 45);
@@ -210,7 +218,7 @@ void Ball::game_Over(Adafruit_ILI9341 &lcd)  //metoda pomoću koje se opisuje te
   updateScreen();
 }
 
-int Ball::Live(Adafruit_ILI9341 &lcd) //metoda za oduzimanje zivota nakon sto istekne vrijeme
+int Ball::Live(Adafruit_ILI9341 &lcd) //metoda unutar koje se oduzme zivot
 {
   
   live = live - 1;
@@ -219,7 +227,7 @@ int Ball::Live(Adafruit_ILI9341 &lcd) //metoda za oduzimanje zivota nakon sto is
   //live+=1;
 }
 
-int Ball::no_l(Adafruit_ILI9341 &lcd)
+int Ball::no_l(Adafruit_ILI9341 &lcd) //metoda unutar koje se ispituje da li je igrac ostao bez zivota
 {
   int a = 0;
   if(live == 0)
@@ -229,6 +237,14 @@ int Ball::no_l(Adafruit_ILI9341 &lcd)
   }
   return a;
   a = 0;
+}
+
+void Ball::Bodovi_igra()
+{
+  if(bodovi == 5)
+  {
+  bodovi_igra+=10;
+  }
 }
 
 void Ball::bod(Adafruit_ILI9341 &lcd, int draw, int Xb, int Yb)
