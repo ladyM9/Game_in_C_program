@@ -285,7 +285,7 @@ void loop()
         int x;
         int y;
         display.fillScreen(ILI9341_WHITE);
-        ball.score_Game(display);
+        pong.score_In_High_Score(display);
         if (button.myButton(display, x, y, 200, 180, 80, 50, 2, "Back", 1) == 1)
         {
           state = 0;

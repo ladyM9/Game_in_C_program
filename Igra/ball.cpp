@@ -165,14 +165,14 @@ uint8_t Ball::Score(Adafruit_ILI9341 &lcd) // metoda koja ispisuje score odnosno
 
 uint8_t Ball::GM_SCORE(Adafruit_ILI9341 &lcd)
 {
-  uint8_t score0 = 0;
-  if(bodovi == 0)
+  uint8_t score0 = 0; //zastavica score0 je jednaka false tj 0
+  if(bodovi == 0) //ako je igrac izgubio sve bodove odnosno ako su mu bodovi jednaki 0
   {
-  score0 = 1;
-  bodovi = 50;  
+  score0 = 1; //zastavicu postavi na 1 odnosno na true
+  bodovi = 50;  //bodove stavi na pocetni broj bodova sto je 50
   }
-  return score0;
-  score0 = 0;
+  return score0; //vrati zastavicu
+  score0 = 0; //ponisti zastavicu
 }
 
 void Ball::score_Game(Adafruit_ILI9341 &lcd) // metoda pomocu koje na display se ispisuje broj bodova u igrici i zivoti u igrici
@@ -189,7 +189,7 @@ void Ball::score_Game(Adafruit_ILI9341 &lcd) // metoda pomocu koje na display se
   updateScreen();
 }
 
-void Ball::ukupni_Bodovi(Adafruit_ILI9341 &lcd) 
+void Ball::ukupni_Bodovi(Adafruit_ILI9341 &lcd)  //bodovi koje je korisnik uspio skupiti tijekom igranja igre
 {
 
   lcd.setCursor(200, 45);
@@ -221,29 +221,29 @@ void Ball::game_Over(Adafruit_ILI9341 &lcd)  //metoda pomoću koje se opisuje te
 int Ball::Live(Adafruit_ILI9341 &lcd) //metoda unutar koje se oduzme zivot
 {
   
-  live = live - 1;
+  live = live - 1; //trenutnom broju zivota oduzmi jedan
 
-  return live;
+  return live; //vrati novo stanje zivota
   //live+=1;
 }
 
 int Ball::no_l(Adafruit_ILI9341 &lcd) //metoda unutar koje se ispituje da li je igrac ostao bez zivota
 {
-  int a = 0;
-  if(live == 0)
+  int a = 0; //zastavica je prvo postavljena na 0 odnosno false
+  if(live == 0)  //ako je broj zivota jednak 0
   {
-    a = 1;
-    live = 3;
+    a = 1; // a je 1 odnosno istina
+    live = 3; //vrati broj zivota na 3
   }
-  return a;
-  a = 0;
+  return a; //vrati a
+  a = 0; //a vrati na 0 tj false tj ponisti zastavicu
 }
 
 void Ball::Bodovi_igra()
 {
-  if(bodovi == 5)
+  if(bodovi == 5) //ako su bodovi na izlaznoj liniji jednaki 5
   {
-  bodovi_igra+=10;
+  bodovi_igra+=10; //ukupnim bodovima u igri dodaj 10 bodova
   }
 }
 

@@ -34,7 +34,7 @@ int Button::myButton(Adafruit_ILI9341 &lcd, int _xcur, int _ycur, int x, int y, 
 
     return push_button;
 }
-int Button::back_Button(Adafruit_ILI9341 &lcd, int x, int y, int h, int w, int _textscale, char *mytext, int draw)
+int Button::back_Button(Adafruit_ILI9341 &lcd, int x, int y, int h, int w, int _textscale, char *mytext, int draw) //metoda za opis tipke back
 {
 
     int push_back = 0;

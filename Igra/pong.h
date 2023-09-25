@@ -25,6 +25,7 @@ public:
     void gameOverText(Adafruit_ILI9341 &lcd);
     void scoreInGame(Adafruit_ILI9341 &lcd);
     void scoreInGame2(Adafruit_ILI9341 &lcd);
+    void score_In_High_Score(Adafruit_ILI9341 &lcd);
     uint8_t live_User(Adafruit_ILI9341 &lcd);
     uint8_t lives_minus();
   
