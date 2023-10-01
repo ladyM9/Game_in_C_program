@@ -67,22 +67,30 @@ void loop()
   switch (state)
   {
     case 0:
+    {
+
+      game_over = (millis() / 1000);
+      state = 16;
+      break;
+    }
+    
+    case 1:
       {
         int x;
         int y;
 
         if (button.myButton(display, x, y, 100, 50, 100, 50, 3, "START", 1) == 1)
         {
-          state = 1;
+          state = 2;
         }
         if (button.myButton(display, x, y, 80, 150, 200, 50, 3, "HIGH SCORE", 1) == 1)
         {
-          state = 11;
+          state = 12;
         }
         button.cursor(display, 1);
         break;
       }
-    case 1:
+    case 2:
       {
 
         int x;
@@ -90,21 +98,21 @@ void loop()
 
         if (button.myButton(display, x, y, 20, 90, 100, 50, 3, "Maze", 1) == 1)
         {
-          state = 2;
+          state = 3;
         }
         if (button.myButton(display, x, y, 160, 90, 100, 50, 3, "Pong", 1) == 1)
         {
-          state = 8;
+          state = 9;
         }
         if (button.myButton(display, x, y, 100, 180, 100, 50, 3, "Back", 1) == 1)
         {
-          state = 0;
+          state = 1;
         }
         button.cursor(display, 1);
 
         break;
       }
-    case 2:
+    case 3:
       {
         int x;
         int y;
@@ -115,45 +123,45 @@ void loop()
         if (button.myButton(display, x, y, 20, 20, 100, 50, 3, "Easy", 1) == 1) // ako je kliknuta tipka za easy tezinu igrice odi na state 2
         {
           mod1 = maze.choosing_Mode_Game(0);
-          state = 4;
+          state = 5;
         }
         if (button.myButton(display, x, y, 150, 20, 120, 50, 3, "Medium", 1) == 1)
         {
           mod2 = maze.choosing_Mode_Game(1);
-          state = 4;
+          state = 5;
         }
         if (button.myButton(display, x, y, 20, 100, 120, 50, 3, "Hard", 1) == 1)
         {
           mod3 = maze.choosing_Mode_Game(2);
-          state = 4;
+          state = 5;
         }
         if (button.myButton(display, x, y, 150, 100, 100, 50, 3, "Back", 1) == 1)
         {
-          state = 0;
+          state = 1;
         }
         button.cursor(display, 1); // prikaz kurzora u izborniku za tezinu odabrane igrice
 
         break;
       }
-    case 3:
+    case 4:
 
       {
         int x;
         int y;
         if (button.back_Button(display, 270, 0, 20, 45, 2, "Back", 1) == true)
         {
-          state = 2;
+          state = 3;
         }
         maze.drawLines(display); // iscrtaj labirint na display
         // Time_Game();             // iscrtaj i broji vrijeme u igrici
         if (Time_Game() == 1)
         {
           ball.Live(display);
-          state = 4;
+          state = 5;
         }
         if (Time_Game() == 2)
         {
-          state = 10;
+          state = 11;
         }
 
         GameLoop();
@@ -161,64 +169,65 @@ void loop()
         {
           brojanje_exit += 1;
           ball.Bodovi_igra();
-          state = 5;
+          state = 6;
         }
 
 
-        break;
-      }
-
-    case 4:
-      {
-        maze.LoadNewMaze(maze.getRandomMaze(&hrng));            // ucitaj novi random labirint
-        ball.firstBallposition(display, maze.getCurrentMaze()); // iscrtaj kuglicu na pocetnoj poziciji u odabranom labirintu
-        Time = (millis() / 1000);                               // millis podjeli sa 1000 kako bi dobila odbrojavanje vremena u sekundama
-        state = 3;                                              // odi na state 1 kako bi se odabrani random labirint iscrtao na display
         break;
       }
 
     case 5:
       {
+        maze.LoadNewMaze(maze.getRandomMaze(&hrng));            // ucitaj novi random labirint
+        ball.firstBallposition(display, maze.getCurrentMaze()); // iscrtaj kuglicu na pocetnoj poziciji u odabranom labirintu
+        Time = (millis() / 1000);                               // millis podjeli sa 1000 kako bi dobila odbrojavanje vremena u sekundama
+        state = 4;                                              // odi na state 1 kako bi se odabrani random labirint iscrtao na display
+        break;
+      }
+
+    case 6:
+      {
         Times = (millis() / 1000);
-        state = 6;
+        state = 7;
 
         break;
       }
-    case 6:
+    case 7:
 
       {
         ball.score_Game(display);
         if (brojanje_exit == 4)
         {
-          state = 7;
+          state = 8;
+          brojanje_exit = 0;
         }
         if (Time_Score() == true)
         {
-          state = 4;
+          state = 5;
         }
 
         break;
       }
-    case 7:
+    case 8:
       {
         ball.win_Screen(display);
         if (Time_Score() == true)
         {
-          state = 2;
+          state = 3;
         }
         break;
       }
-    case 8:
+    case 9:
       {
 
         pong.paddle1(display, padle1[0]);
         pong.paddle2(display, padle2[0]);
 
 
-        state = 9;
+        state = 10;
         break;
       }
-    case 9:
+    case 10:
       {
         int x;
         int y;
@@ -228,54 +237,42 @@ void loop()
         pong.scoreInGame2(display);
         if (button.back_Button(display, 120, 0, 30, 50, 2 , "Back", 1) == true)
         {
-          state = 0;
+          state = 1;
         }
         Game2();
         if (pong.GAME_OVER(display) == true)
         {
 
-          state = 10;
+          state = 11;
         }
-
-        break;
-      }
-    case 10:
-      {
-        game_over = (millis() / 1000);
-
-        state = 14;
-
 
         break;
       }
     case 11:
       {
-        int x;
-        int y;
-        display.fillScreen(ILI9341_WHITE);
-        if (button.myButton(display, x, y, 20, 90, 100, 50, 3, "Game1", 1) == 1)
-        {
-          state = 12;
-        }
-        if (button.myButton(display, x, y, 160, 90, 100, 50, 3, "Game2", 1) == 1)
-        {
-          state = 13;
-        }
-        if (button.myButton(display, x, y, 140, 170, 100, 50, 3, "Back", 1) == 1)
-        {
-          state = 0;
-        }
-        button.cursor(display, 1);
+        game_over = (millis() / 1000);
+
+        state = 15;
+
+
         break;
       }
     case 12:
       {
         int x;
         int y;
-        ball.score_Game(display);
-        if (button.myButton(display, x, y, 200, 180, 80, 50, 2, "Back", 1) == 1)
+        display.fillScreen(ILI9341_WHITE);
+        if (button.myButton(display, x, y, 20, 90, 100, 50, 3, "Game1", 1) == 1)
         {
-          state = 0;
+          state = 13;
+        }
+        if (button.myButton(display, x, y, 160, 90, 100, 50, 3, "Game2", 1) == 1)
+        {
+          state = 14;
+        }
+        if (button.myButton(display, x, y, 140, 170, 100, 50, 3, "Back", 1) == 1)
+        {
+          state = 1;
         }
         button.cursor(display, 1);
         break;
@@ -284,28 +281,53 @@ void loop()
       {
         int x;
         int y;
-        display.fillScreen(ILI9341_WHITE);
-        pong.score_In_High_Score(display);
+        ball.score_Game(display);
         if (button.myButton(display, x, y, 200, 180, 80, 50, 2, "Back", 1) == 1)
         {
-          state = 0;
+          state = 1;
         }
         button.cursor(display, 1);
         break;
       }
     case 14:
       {
+        int x;
+        int y;
+        display.fillScreen(ILI9341_WHITE);
+        pong.score_In_High_Score(display);
+        if (button.myButton(display, x, y, 200, 180, 80, 50, 2, "Back", 1) == 1)
+        {
+          state = 1;
+        }
+        button.cursor(display, 1);
+        break;
+      }
+    case 15:
+      {
         ball.game_Over(display);
         if (Game_over() == true)
         {
-          state = 0;
+          state = 1;
         }
         break;
       }
+    case 16:
+    {
+      display.fillScreen(ILI9341_WHITE);
+      ball.picture(display);
+      if(Game_over() == true)
+      {
+          state = 1;
+      }
+    
+      break;
+    }
   }
 
   screen.checkForRefresh();
 }
+
+
 
 void GameLoop() // game loop za labirint
 {
@@ -413,6 +435,7 @@ uint16_t Game_over()
   return gt;
   gt = false;
 }
+
 
 extern "C" void SystemClock_Config(void)
 {

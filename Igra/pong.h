@@ -21,6 +21,7 @@ public:
     void moveBall(Adafruit_ILI9341 &lcd, my_ballPong *b);
     uint8_t checkCollisionPaddle(myPaddle_t1 *p1, myPaddle_t2 *p2, my_ballPong *b);
     void newBallPosition(my_ballPong *b);
+    void newBallPosition2(my_ballPong *b);
     uint8_t GAME_OVER(Adafruit_ILI9341 &lcd);
     void gameOverText(Adafruit_ILI9341 &lcd);
     void scoreInGame(Adafruit_ILI9341 &lcd);

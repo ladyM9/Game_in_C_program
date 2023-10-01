@@ -60,11 +60,15 @@ void Pong::movePaddle1(Adafruit_ILI9341 &lcd, LSM6DS3 myIMU, myPaddle_t1 *p1) //
 
 void Pong::movePaddle2(Adafruit_ILI9341 &lcd, myPaddle_t2 *p2, my_ballPong *b) //kretanje reketa sa kojim upravlja računalo
 {
-    p2->sy2 = b->startBally - p2->h;  //poziciji po y osi pridruzi trenutnu poziciju kuglice umanjenu za visinu reketa
+    p2->sy2 = b->startBally - (p2->h/2);  //poziciji po y osi pridruzi trenutnu poziciju kuglice umanjenu za visinu reketa
 
     if(p2->sy2 <= 0) //ako je pozicija reketa jednaka ili manja od 0
     {
         p2->sy2 = 0; //pocetna pozicija iscrtavanja reketa po y osi je jednaka 10
+    }
+    if(p2->sy2 >= 190)
+    {
+        p2->sy2 = 190;
     }
     lcd.fillRect(p2->sx2, p2->sy2, p2->w, p2->h, _colorpaddle);
 
@@ -105,7 +109,6 @@ uint8_t Pong::checkCollisionPaddle(myPaddle_t1 *p1, myPaddle_t2 *p2, my_ballPong
     score = false;
     score2 = false;
 
-
     //prvi uvjet ispituje da li je reket sa kojom upravlja korisnik, odnosno da li je trenutna pozicija kuglice po x osi, y osi i njen radijus
     //da li su dotaknuli trenutnu poziciju reketa po x osi i po y osi
     if (((b->startBallx - b->r) <= (p1->sx1 + p1->w)) && ((b->startBallx - b->r) > 0) && (b->startBally >= p1->sy1) && (b->startBally <= (b->startBally + p1->h)))
@@ -125,25 +128,22 @@ uint8_t Pong::checkCollisionPaddle(myPaddle_t1 *p1, myPaddle_t2 *p2, my_ballPong
     {
         score = true; //ako je uvjet ispunjen score stavi na true to znaci da je kuglica otisla iza reketa i dotaknila rub
         collision = 2;
-     
-
     }
-
     //uvjet koji ispituje da li je kuglica otisla iza reketa sa kojim upravlja mikroupravljač
     if (((b->startBallx + b->r) >= 320) && ((b->startBally + b->r) <= 240) && (b->startBally >= 0))
     {
         collision = 4;
         score2 = true;  //ako je uvjet ispunjen score stavi na true to znaci da je kuglica otisla iza reketa i dotaknila rub
- 
     }
 
     return collision;  //vrati zastavicu collision odnosno da li se kolizija dogodila i koja se kolizija dogodila
+    collision = 0;
 }
 
 void Pong::newBallPosition(my_ballPong *b) //metoda za kretanje kuglice
 {
     ballDirectionX = -ballDirectionX;
-    ballDirectionY = -ballDirectionY;
+    ballDirectionY = +ballDirectionY;
     b->startBallx = newxb;
     b->startBally = newyb;
     newxb += ballDirectionX;

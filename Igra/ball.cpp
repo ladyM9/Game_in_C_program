@@ -247,6 +247,23 @@ void Ball::Bodovi_igra()
   }
 }
 
+void Ball::picture(Adafruit_ILI9341 &lcd)
+{
+  lcd.setRotation(3);
+ // lcd.drawBitmap(0,0,image_data_mazehh, 170, 200, ILI9341_WHITE);
+  lcd.drawRGBBitmap(0,0, image_data_mazehh, 186,100);
+  lcd.drawRGBBitmap(120,120, image_data_Ponggamepicturescale, 180,120);
+  lcd.setCursor(190, 20);
+  lcd.setTextSize(3);
+  lcd.setTextColor(ILI9341_BLUE);
+  lcd.print("MAZE");
+  lcd.setCursor(30, 190);
+  lcd.setTextSize(3);
+  lcd.setTextColor(ILI9341_GREEN);
+  lcd.print("PONG");
+  updateScreen();
+}
+
 void Ball::bod(Adafruit_ILI9341 &lcd, int draw, int Xb, int Yb)
 {
   if (draw)
