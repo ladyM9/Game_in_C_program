@@ -33,8 +33,7 @@ void Ball::updateBallposition(Adafruit_ILI9341 &lcd, LSM6DS3 myIMU)
   lcd.setRotation(3);
   float rawX = myIMU.readFloatAccelX(); // citanje vrijednosti pozicije akcelerometra po x osi
   float rawY = myIMU.readFloatAccelY(); // citanje pozicije akcelerometra po y osi
-  Serial.begin(115200);
-  Serial.printf("\n %d X: ", rawX);
+
 
   velX = rawX * -5;
   velY = rawY * -5;
@@ -250,8 +249,7 @@ void Ball::Bodovi_igra()
 void Ball::picture(Adafruit_ILI9341 &lcd)
 {
   lcd.setRotation(3);
- // lcd.drawBitmap(0,0,image_data_mazehh, 170, 200, ILI9341_WHITE);
-  lcd.drawRGBBitmap(0,0, image_data_mazehh, 186,100);
+  lcd.drawRGBBitmap(0,0,  image_data_Redmazescale, 186,100);
   lcd.drawRGBBitmap(120,120, image_data_Ponggamepicturescale, 180,120);
   lcd.setCursor(190, 20);
   lcd.setTextSize(3);
@@ -283,6 +281,7 @@ int Ball::collision_bod(int xc, int yc)
   int hb = 18 + Yb;
 
   // if ((xp > x) && (xp < (w + x)) && (yp > y) && (yp < (h + y))
+  /*
   if ((X > Xb) && (X < (18 + Xb)) && (Y > Yb) && (Y < (18 + Yb)))
   {
     col = 1;
@@ -291,6 +290,7 @@ int Ball::collision_bod(int xc, int yc)
   {
     Serial.print("Collision");
   }
+  */
 
   return col;
 }

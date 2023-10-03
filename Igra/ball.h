@@ -32,6 +32,7 @@ public:
     uint8_t GM(Adafruit_ILI9341 &lcd);
     uint8_t GM_SCORE(Adafruit_ILI9341 &lcd);
     void Bodovi_igra();
+    void picture(Adafruit_ILI9341 &lcd);
 
 
 private: // kad su varijable private tu im ne dajeĹˇ vrijednost

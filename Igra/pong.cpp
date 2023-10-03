@@ -103,6 +103,8 @@ void Pong::moveBall(Adafruit_ILI9341 &lcd, my_ballPong *b) //metoda za kretanje 
     lcd.fillCircle(b->startBallx, b->startBally, b->r, ILI9341_BLUE);
 }
 
+
+
 uint8_t Pong::checkCollisionPaddle(myPaddle_t1 *p1, myPaddle_t2 *p2, my_ballPong *b) //metoda za ispitivanje kolizije izmedu reketa i kuglice
 {
     uint8_t collision = 0; 
@@ -111,14 +113,14 @@ uint8_t Pong::checkCollisionPaddle(myPaddle_t1 *p1, myPaddle_t2 *p2, my_ballPong
 
     //prvi uvjet ispituje da li je reket sa kojom upravlja korisnik, odnosno da li je trenutna pozicija kuglice po x osi, y osi i njen radijus
     //da li su dotaknuli trenutnu poziciju reketa po x osi i po y osi
-    if (((b->startBallx - b->r) <= (p1->sx1 + p1->w)) && ((b->startBallx - b->r) > 0) && (b->startBally >= p1->sy1) && (b->startBally <= (b->startBally + p1->h)))
+    if (((b->startBallx - b->r) <= (p1->sx1 + p1->w)) && ((b->startBallx - b->r) > 0) && (b->startBally >= p1->sy1) && (b->startBally <= (p1->sy1 + p1->h)))
     {
         collision = 1;
     }
 
     //drugi uvjet ispituje da li je reket sa kojom upravlja mikroupravljač, odnosno da li je trenutna pozicija kuglice po x osi, y osi i njen radijus
     //da li su dotaknuli trenutnu poziciju reketa po x osi i po y osi
-    if (((b->startBallx + b->r) >= (p2->sx2)) && ((b->startBallx + b->r) > 0) && (b->startBally >= p2->sy2) && (b->startBally <= (b->startBally + p2->h)))
+    if (((b->startBallx + b->r) >= (p2->sx2)) && ((b->startBallx + b->r) > 0) && (b->startBally >= p2->sy2) && (b->startBally <= (p2->sy2 + p2->h)))
     {
         collision = 3;
     }
@@ -135,20 +137,28 @@ uint8_t Pong::checkCollisionPaddle(myPaddle_t1 *p1, myPaddle_t2 *p2, my_ballPong
         collision = 4;
         score2 = true;  //ako je uvjet ispunjen score stavi na true to znaci da je kuglica otisla iza reketa i dotaknila rub
     }
-
+    
     return collision;  //vrati zastavicu collision odnosno da li se kolizija dogodila i koja se kolizija dogodila
-    collision = 0;
 }
 
 void Pong::newBallPosition(my_ballPong *b) //metoda za kretanje kuglice
 {
-    ballDirectionX = -ballDirectionX;
+    if(ballDirectionX == -ballDirectionX)
+    {
+        ballDirectionX = +ballDirectionX;
+    }
+    if(ballDirectionX == +ballDirectionX)
+    {
+        ballDirectionX = -ballDirectionX;
+    }
+
+   // ballDirectionX = -ballDirectionX;
     ballDirectionY = +ballDirectionY;
     b->startBallx = newxb;
     b->startBally = newyb;
-    newxb += ballDirectionX;
+    newxb = +ballDirectionX;
 
-    newyb += ballDirectionY;
+    newyb = +ballDirectionY;
 }
 
 void Pong::scoreInGame(Adafruit_ILI9341 &lcd) //metoda za ispisivanje trentunog broja zivota za reket sa kojim upravlja korisnik u igrici
@@ -224,13 +234,13 @@ void Pong::score_In_High_Score(Adafruit_ILI9341 &lcd) //metoda za ispisivanje os
 uint8_t Pong::GAME_OVER(Adafruit_ILI9341 &lcd) // metoda koja ispituje da li je korisnik izgubio sve zivote
 { 
     gm = false; //zastavicu gm je prvo potrebno staviti na false odnosno laz
-    if (live_User(lcd) == 0) //ako je broj zivota korisnika jednak 0
+    if (live == 0) //ako je broj zivota korisnika jednak 0
     {
         gm = true; //zastavica gm je jednaka istini
         live = 5; //broj zivota korisnika vrati na pocetni broj zivota
     }
     return gm; //vrati zastavicu
-    gm = false; //ponisti zastavicu
+    //gm = false; //ponisti zastavicu
 }
 
 void Pong::gameOverText(Adafruit_ILI9341 &lcd) //metoda za ispisivanje game over teksta

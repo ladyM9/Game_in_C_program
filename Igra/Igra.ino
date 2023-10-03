@@ -27,7 +27,7 @@ unsigned long Time = 0;
 unsigned long Times = 0;
 unsigned long game_over = 0;
 unsigned long TIMER_CHANGE_INTERVAL = 50000;
-unsigned long millis();
+
 
 int state = 0;
 int brojanje_exit = 0;
@@ -49,13 +49,14 @@ void setup()
   pinMode(D6, OUTPUT);
   pinMode(D4, INPUT_PULLUP);
   digitalWrite(D6, HIGH);
+ // digitalWrite(D8, HIGH);
   Wire.setSCL(D15);
   Wire.setSDA(D14);
   maze.initializeRNG(&hrng);
   display.begin();
   Wire.begin();
   display.setRotation(3); // rotiraj display
-  Serial.begin(115200);
+ // Serial.begin(115200);
   myIMU.begin();
   // Forsiraj da kod misli da je partija igrice pobjeđena da bi se učitao novi random maze.
   // state = 1;
@@ -125,17 +126,17 @@ void loop()
           mod1 = maze.choosing_Mode_Game(0);
           state = 5;
         }
-        if (button.myButton(display, x, y, 150, 20, 120, 50, 3, "Medium", 1) == 1)
+       else if (button.myButton(display, x, y, 150, 20, 120, 50, 3, "Medium", 1) == 1)
         {
           mod2 = maze.choosing_Mode_Game(1);
           state = 5;
         }
-        if (button.myButton(display, x, y, 20, 100, 120, 50, 3, "Hard", 1) == 1)
+       else if (button.myButton(display, x, y, 20, 100, 120, 50, 3, "Hard", 1) == 1)
         {
           mod3 = maze.choosing_Mode_Game(2);
           state = 5;
         }
-        if (button.myButton(display, x, y, 150, 100, 100, 50, 3, "Back", 1) == 1)
+       else if (button.myButton(display, x, y, 150, 100, 100, 50, 3, "Back", 1) == 1)
         {
           state = 1;
         }
@@ -232,17 +233,15 @@ void loop()
         int x;
         int y;
         display.fillScreen(ILI9341_WHITE);
-        pong.live_User(display);
         pong.scoreInGame(display);
         pong.scoreInGame2(display);
+        Game2();
         if (button.back_Button(display, 120, 0, 30, 50, 2 , "Back", 1) == true)
         {
           state = 1;
         }
-        Game2();
         if (pong.GAME_OVER(display) == true)
         {
-
           state = 11;
         }
 
@@ -253,7 +252,6 @@ void loop()
         game_over = (millis() / 1000);
 
         state = 15;
-
 
         break;
       }
@@ -339,12 +337,8 @@ void GameLoop() // game loop za labirint
   if ((ball.checkColision(display, maze.getCurrentMaze()) != 0)) // ako je kuglica dotaknila liniju u labirintu
   {
     ball.newBallposition(display); // kuglicu stavi na poziciju u kojoj je bila prije nego što je dotaknila liniju u labirintu
-    // erial.print("Detection collision");
   }
-  //    if((ball.GM_SCORE(display)) == 1)
-  //    {
-  //      ball.Live(display);
-  //    }
+
   ball.Score(display); // poziv metode za ispis i pracenje scora u igrici
 
 }
@@ -361,6 +355,7 @@ void Game2()
   if (pong.checkCollisionPaddle(padle1[0], padle2[0], ponggame[0]) == 3)
   {
     pong.newBallPosition(ponggame[0]);
+ 
   }
   if (pong.checkCollisionPaddle(padle1[0], padle2[0], ponggame[0]) == 2)
   {
@@ -394,7 +389,6 @@ uint16_t Time_Game() // vrijeme u Game1
 
 
   return time_is_up;
-  time_is_up = 0;
 }
 
 uint8_t GM()
@@ -405,7 +399,6 @@ uint8_t GM()
     gm = true;
   }
   return gm;
-  gm = false;
 
 }
 
@@ -420,7 +413,6 @@ uint16_t Time_Score() // score u game1 tj labirint
     sc = true;
   }
   return sc;
-  sc = false;
 }
 
 uint16_t Game_over()
@@ -433,7 +425,6 @@ uint16_t Game_over()
     gt = true;
   }
   return gt;
-  gt = false;
 }
 
 
