@@ -1,1 +1,2 @@
-# Game_in_C_program
+# Završni rad
+# Igraća konzola temeljena na mikroupravljaču
