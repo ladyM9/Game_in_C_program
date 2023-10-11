@@ -1,2 +1,2 @@
-# Završni rad
-# Igraća konzola temeljena na mikroupravljaču
+# Završni rad -> Igraća konzola temeljena na mikroupravljaču
+
