@@ -7,5 +7,6 @@
 > 
 > Schema and PCB
 >
+> ![Uploading Prikaz izbornika highscore.JPG…]()
 
 
