@@ -6,4 +6,6 @@
 >  Maze scaling script
 > 
 > Schema and PCB
+>
+> ![My Image](Prikaz izbornika highscore.JPG)
 
