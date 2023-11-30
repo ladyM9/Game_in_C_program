@@ -7,5 +7,6 @@
 > 
 > Schema and PCB
 >
+> ![Prikaz izbornika highscore](https://github.com/ladyM9/Game_in_C_program/assets/78236758/f5e76f42-8c59-4d2c-a8d2-2224e9b86b13)
 
 
