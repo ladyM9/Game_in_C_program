@@ -142,7 +142,6 @@ void Ball::Time(Adafruit_ILI9341 &lcd, unsigned long time_game) // metoda pomocu
 
 uint8_t Ball::Score(Adafruit_ILI9341 &lcd) // metoda koja ispisuje score odnosno bodove u igrici na display tijekom igre
 {
-  uint8_t gameover = false;
   lcd.setCursor(60, 3);
   lcd.setTextSize(2);
   lcd.setTextColor(ILI9341_WHITE);
@@ -171,8 +170,8 @@ uint8_t Ball::GM_SCORE(Adafruit_ILI9341 &lcd)
   bodovi = 50;  //bodove stavi na pocetni broj bodova sto je 50
   }
   return score0; //vrati zastavicu
-  score0 = 0; //ponisti zastavicu
 }
+
 
 void Ball::score_Game(Adafruit_ILI9341 &lcd) // metoda pomocu koje na display se ispisuje broj bodova u igrici i zivoti u igrici
 {
@@ -207,6 +206,11 @@ void Ball::win_Screen(Adafruit_ILI9341 &lcd) // metoda odnosno screen koji se is
 
   updateScreen();
 }
+void Ball::reset_score()
+{
+  live = 3;
+  bodovi = 50;
+}
 
 void Ball::game_Over(Adafruit_ILI9341 &lcd)  //metoda pomoću koje se opisuje tekst koji se prikazuje na zaslonu nakon sto dode do game over-a
 {
@@ -235,7 +239,6 @@ int Ball::no_l(Adafruit_ILI9341 &lcd) //metoda unutar koje se ispituje da li je 
     live = 3; //vrati broj zivota na 3
   }
   return a; //vrati a
-  a = 0; //a vrati na 0 tj false tj ponisti zastavicu
 }
 
 void Ball::Bodovi_igra()

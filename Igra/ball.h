@@ -34,6 +34,9 @@ public:
     void Bodovi_igra();
     void picture(Adafruit_ILI9341 &lcd);
 
+    void reset_score(); //metoda koja reseta na pocetne vrijednosti bodove i zivote nakon sto je kliknuta tipka back u igri
+
+
 
 private: // kad su varijable private tu im ne dajeĹˇ vrijednost
     float X, velX;

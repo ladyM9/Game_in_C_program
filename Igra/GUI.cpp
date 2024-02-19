@@ -86,7 +86,7 @@ void Button::cursor(Adafruit_ILI9341 &lcd, int draw_cursor) // metoda pomocu koj
         int rawX = 1023 - analogRead(A0); //- analogRead(A0); // ocitavaj x os
         int rawY = 1023 - analogRead(A1); // ocitavaj y os
         xp -= (511 - rawX) / 100;
-        yp -= (511 - rawY) / 100;
+        yp += (511 - rawY) / 100;
 
         if ((xp > x1) && (xp < (width1 + x1)) && (yp < y1))
         {

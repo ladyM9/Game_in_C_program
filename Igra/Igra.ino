@@ -149,8 +149,10 @@ void loop()
       {
         int x;
         int y;
+        GameLoop();
         if (button.back_Button(display, 270, 0, 20, 45, 2, "Back", 1) == true)
         {
+          ball.reset_score();
           state = 3;
         }
         maze.drawLines(display); // iscrtaj labirint na display
@@ -165,7 +167,6 @@ void loop()
           state = 11;
         }
 
-        GameLoop();
         if (ball.checkExit(display, maze.getCurrentMaze()) == true) // ako se kuglica nalazi na izlaznoj liniji iz labirinta odi na state
         {
           brojanje_exit += 1;
@@ -238,6 +239,7 @@ void loop()
         Game2();
         if (button.back_Button(display, 120, 0, 30, 50, 2 , "Back", 1) == true)
         {
+          pong.reset_score();
           state = 1;
         }
         if (pong.GAME_OVER(display) == true)
@@ -320,6 +322,7 @@ void loop()
     
       break;
     }
+
   }
 
   screen.checkForRefresh();

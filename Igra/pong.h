@@ -29,6 +29,7 @@ public:
     void score_In_High_Score(Adafruit_ILI9341 &lcd);
     uint8_t live_User(Adafruit_ILI9341 &lcd);
     uint8_t lives_minus();
+    void reset_score();
   
     //int x, int y, int rectX, int rectY, int rectWidth, int rectHeight
     void updateScreenGame1();

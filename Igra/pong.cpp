@@ -253,6 +253,12 @@ void Pong::gameOverText(Adafruit_ILI9341 &lcd) //metoda za ispisivanje game over
 
     updateScreenGame1();
 }
+
+void Pong::reset_score()
+{
+    live = 5;
+    live_rac = 5;
+}
 void Pong::updateScreenGame1()
 {
     requestForCallback();
