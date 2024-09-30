@@ -21,5 +21,6 @@ Maze scaling script
 
  The history of game scores
  
+Beginning screen on the game console
 
 ![20231206_175909](https://github.com/ladyM9/Game_in_C_program/assets/78236758/e344b27f-8dff-4348-a23f-a9a6c9c926ba)
