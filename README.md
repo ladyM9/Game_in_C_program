@@ -24,3 +24,17 @@ Maze scaling script
 Beginning screen on the game console
 
 ![20231206_175909](https://github.com/ladyM9/Game_in_C_program/assets/78236758/e344b27f-8dff-4348-a23f-a9a6c9c926ba)
+
+Main Menu Overview
+
+<p align="center">
+    <img width = "400" src=https://github.com/ladyM9/Game_in_C_program/blob/main/Images/Slika%20izbornika%20igre.jpg>
+</p>
+
+Maze game
+
+<p align="center">
+    <img width = "400" src=https://github.com/ladyM9/Game_in_C_program/blob/main/Images/Labirint%20igra%20prikaz.jpg>
+</p>
+
+
