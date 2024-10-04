@@ -22,29 +22,38 @@ Maze scaling script
  The history of game scores
  
 
-Main Menu Overview
+##Game console overview
 
 <p align="center">
     <img width = "400" src=https://github.com/ladyM9/Game_in_C_program/blob/main/Images/Slika%20izbornika%20igre.jpg>
+    <br>
+        <b>Main Menu Overview</b>
 </p>
+<br>
 
-Maze game
 
 <p align="center">
     <img width = "400" src=https://github.com/ladyM9/Game_in_C_program/blob/main/Images/Labirint%20igra%20prikaz.jpg>
+    <br>
+        <b>Maze game</b>
 </p>
+<br>
 
-Pong game
 
 <p align="center">
     <img width = "400" src=https://github.com/ladyM9/Game_in_C_program/blob/main/Images/Pong_game.jpg>
+    <br>
+        <b>Pong game</b>
 </p>
+<br>
 
-Highscore screen
 
 <p align="center">
     <img width = "400" src=https://github.com/ladyM9/Game_in_C_program/blob/main/Images/High_score_screen.JPG>
+    <br>
+        <b>Highscore screen</b>
 </p>
+<br>
 
 
 
