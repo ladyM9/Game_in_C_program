@@ -4,19 +4,19 @@ The menu is navigated using a joystick, and the games are played using an accele
 
  In this repository, you can find a scaling script (written in Python) for scaling a maze for display on an LCD TFT, as well as the main code used to display the menu and games. Other parts of the code describe the menu, the first game, the second game, and the objects in the games.
 
-***Contents of repo***
+## ***Contents of repo***
 -   Main code
 -   Maze scaling script
 -   Schema and PCB
 
 
-***Features***
+## ***Features***
 -   Two games
 -   Power with using battery
 -   Controlling with objects in games using the acelerometer
 -   The history of game scores
 
-***Game console overview***
+## ***Game console overview***
 
 <p align="center">
     <img width = "400" src=https://github.com/ladyM9/Game_in_C_program/blob/main/Images/Slika%20izbornika%20igre.jpg>
